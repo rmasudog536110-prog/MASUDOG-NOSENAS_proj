@@ -1,0 +1,109 @@
+/* log-in css */
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #111 0%, #181818 50%);
+    color: #fff;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 10%;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 60%;
+    height: 100%;
+    flex: 1;
+    background: url('../imgs/gymbg1.jpg') no-repeat center center;
+    background-size: cover;
+    z-index: 0;
+}
+main {
+    position: relative;
+    z-index: 1;
+}
+
+
+
+/* Login card */
+.login-card {
+    background: #202020;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    max-width: 25rem;
+    width: 40rem;
+    padding: 2rem; 
+    margin-left: 10%;
+    margin-bottom: 30%;
+}
+
+/* Headings */
+h2 {
+    color: #f24b0f;
+    text-align: center;
+    margin-bottom: 1.5rem;
+     margin-left: 20%;
+}
+
+/* Inputs */
+.form-control {
+    background-color: #2a2a2a;
+    border: 1px solid #3a3a3a;
+    color: #fff;
+}
+
+.form-control:focus {
+    border-color: #f24b0f;
+    box-shadow: 0 0 0 0.2rem rgba(242, 75, 15, 0.25);
+    background-color: #685050;
+    color: #fff;
+}
+
+/* Button */
+.btn-primary {
+    background-color: #f24b0f;
+    border: none;
+    width: 100%;
+    font-weight: 600;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: #d93f0c;
+}
+
+/* Links */
+
+.text-muted {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.text-muted a {
+    color: #aaa; 
+    text-decoration: none;
+}
+
+.text-muted a:hover {
+    color: #f24b0f;
+}
+
+/* Flash messages */
+.flash-message.success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    padding: 0.75rem;
+    border-radius: 8px;
+}
+
+.flash-message.error {
+    background-color: #f8d7da;
+    color: #842029;
+    padding: 0.75rem;
+    border-radius: 8px;
+}

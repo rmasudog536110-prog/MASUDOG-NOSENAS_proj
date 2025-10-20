@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Sign Up - FitClub</title>
-    <link rel="stylesheet" href="{{ asset('css/HTML-CSS.styles.css') }}"> {{-- adjust filename if needed --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/41115896cd.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="{{ asset('css/register.css') }}">
 </head>
 <body>
     <main class="content-section">
@@ -68,17 +68,23 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="phone">Phone Number (Optional)</label>
+                        <label for="phone_number">Phone Number (Optional)</label>
+                        <div class="input-group">
+                        <span class="input-group-text">+63</span>
                         <input
                             type="tel"
-                            id="phone"
-                            name="phone"
+                            id="phone_number"
+                            name="phone_number"
                             class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}"
+                            maxlength="10"
+                            pattern="[0-9]{10}"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0.10);"
                             value="{{ old('phone') }}"
-                            placeholder="+63 9284594158"
+                            placeholder="9284594158"
                         >
-                        @if ($errors->has('phone'))
-                            <div class="form-error text-danger small mt-1">{{ $errors->first('phone') }}</div>
+                        </div>
+                        @if ($errors->has('phone_number'))
+                            <div class="form-error text-danger small mt-1">{{ $errors->first('phone_number') }}</div>
                         @endif
                     </div>
 
@@ -95,7 +101,7 @@
                         @if ($errors->has('password'))
                             <div class="form-error text-danger small mt-1">{{ $errors->first('password') }}</div>
                         @endif
-                        <small class="text-muted">Minimum 6 characters</small>
+                        <p><small class="text-muted">Minimum 6 characters</small></p>
                     </div>
 
                     <div class="form-group mb-3">
@@ -113,72 +119,18 @@
                         @endif
                     </div>
 
-                    {{-- plan selector (if no pre-selected plan) --}}
-                    @if (empty($selectedPlanId))
-                        <div class="form-group mb-3">
-                            <label for="plan_select">Choose a Plan (Optional)</label>
-                            <select id="plan_select" name="plan_id" class="form-control">
-                                <option value="">Select a plan later</option>
-                                @foreach($plans ?? [] as $plan)
-                                    @php
-                                        $planId = data_get($plan, 'id');
-                                        $selected = (string) old('plan_id', $selectedPlanId ?? '') === (string) $planId;
-                                    @endphp
-                                    <option value="{{ $planId }}" {{ $selected ? 'selected' : '' }}>
-                                        {{ data_get($plan,'name') }} - ₱{{ number_format(data_get($plan,'price',0), 0) }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    @endif
-
                     @php
-                        $buttonLabel = isset($selectedPlanId) ? 'Create Account & Continue' : 'Create Account';
+                        $buttonLabel = 'Create Account';
                     @endphp
 
                     <button type="submit" class="btn btn-primary btn-full mt-3">{{ $buttonLabel }}</button>
                 </form>
 
-                <div class="text-center" style="margin-top: 2rem;">
-                    <p>Already have an account? <a href="{{ url('/login') }}" style="color: var(--primary); font-weight: var(--font-weight-medium);">Login here</a></p>
+                <div class="text-muted" style="margin-top: 2rem;">
+                    <p><a href="{{ url('/login') }}">Already have an account? Login here</a></p>
                 </div>
             </div>
         </div>
     </main>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('form');
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const password = document.getElementById('password');
-            const confirmPassword = document.getElementById('confirm_password');
-
-            // real-time password confirmation (HTML5 customValidity)
-            function checkPasswordMatch() {
-                if (confirmPassword.value && password.value !== confirmPassword.value) {
-                    confirmPassword.setCustomValidity('Passwords do not match');
-                } else {
-                    confirmPassword.setCustomValidity('');
-                }
-            }
-
-            password.addEventListener('input', checkPasswordMatch);
-            confirmPassword.addEventListener('input', checkPasswordMatch);
-
-            form.addEventListener('submit', function() {
-                submitBtn.textContent = 'Creating Account...';
-                submitBtn.disabled = true;
-            });
-
-            const initialBtnText = @json($buttonLabel);
-            const hadErrors = @json($errors->any());
-
-            if (hadErrors) {
-                // restore button when server-side validation failed
-                submitBtn.textContent = initialBtnText;
-                submitBtn.disabled = false;
-            }
-        });
-    </script>
 </body>
 </html>

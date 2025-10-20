@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <?php include '../PHP/header.php'; ?>
+     @include('index.header')
 
     <main class="content-section">
         <div class="container">
@@ -174,7 +174,7 @@
         </div>
     </main>
 
-    <?php include '../PHP/footer.php'; ?>
+     @include('index.footer')
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

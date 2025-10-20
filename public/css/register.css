@@ -1,0 +1,107 @@
+/* register.css */
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #111 0%, #181818 50%);
+    color: #fff;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%; /* half screen for image */
+    height: 100%;
+    background: url('../imgs/gymbg3.jpg') no-repeat center center;
+    background-size: cover;
+    z-index: 0;
+    filter: brightness(0.5);
+}
+
+main {
+    position: absolute;
+    z-index: 1;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.register-card {
+    background: #202020;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    max-width: 25rem;
+    width: 100%;
+    padding: 2rem 2.5rem;
+    text-align: center;
+}
+
+/* Headings */
+h2, h1 {
+    color: #f24b0f;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Form inputs */
+.form-control {
+    background-color: #2a2a2a;
+    border: 1px solid #3a3a3a;
+    color: #fff;
+}
+
+.form-control:focus {
+    border-color: #f24b0f;
+    box-shadow: 0 0 0 0.2rem rgba(242, 75, 15, 0.25);
+    background-color: #2a2a2a;
+    color: #fff;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.2); 
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #f24b0f;
+    border: none;
+    width: 100%;
+    font-weight: 600;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: #d93f0c;
+}
+
+/* Text links */
+.text-muted {
+    color: #bbb !important;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.text-muted a {
+    color: #aaa;
+    text-decoration: none;
+}
+
+.text-muted a:hover {
+    color: #f24b0f;
+}
+
+/* Flash message styles */
+.flash-message.error {
+    background-color: #f8d7da;
+    color: #842029;
+    padding: 0.75rem;
+    border-radius: 8px;
+}

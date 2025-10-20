@@ -20,14 +20,18 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
+            'phone_number' => 'required|max:10|unique:users',
             'password' => 'required|min:6|confirmed'
+            
         ]);
  
  
         User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone_number' => $request->phone_number,
             'password' => Hash::make($request->password),
+            
         ]);
  
  
@@ -41,26 +45,25 @@ class UserController extends Controller
  
  
     public function login(Request $request) {
-        $credentials = $request->only('email', 'password');
- 
- 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect('/dashboard');
-        }
- 
- 
-        return back()->withErrors([
-            'email' => 'Invalid credentials.',
-        ]);
+    $credentials = $request->only('email', 'password');
+
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+        return view('index.dashboard'); 
     }
+
+    return back()->withErrors([
+        'email' => 'Invalid credentials.',
+    ]);
+}
+
  
  
     public function logout(Request $request) {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/login');
+        return redirect('auth.login');
     }
 
 }
