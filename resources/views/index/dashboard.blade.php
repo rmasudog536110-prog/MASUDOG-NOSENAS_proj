@@ -1,33 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - FitClub</title>
+@extends('skeleton.layout')
 
-    <link 
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
-        rel="stylesheet" 
-        crossorigin="anonymous"
-    >
-    <script 
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" 
-        crossorigin="anonymous"
-    ></script>
-    <script 
-        src="https://kit.fontawesome.com/41115896cd.js" 
-        crossorigin="anonymous"
-    ></script>
-
-    <link rel="stylesheet" href="{{ asset('HTML-CSS/dashboard.css') }}">
-    <link rel="stylesheet" href="{{ asset('HTML-CSS/styles.css') }}">
+@section('title', 'Dashboard - FitClub')
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link 
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" 
         rel="stylesheet"
     >
-</head>
-<body>
-    @include('index.header')
+@endpush
+
+@section('content')
+
+@include('index.header')
 
     {{-- Flash Messages --}}
     @if (session('success'))
@@ -48,9 +32,8 @@
         </div>
     @endif
 
-    <main class="content-section">
+    <section class="content-section">
         <div class="container">
-            <h1>Welcome back, {{ Auth::user()->name }}!</h1>
 
             <div class="dashboard-grid">
                 {{-- Subscription Status --}}
@@ -60,7 +43,7 @@
                     <div class="subscription-info">
                         @if ($userSubscription)
                             <div class="subscription-plan">
-                                <strong>Plan:</strong> {{ $userSubscription['plan_name'] }}
+                                <strong>Plan:</strong> {{ $userSubscription->plan->name }}
                             </div>
 
                             <div class="subscription-status {{ $subscriptionStatus }}">
@@ -95,7 +78,7 @@
                             @endif
 
                             <div class="subscription-amount">
-                                <strong>Amount Paid:</strong> ₱{{ number_format($userSubscription['price'], 0) }}
+                                <strong>Amount Paid:</strong> ₱{{ number_format($userSubscription->plan->price ?? 0, 2) }}
                             </div>
                         @else
                             <div class="no-subscription">
@@ -134,10 +117,7 @@
 
                     <div class="mt-4">
                         @if (in_array($subscriptionStatus, ['active', 'trial']))
-                            <a 
-                                href="{{ route('programs') }}" 
-                                class="btn btn-primary btn-full"
-                            >
+                            <a href="{{ route('programs') }}" class="btn btn-primary btn-full">
                                 Start New Workout
                             </a>
                         @else
@@ -211,16 +191,16 @@
                                 <span>Training Programs</span>
                             </a>
 
-                            <a href="{{ url('exercises') }}" class="action-btn">
+                            <a href="{{ route('exercises') }}" class="action-btn">
                                 <span class="action-icon">💪</span>
                                 <span>Exercise Library</span>
                             </a>
                         @endif
-
-                        <a href="{{ route('profile') }}" class="action-btn">
+    
+                      {{-- <a href="{{ route('profile') }}" class="action-btn">
                             <span class="action-icon">👤</span>
                             <span>Edit Profile</span>
-                        </a>
+                        </a>  --}}   
 
                         @if ($subscriptionStatus === 'expired' || !$userSubscription)
                             <a href="{{ url('#subscription-plans') }}" class="action-btn">
@@ -230,46 +210,9 @@
                         @endif
                     </div>
                 </div>
-
-                {{-- Subscription History --}}
-                @if (!empty($subscriptionHistory))
-                    <div class="dashboard-card">
-                        <h3>Subscription History</h3>
-
-                        <div class="subscription-history">
-                            @foreach (array_slice($subscriptionHistory, 0, 3) as $subscription)
-                                <div class="history-item">
-                                    <div class="history-details">
-                                        <span class="history-plan">{{ $subscription['plan_name'] }}</span>
-                                        <span class="history-period">
-                                            {{ \Carbon\Carbon::parse($subscription['start_date'])->format('M j, Y') }} -
-                                            {{ \Carbon\Carbon::parse($subscription['end_date'])->format('M j, Y') }}
-                                        </span>
-                                    </div>
-
-                                    <div class="history-amount">
-                                        ₱{{ number_format($subscription['price'], 0) }}
-                                    </div>
-                                </div>
-                            @endforeach
-
-                            @if (count($subscriptionHistory) > 3)
-                                <div class="text-center mt-3">
-                                    <a 
-                                        href="{{ route('subscription.history') }}" 
-                                        class="btn btn-outline"
-                                    >
-                                        View All History
-                                    </a>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                @endif
             </div>
         </div>
-    </main>
+    </section>
 
     @include('index.footer')
-</body>
-</html>
+@endsection

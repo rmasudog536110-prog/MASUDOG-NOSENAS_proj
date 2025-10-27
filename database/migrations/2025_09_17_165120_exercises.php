@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->enum('category', ['strength', 'cardio', 'flexibility', 'functional']);
+            $table->enum('category', ['warmup', 'strength', 'cardio', 'core', 'flexibility','weightlifting', 'functional', 'plyometrics']);
             $table->enum('difficulty', ['beginner', 'intermediate', 'expert']);
             $table->string('equipment');
             $table->text('instruction');

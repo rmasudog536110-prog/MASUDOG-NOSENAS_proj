@@ -20,7 +20,7 @@ return new class extends Migration
             $table->json('features');
             $table->boolean('is_active')->default(true);
             $table->boolean('free_trial')->default(false);
-            $table->integer('trial_days')->nullable();
+            $table->integer('duration_days')->nullable();
             $table->timestamps();
         });
     }

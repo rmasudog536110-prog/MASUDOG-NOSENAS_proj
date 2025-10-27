@@ -1,0 +1,313 @@
+:root {
+  --font-size: 16px;
+  --background: #000000;
+  --foreground: #f5f5f5;
+  --card: #1a1a1a;
+  --card-foreground: #f5f5f5;
+  --primary: #ff6600;
+  --primary-foreground: #ffffff;
+  --muted: #222222;
+  --muted-foreground: #b5b5b5;
+  --accent: #2b2b2b;
+  --radius: 0.7rem;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+}
+
+* {
+  box-sizing: content-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+.hero {
+  background: url("../imgs/gymbg1.jpg") no-repeat center center/cover;
+  color: #fff;
+  text-align: center;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.hero .container {
+  position: relative;
+  padding: 0 2rem;
+  width: 100%;
+  margin: 0;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--primary);
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #ddd;
+}
+
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 1rem 3rem;
+}
+
+.btn-primary:hover {
+  background: #e65c00;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 0.75rem 1.5rem;
+}
+
+.btn-outline:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+.subscription-plans {
+  background: #0d0d0d;
+  padding: 5rem 1rem;
+  text-align: center;
+}
+
+.subscription-plans h2 {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 3rem;
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.plan-card {
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 102, 0, 0.2);
+  border-radius: var(--radius);
+  padding: 2rem;
+  min-height: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.plan-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(255, 102, 0, 0.3);
+}
+
+.plan-badge {
+  background: var(--primary);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.plan-header h3 {
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.plan-price {
+  margin-bottom: 1rem;
+}
+
+.plan-price .price {
+  font-size: 2rem;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.plan-features {
+  list-style: none;
+  text-align: left;
+  margin: 2rem 0;
+  color: #ccc;
+}
+
+.plan-features li {
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  position: relative;
+}
+
+.plan-features li::before {
+  content: "✓";
+  color: var(--primary);
+  position: absolute;
+  left: 0;
+}
+
+.training-preview {
+  background: #000;
+  padding: 5rem 1rem;
+  text-align: center;
+}
+
+.training-preview h2 {
+  color: var(--primary);
+  font-size: 2rem;
+  margin-bottom: 3rem;
+}
+
+.programs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.program-card {
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 102, 0, 0.2);
+  border-radius: var(--radius);
+  padding: 2rem;
+  transition: transform 0.3s;
+}
+
+.program-card:hover {
+  transform: translateY(-5px);
+}
+
+.program-card h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.program-card p {
+  color: #ccc;
+  margin-bottom: 1rem;
+}
+
+.program-meta {
+  display: flex;
+  justify-content: space-between;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.features {
+  background: #000;
+  color: #fff;
+  padding: 100px 0;
+  text-align: center;
+}
+
+.features h2 {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 60px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.feature-card {
+  background: #1a1a1a;
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 4px 12px rgba(255, 102, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 18px rgba(255, 102, 0, 0.4);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 0.75rem;
+}
+
+.feature-card p {
+  color: #ccc;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+  .hero p {
+    font-size: 1rem;
+  }
+  .btn-primary {
+    padding: 0.75rem 2rem;
+  }
+  .plan-card {
+    min-height: auto;
+  }
+  .feature-card {
+    max-width: 100%;
+  }
+}

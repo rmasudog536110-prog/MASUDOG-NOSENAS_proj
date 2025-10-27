@@ -16,7 +16,7 @@
             <div class="form-container" style="max-width: 500px;">
                 <h1 class="text-center" style="margin-bottom: 2rem;">Join FitClub</h1>
 
-                {{-- selected plan info (works with arrays or Eloquent models) --}}
+                
                 @if(!empty($selectedPlan))
                     <div class="selected-plan-info" style="background-color: var(--accent); padding: 1rem; border-radius: var(--radius); margin-bottom: 2rem; text-align: center;">
                         <h3>Selected Plan: {{ data_get($selectedPlan, 'name') }}</h3>
@@ -31,11 +31,10 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ url('/register') }}">
+                <form method="POST" action="{{ route('register.submit') }}">
                     @csrf
-
-                    {{-- keep plan_id from old input or provided selectedPlanId --}}
                     <input type="hidden" name="plan_id" value="{{ old('plan_id', $selectedPlanId ?? '') }}">
+
 
                     <div class="form-group mb-3">
                         <label for="name">Full Name</label>
@@ -116,6 +115,27 @@
                         >
                         @if ($errors->has('password_confirmation'))
                             <div class="form-error text-danger small mt-1">{{ $errors->first('password_confirmation') }}</div>
+                        @endif
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="plan_id">Choose a Subscription Plan</label>
+                        <select
+                            id="plan_id"
+                            name="plan_id"
+                            class="form-control {{ $errors->has('plan_id') ? 'is-invalid' : '' }}"
+                        >
+                            <option value="">-- Please Select a Plan --</option>
+                            @foreach(\App\Models\SubscriptionPlan::all() as $plan)
+                                <option value="{{ $plan->id }}"
+                                {{ old('plan_id', $selectedPlanId ?? '') == $plan->id ? 'selected' : '' }}>
+                                    {{ $plan->name }} — ₱{{ number_format($plan->price, 2) }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        @if ($errors->has('plan_id'))
+                            <div class="form-error text-danger small mt-1">{{ $errors->first('plan_id') }}</div>
                         @endif
                     </div>
 

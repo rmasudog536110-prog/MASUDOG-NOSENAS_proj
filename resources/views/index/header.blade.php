@@ -2,6 +2,8 @@
 $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 ?>
 
+<link rel="stylesheet" href="{{ asset('css/header.css') }}">
+
 <!-- Header -->
 <header class="header">
     <div class="container">
@@ -15,7 +17,7 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
             <nav class="nav">
                 <a href="{{ url('/') }}" 
                    class="nav-link {{ request()->is('/') ? 'active' : '' }}">
-                    Home
+                    <i class="fa-solid fa-house-user"></i> Home
                 </a>
 
                 @auth
@@ -50,7 +52,7 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                 @guest
                     <div class="auth-buttons">
                         <a href="{{ route('login') }}" class="btn btn-outline">Login</a>
-                        <a href="{{ route('register') }}" class="btn btn-primary">Sign Up</a>
+                        <a href="{{ route('register') }}" class="btn btn-outline">Sign Up</a>
                     </div>
                 @endguest
             </div>

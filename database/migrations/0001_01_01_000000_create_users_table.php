@@ -20,6 +20,7 @@ return new class extends Migration
             $table->bigInteger('phone_number')->default(null);
             $table->rememberToken();
             $table->timestamps();
+
         });
 
          Schema::create('password_reset_tokens', function (Blueprint $table) {
