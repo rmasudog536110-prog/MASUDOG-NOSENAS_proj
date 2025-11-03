@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon; 
 use App\Models\UserProgress; 
 use App\Models\UserSubscription;
+use App\Models\WorkoutLog;
 
 class DashboardController extends Controller
 {
@@ -14,23 +15,77 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
+        // Redirect admins and managers to admin dashboard
+        if ($user->hasAdminAccess()) {
+            return redirect()->route('admin.dashboard');
+        }
+
     $userSubscription = UserSubscription::where('user_id', Auth::id())
         ->with('plan')
         ->latest()
         ->first();
 
-        $subscriptionExpiry = $userSubscription ? $userSubscription->end_date : null;   
-        $subscriptionStatus = $subscriptionExpiry->isPast() ? 'expired' : 'active';
-        $daysLeft = round(now()->diffInHours($subscriptionExpiry) / 24, 0);
+        $subscriptionExpiry = $userSubscription ? $userSubscription->end_date : null;
         
+        // Determine subscription status based on payment_status and expiry
+        if ($userSubscription) {
+            // Check payment status first
+            if ($userSubscription->payment_status === 'pending') {
+                $subscriptionStatus = 'pending';
+                $daysLeft = 0;
+            } elseif ($userSubscription->payment_status === 'rejected') {
+                $subscriptionStatus = 'rejected';
+                $daysLeft = 0;
+            } elseif ($userSubscription->payment_status === 'approved') {
+                // Check if subscription is expired
+                if ($subscriptionExpiry && $subscriptionExpiry->isPast()) {
+                    $subscriptionStatus = 'expired';
+                    $daysLeft = 0;
+                } else {
+                    $subscriptionStatus = 'active';
+                    $daysLeft = $subscriptionExpiry 
+                        ? max(0, round(now()->diffInHours($subscriptionExpiry) / 24, 0))
+                        : 0;
+                }
+            } else {
+                $subscriptionStatus = 'none';
+                $daysLeft = 0;
+            }
+        } else {
+            $subscriptionStatus = 'none';
+            $daysLeft = 0;
+        }
+        
+        // Get workout statistics from workout_logs table
         $workoutStats = [
-            'total_workouts' => $user->progress()->count(),
-            'weekly_workouts' => $user->progress()->where('workout_date', '>=', now()->subWeek())->count(),
-            'days_active' => $user->progress()->distinct('workout_date')->count('workout_date')
+            'total_workouts' => $user->workoutLogs()->count(),
+            'weekly_workouts' => $user->workoutLogs()
+                ->where('workout_date', '>=', now()->subWeek())
+                ->count(),
+            'days_active' => $user->workoutLogs()
+                ->distinct('workout_date')
+                ->count('workout_date')
         ];
 
+        // Get recent workout activities
+        $recentActivities = $user->workoutLogs()
+            ->with(['exercise', 'trainingProgram'])
+            ->latest('workout_date')
+            ->take(5)
+            ->get()
+            ->map(function($log) {
+                return [
+                    'exercise_name' => $log->exercise->name ?? null,
+                    'program_title' => $log->trainingProgram->title ?? null,
+                    'sets_completed' => $log->sets,
+                    'reps_completed' => $log->reps,
+                    'weight_used' => $log->weight,
+                    'workout_date' => $log->workout_date,
+                    'duration_minutes' => $log->duration_minutes,
+                ];
+            })
+            ->toArray();
 
-        $recentActivities = $user->progress()->latest()->take(5)->get()->toArray();
         $subscriptionHistory = $user->subscriptions()->latest()->get()->toArray();
 
         return view('index.dashboard', compact(

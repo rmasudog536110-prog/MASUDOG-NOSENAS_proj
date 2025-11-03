@@ -52,23 +52,16 @@ class UserController extends Controller
         Auth::login($user);
 
        if ($request->filled('plan_id')) {
-    $plan = SubscriptionPlan::find($request->plan_id);
+            $plan = SubscriptionPlan::find($request->plan_id);
+            
+            if ($plan) {
+                // Redirect to payment proof upload form instead of creating subscription
+                return redirect()
+                    ->route('subscription.payment.form', ['plan' => $plan->id])
+                    ->with('success', 'Please upload your payment proof to activate your subscription.');
+            }
+        }
         
-
-    if ($plan) {
-       $subscription = UserSubscription::create([
-            'user_id'              => $user->id,
-            'plan_id'              => $plan->id,
-            'start_date'           => Carbon::now(),
-            'end_date'             => Carbon::now()->addDays($plan->duration_days),
-            'is_active'            => true,
-        ]); 
-
-        return redirect()
-                ->route('payment.payment', ['subscription_id' => $subscription->id])
-                ->with('success', 'Please complete your payment to activate your subscription.');
-    }
-}
         return redirect('/dashboard')->with('success', 'Registered successfully.');
     }
  
@@ -83,6 +76,12 @@ class UserController extends Controller
 
     if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
+        
+        // Redirect based on user role
+        if (Auth::user()->hasAdminAccess()) {
+            return redirect()->route('admin.dashboard');
+        }
+        
         return redirect('/dashboard'); 
     }
 

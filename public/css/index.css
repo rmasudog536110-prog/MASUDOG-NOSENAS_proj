@@ -5,6 +5,7 @@
   --card: #1a1a1a;
   --card-foreground: #f5f5f5;
   --primary: #ff6600;
+  --primary-dark: #e65c00;
   --primary-foreground: #ffffff;
   --muted: #222222;
   --muted-foreground: #b5b5b5;
@@ -12,12 +13,17 @@
   --radius: 0.7rem;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
+  --transition-speed: 0.3s;
 }
 
 * {
-  box-sizing: content-box;
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html, body {
@@ -41,7 +47,7 @@ a {
   background: url("../imgs/gymbg1.jpg") no-repeat center center/cover;
   color: #fff;
   text-align: center;
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
   display: flex;
   align-items: center;
@@ -82,7 +88,13 @@ a {
   border-radius: var(--radius);
   cursor: pointer;
   font-weight: 600;
-  transition: all 0.2s;
+  transition: all var(--transition-speed) ease;
+  text-decoration: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
 .btn-primary {
@@ -92,7 +104,9 @@ a {
 }
 
 .btn-primary:hover {
-  background: #e65c00;
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 102, 0, 0.4);
 }
 
 .btn-outline {
@@ -105,6 +119,7 @@ a {
 .btn-outline:hover {
   background: var(--primary);
   color: #fff;
+  transform: translateY(-2px);
 }
 
 .subscription-plans {
@@ -132,12 +147,11 @@ a {
   border: 1px solid rgba(255, 102, 0, 0.2);
   border-radius: var(--radius);
   padding: 2rem;
-  min-height: 450px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
 }
 
 .plan-card:hover {
@@ -216,11 +230,12 @@ a {
   border: 1px solid rgba(255, 102, 0, 0.2);
   border-radius: var(--radius);
   padding: 2rem;
-  transition: transform 0.3s;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
 }
 
 .program-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);
 }
 
 .program-card h3 {
@@ -264,12 +279,13 @@ a {
 
 .feature-card {
   background: #1a1a1a;
-  border-radius: 1rem;
+  border: 1px solid rgba(255, 102, 0, 0.2);
+  border-radius: var(--radius);
   padding: 2rem;
   width: 100%;
   max-width: 320px;
   box-shadow: 0 4px 12px rgba(255, 102, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
 }
 
 .feature-card:hover {
@@ -294,6 +310,24 @@ a {
   line-height: 1.6;
 }
 
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}
+
 @media (max-width: 768px) {
   .hero h1 {
     font-size: 2.2rem;
@@ -304,8 +338,14 @@ a {
   .btn-primary {
     padding: 0.75rem 2rem;
   }
-  .plan-card {
-    min-height: auto;
+  .plans-grid {
+    grid-template-columns: 1fr;
+  }
+  .programs-grid {
+    grid-template-columns: 1fr;
+  }
+  .features-grid {
+    grid-template-columns: 1fr;
   }
   .feature-card {
     max-width: 100%;

@@ -2,6 +2,10 @@
 
 @section('title', 'Exercise Library - FitClub')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/programs.css') }}">
+@endpush
+
 @section('content')
 
 @include('index.header')
@@ -32,11 +36,11 @@
         <div class="container">
             <!-- Header -->
             <div class="text-center mb-5">
-                <h1 class="display-4 fw-bold text-dark mb-3">
-                    <i class="fas fa-book me-3 text-primary"></i>
+                <h1 class="display-4 fw-bold mb-3" style="color: var(--primary);">
+                    <i class="fas fa-book me-3"></i>
                     Exercise Library
                 </h1>
-                <p class="lead text-muted">
+                <p class="lead" style="color: var(--muted-foreground);">
                     Comprehensive collection of exercises for all fitness levels
                 </p>
             </div>
@@ -97,10 +101,10 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center mb-2">
                                     <span class="fs-4 me-2">{!! $exercise->icon !!}</span>
-                                    <h6 class="card-title fw-bold text-dark mb-0">{{ $exercise->name }}</h6>
+                                    <h6 class="card-title fw-bold mb-0" style="color: var(--foreground);">{{ $exercise->name }}</h6>
                                 </div>
 
-                                <p class="card-text text-muted small mb-3">{{ $exercise->description }}</p>
+                                <p class="card-text small mb-3" style="color: var(--muted-foreground);">{{ $exercise->description }}</p>
 
                                 <div class="d-flex flex-wrap gap-1 mb-2">
                                     <span class="badge 
@@ -125,7 +129,7 @@
                                     </span>
                                 </div>
 
-                                <div class="text-muted small">
+                                <div class="small" style="color: var(--muted-foreground);">
                                     <i class="fas fa-tools me-1"></i>
                                     {{ $exercise->equipment }}
                                 </div>

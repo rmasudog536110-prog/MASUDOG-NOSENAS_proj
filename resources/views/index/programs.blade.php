@@ -2,6 +2,10 @@
 
 @section('title', 'Training Programs - FitClub')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/programs.css') }}">
+@endpush
+
 @section('content')
 
 @include('index.header')
@@ -32,11 +36,11 @@
         <div class="container">
             <!-- Header -->
             <div class="text-center mb-5">
-                <h1 class="display-4 fw-bold text-dark mb-3">
-                    <i class="fas fa-dumbbell me-3 text-primary"></i>
+                <h1 class="display-4 fw-bold mb-3" style="color: var(--primary);">
+                    <i class="fas fa-dumbbell me-3"></i>
                     Training Programs
                 </h1>
-                <p class="lead text-muted">
+                <p class="lead" style="color: var(--muted-foreground);">
                     Professional programs designed for every fitness level
                 </p>
             </div>
@@ -73,28 +77,28 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center mb-3">
                                     <span class="fs-2 me-3">{{ $program['icon'] }}</span>
-                                    <h5 class="card-title fw-bold text-dark mb-0">
+                                    <h5 class="card-title fw-bold mb-0" style="color: var(--foreground);">
                                         {{ $program['title'] }}
                                     </h5>
                                 </div>
 
-                                <p class="card-text text-muted mb-4">
+                                <p class="card-text mb-4" style="color: var(--muted-foreground);">
                                     {{ $program['description'] }}
                                 </p>
 
                                 <div class="mb-4">
                                     <div class="row g-2 text-sm">
                                         <div class="col-6">
-                                            <small class="text-muted">Duration:</small>
-                                            <div class="fw-medium">{{ $program['duration'] }}</div>
+                                            <small style="color: var(--muted-foreground);">Duration:</small>
+                                            <div class="fw-medium" style="color: var(--foreground);">{{ $program['duration'] }}</div>
                                         </div>
                                         <div class="col-6">
-                                            <small class="text-muted">Workouts:</small>
-                                            <div class="fw-medium">{{ $program['workouts'] }}</div>
+                                            <small style="color: var(--muted-foreground);">Workouts:</small>
+                                            <div class="fw-medium" style="color: var(--foreground);">{{ $program['workouts'] }}</div>
                                         </div>
                                         <div class="col-12 mt-2">
-                                            <small class="text-muted">Equipment:</small>
-                                            <div class="fw-medium">{{ $program['equipment'] }}</div>
+                                            <small style="color: var(--muted-foreground);">Equipment:</small>
+                                            <div class="fw-medium" style="color: var(--foreground);">{{ $program['equipment'] }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -133,7 +137,7 @@
     @push('scripts')
         <script>
             function viewProgram(programId) {
-                window.location.href = '{{ url('program-detail') }}/' + programId;
+                window.location.href = '{{ url('programs') }}/' + programId;
             }
 
             document.addEventListener('DOMContentLoaded', function () {

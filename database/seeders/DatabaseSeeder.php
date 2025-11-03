@@ -17,10 +17,12 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Admin',
-            'password' => 'Admin123',
-            'phone_number' => '9284594158',
-            'email' => 'admin123@fitclub.com',
+            'name' => 'Admin User',
+            'email' => 'admin@fitclub.com',
+            'phone_number' => '1234567890',
+            'password' => 'admin123',
+            'role' => 'admin',
+            'is_active' => true,
         ]);
 
         $this->call(SubscriptionPlanSeeder::class);

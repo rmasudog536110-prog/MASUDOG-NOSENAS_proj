@@ -10,7 +10,7 @@
 @include('index.header')
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" aria-label="Hero section">
         <div class="container">
             <div class="hero-content">
                 <h1>Transform Your Body, Transform Your Life</h1>
@@ -29,9 +29,9 @@
     </section>
 
     <!-- Subscription Plans -->
-    <section class="subscription-plans" id="subscription-plans">
+    <section class="subscription-plans" id="subscription-plans" aria-labelledby="plans-heading">
         <div class="container">
-            <h2>Choose Your Plan</h2>
+            <h2 id="plans-heading">Choose Your Plan</h2>
             <div class="plans-grid">
                 @foreach ($plans as $plan)
                     <div class="plan-card
@@ -65,18 +65,34 @@
                         </ul>
 
                        @auth
-                            @if ($userSubscription && $userSubscription->plan_id == $plan->id)
-                                <button class="btn btn-outline" disabled>Current Plan</button>
+                            @if ($userSubscription && $userSubscription->plan_id == $plan->id && $userSubscription->payment_status == 'approved')
+                                <button class="btn btn-outline" disabled aria-label="Current active plan">
+                                    <i class="fa-solid fa-check"></i> Current Plan
+                                </button>
+                            @elseif ($userSubscription && $userSubscription->plan_id == $plan->id && $userSubscription->payment_status == 'pending')
+                                <button class="btn btn-warning" disabled aria-label="Payment pending approval">
+                                    <i class="fa-solid fa-clock"></i> Pending Approval
+                                </button>
+                            @elseif ($userSubscription && $userSubscription->payment_status == 'approved')
+                                <button class="btn btn-secondary" disabled aria-label="Already subscribed to another plan">
+                                    <i class="fa-solid fa-ban"></i> Already Subscribed
+                                </button>
+                            @elseif ($userSubscription && $userSubscription->payment_status == 'pending')
+                                <button class="btn btn-secondary" disabled aria-label="Payment pending for another plan">
+                                    <i class="fa-solid fa-hourglass-half"></i> Payment Pending
+                                </button>
                             @else
-                                <a href="{{ route('register', ['plan_id' => $plan->id]) }}"
-                                class="btn {{ $plan->is_trial ? 'btn-outline' : 'btn-primary' }}">
-                                    {{ $plan->is_trial ? 'Start Free Trial' : 'Subscribe Now' }}
+                                <a href="{{ route('subscription.payment.form', $plan->id) }}"
+                                class="btn {{ $plan->is_trial ? 'btn-outline' : 'btn-primary' }}"
+                                aria-label="Subscribe to {{ $plan['name'] }} plan">
+                                    <i class="fa-solid fa-credit-card"></i> {{ $plan->is_trial ? 'Start Free Trial' : 'Subscribe Now' }}
                                 </a>
                             @endif
                         @else
-                            <a href="{{ route('register', ['plan_id' => $plan->id]) }}"
-                            class="btn {{ $plan->is_trial ? 'btn-outline' : 'btn-primary' }}">
-                                {{ $plan->is_trial ? 'Start Free Trial' : 'Subscribe Now' }}
+                            <a href="{{ route('login') }}"
+                            class="btn {{ $plan->is_trial ? 'btn-outline' : 'btn-primary' }}"
+                            aria-label="Login to subscribe to {{ $plan['name'] }} plan">
+                                <i class="fa-solid fa-sign-in-alt"></i> {{ $plan->is_trial ? 'Login to Start Trial' : 'Login to Subscribe' }}
                             </a>
                         @endauth
                     </div>
@@ -86,9 +102,9 @@
     </section>
 
     <!-- Training Programs Preview -->
-    <section class="training-preview">
+    <section class="training-preview" aria-labelledby="programs-heading">
         <div class="container">
-            <h2>Preview Our Training Programs</h2>
+            <h2 id="programs-heading">Preview Our Training Programs</h2>
             <div class="programs-grid">
                 <div class="program-card">
                     <h3>Beginner Fitness</h3>
@@ -131,9 +147,9 @@
     </section>  
 
     <!-- Features Section -->
-    <section class="features">
+    <section class="features" aria-labelledby="features-heading">
         <div class="container">
-            <h2>Why Choose FitClub?</h2>
+            <h2 id="features-heading">Why Choose FitClub?</h2>
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">🏋️</div>
