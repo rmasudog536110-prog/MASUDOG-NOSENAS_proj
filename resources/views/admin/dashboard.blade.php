@@ -213,9 +213,9 @@
                 <i class="fa-solid fa-dumbbell"></i>
                 Manage Programs
             </a>
-            <a href="{{ route('exercises') }}" class="admin-action-btn">
+            <a href="{{ route('admin.exercises.index') }}" class="admin-action-btn">
                 <i class="fa-solid fa-list"></i>
-                View Exercises
+                Manage Exercises
             </a>
             <a href="{{ route('dashboard') }}" class="admin-action-btn">
                 <i class="fa-solid fa-arrow-left"></i>

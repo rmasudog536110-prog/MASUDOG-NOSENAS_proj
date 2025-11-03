@@ -4,6 +4,78 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/programs.css') }}">
+    <style>
+        /* Consistent button and input heights */
+        .input-group {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .input-group .form-control,
+        .input-group .input-group-text,
+        .input-group .btn {
+            height: 50px;
+            border: none;
+            margin: 0;
+            line-height: 50px;
+        }
+        
+        .input-group .form-control {
+            font-size: 1rem;
+            padding: 0 1rem;
+            background: white;
+            color: var(--foreground);
+        }
+        
+        .input-group .form-control:focus {
+            box-shadow: none;
+            background: white;
+        }
+        
+        .input-group .input-group-text {
+            background: white;
+            border: none;
+            color: var(--primary);
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .input-group .btn {
+            padding: 0 2rem;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Filter buttons consistent height */
+        .filter-buttons {
+            gap: 0.75rem !important;
+            margin-top: 2rem;
+        }
+        
+        .filter-buttons .btn {
+            height: 50px;
+            padding: 0 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 600;
+            white-space: nowrap;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-buttons .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -47,17 +119,19 @@
 
             <!-- Search Bar -->
             <div class="row justify-content-center mb-4">
-                <div class="col-md-6">
-                    <form action="{{ route('exercises') }}" method="GET" class="input-group">
-                        <span class="input-group-text">
-                            <i class="fas fa-search"></i>
-                        </span>
-                        <input type="text" 
-                               class="form-control" 
-                               name="search"
-                               placeholder="Search exercises..."
-                               value="{{ request('search') }}">
-                        <button class="btn btn-primary" type="submit">Search</button>
+                <div class="col-lg-8 col-md-10">
+                    <form action="{{ route('exercises') }}" method="GET" class="d-flex gap-0">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input type="text" 
+                                   class="form-control" 
+                                   name="search"
+                                   placeholder="Search exercises..."
+                                   value="{{ request('search') }}">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -66,30 +140,30 @@
             @php
                 $filter = request('category', 'all');
             @endphp
-            <div class="d-flex justify-content-center mb-5 flex-wrap gap-2">
+            <div class="d-flex justify-content-center align-items-center mb-5 flex-wrap filter-buttons">
                 <a href="{{ url('exercises') }}" 
                    class="btn {{ $filter === 'all' ? 'btn-primary' : 'btn-outline-primary' }}">
-                    <i class="fas fa-th-large me-1"></i> All Exercises
+                    <i class="fas fa-th-large me-2"></i> All Exercises
                 </a>
                 <a href="{{ url('exercises?category=strength') }}" 
                    class="btn {{ $filter === 'strength' ? 'btn-info' : 'btn-outline-info' }}">
-                    <i class="fas fa-dumbbell me-1"></i> Strength
+                    <i class="fas fa-dumbbell me-2"></i> Strength
                 </a>
                 <a href="{{ url('exercises?category=cardio') }}" 
                    class="btn {{ $filter === 'cardio' ? 'btn-danger' : 'btn-outline-danger' }}">
-                    <i class="fas fa-heart me-1"></i> Cardio
+                    <i class="fas fa-heart me-2"></i> Cardio
                 </a>
                 <a href="{{ url('exercises?category=core') }}" 
-                   class="btn {{ $filter === 'cardio' ? 'btn-danger' : 'btn-outline-danger' }}">
-                    <i class="fas fa-heart me-1"></i> Core
+                   class="btn {{ $filter === 'core' ? 'btn-success' : 'btn-outline-success' }}">
+                    <i class="fas fa-circle-notch me-2"></i> Core
                 </a>
                 <a href="{{ url('exercises?category=plyometrics') }}" 
-                   class="btn {{ $filter === 'plyometrics' ? 'btn-success' : 'btn-outline-success' }}">
-                    <i class="fas fa-leaf me-1"></i> Plyometrics
+                   class="btn {{ $filter === 'plyometrics' ? 'btn-warning text-dark' : 'btn-outline-warning' }}">
+                    <i class="fas fa-bolt me-2"></i> Plyometrics
                 </a>
                 <a href="{{ url('exercises?category=functional') }}" 
-                   class="btn {{ $filter === 'functional' ? 'btn-warning text-dark' : 'btn-outline-warning' }}">
-                    <i class="fas fa-running me-1"></i> Functional
+                   class="btn {{ $filter === 'functional' ? 'btn-secondary' : 'btn-outline-secondary' }}">
+                    <i class="fas fa-running me-2"></i> Functional
                 </a>
             </div>
 

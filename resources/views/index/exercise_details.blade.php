@@ -107,9 +107,20 @@
                                 <button id="pauseBtn" class="btn btn-warning" onclick="pauseTimer()" disabled>
                                     <i class="fas fa-pause me-1"></i> Pause
                                 </button>
-                                <button id="resetBtn" class="btn btn-outline-secondary" onclick="resetTimer()">
+                                <button id="resumeBtn" class="btn btn-success" onclick="resumeTimer()" style="display: none;">
+                                    <i class="fas fa-play me-1"></i> Resume
+                                </button>
+                                <button id="resetBtn" class="btn btn-outline-secondary" onclick="resetTimer()" disabled>
                                     <i class="fas fa-redo me-1"></i> Reset
                                 </button>
+                            </div>
+                            
+                            <!-- Keyboard Shortcuts Info -->
+                            <div class="text-center mb-3">
+                                <small class="text-muted">
+                                    <i class="fas fa-keyboard me-1"></i>
+                                    <strong>Shortcuts:</strong> Space = Start/Pause | R = Reset | ← → = Navigate Steps
+                                </small>
                             </div>
 
                             <!-- Timer Settings -->
@@ -176,13 +187,26 @@
                                 <i class="fas fa-video me-2 text-primary"></i>
                                 Exercise Demo
                             </h5>
-                            <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 200px;">
-                                <div class="text-center text-muted">
-                                    <i class="fas fa-play-circle fa-3x mb-2"></i>
-                                    <p class="mb-1">Demo video would be shown here</p>
-                                    <small id="stepIndicator">Step 1 of {{ count($exercise['instructions']) }}</small>
+                            @if(!empty($exercise['video_url']))
+                                <div class="bg-dark rounded position-relative" style="height: 250px; cursor: pointer; overflow: hidden;" onclick="openVideoModal('{{ $exercise['video_url'] }}')">
+                                    <div class="position-absolute top-50 start-50 translate-middle text-center">
+                                        <div class="bg-danger rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                            <i class="fas fa-play text-white fa-2x"></i>
+                                        </div>
+                                        <p class="text-white mt-3 mb-0 fw-bold">Click to Watch Tutorial</p>
+                                    </div>
+                                    <div class="position-absolute bottom-0 start-0 end-0 bg-dark bg-opacity-75 p-2">
+                                        <small class="text-white"><i class="fab fa-youtube me-1"></i> YouTube Tutorial</small>
+                                    </div>
                                 </div>
-                            </div>
+                            @else
+                                <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 200px;">
+                                    <div class="text-center text-muted">
+                                        <i class="fas fa-video-slash fa-3x mb-2"></i>
+                                        <p class="mb-1">No video available</p>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
 
@@ -244,6 +268,65 @@
         </div>
     </section>
 
+    <!-- YouTube Video Modal -->
+    <div id="videoModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center;">
+        <div style="position: relative; width: 90%; max-width: 900px;">
+            <button onclick="closeVideoModal()" style="position: absolute; top: -40px; right: 0; background: transparent; border: none; color: white; font-size: 2rem; cursor: pointer;">
+                <i class="fas fa-times"></i>
+            </button>
+            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+                <iframe id="videoFrame" 
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
+
     {{-- Timer + Step JS --}}
     <script src="{{ asset('js/exercise-timer.js') }}"></script>
+    
+    <script>
+        function openVideoModal(videoUrl) {
+            const modal = document.getElementById('videoModal');
+            const iframe = document.getElementById('videoFrame');
+            
+            // Convert YouTube URL to embed URL
+            let embedUrl = videoUrl;
+            if (videoUrl.includes('youtube.com/watch?v=')) {
+                const videoId = videoUrl.split('v=')[1].split('&')[0];
+                embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            } else if (videoUrl.includes('youtu.be/')) {
+                const videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
+                embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            }
+            
+            iframe.src = embedUrl;
+            modal.style.display = 'flex';
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const iframe = document.getElementById('videoFrame');
+            
+            iframe.src = '';
+            modal.style.display = 'none';
+        }
+
+        // Close modal on outside click
+        document.getElementById('videoModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVideoModal();
+            }
+        });
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeVideoModal();
+            }
+        });
+    </script>
 @endsection

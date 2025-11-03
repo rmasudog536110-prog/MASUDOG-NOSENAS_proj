@@ -107,4 +107,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Program Management
     Route::resource('programs', App\Http\Controllers\Admin\ProgramController::class);
     Route::post('/programs/{program}/toggle', [App\Http\Controllers\Admin\ProgramController::class, 'toggleStatus'])->name('programs.toggle');
+    
+    // Exercise Management
+    Route::resource('exercises', App\Http\Controllers\Admin\ExerciseController::class);
 });

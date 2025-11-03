@@ -34,7 +34,27 @@ class ExerciseController extends Controller
 
     public function show(Exercise $exercise)
     {
-        return view('exercises.details', compact('exercise'));
+        // Transform database model to array format expected by view
+        $exerciseData = [
+            'id' => $exercise->id,
+            'name' => $exercise->name,
+            'description' => $exercise->description,
+            'category' => $exercise->category,
+            'difficulty' => $exercise->difficulty,
+            'equipment' => $exercise->equipment,
+            'video_url' => $exercise->video_url,
+            'icon' => $exercise->icon ?? '💪',
+            'targetMuscles' => $exercise->muscle_group ? explode(',', $exercise->muscle_group) : ['Full Body'],
+            'instructions' => $exercise->instructions ? explode("\n", $exercise->instructions) : ['Follow proper form', 'Breathe steadily', 'Control the movement'],
+            'tips' => ['Maintain proper form throughout', 'Start with lighter weights', 'Focus on controlled movements'],
+            'variations' => ['Beginner variation available', 'Advanced variation available'],
+            'commonMistakes' => ['Rushing through reps', 'Using too much weight', 'Poor form'],
+            'defaultSets' => 3,
+            'defaultReps' => 12,
+            'defaultDuration' => 45,
+        ];
+        
+        return view('index.exercise_details', ['exercise' => $exerciseData]);
     }
 }
 
