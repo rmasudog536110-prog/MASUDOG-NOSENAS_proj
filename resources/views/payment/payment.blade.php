@@ -4,9 +4,9 @@
 
 @section('content')
 <div class="container py-5">
-    <div class="card shadow-sm" style="max-width: 700px; margin: 0 auto;">
+    <div class="card shadow-sm" style="max-width: 700px; margin: 0 auto; background-color: var(--card); color: var(--foreground); border-radius: var(--radius);">
         <div class="card-body">
-            <h2 class="mb-4 text-center">Complete Your Payment</h2>
+            <h2 class="mb-4 text-center" style="color: var(--primary);">Complete Your Payment</h2>
 
             {{-- Flash message --}}
             @if (session('success'))
@@ -40,12 +40,12 @@
                 </div>
 
                 {{-- Dynamic Instructions --}}
-                <div id="payment_instructions" class="bg-light p-3 rounded mb-3" style="display: none;">
+                <div id="payment_instructions" class="p-3 mb-3" style="display: none; background-color: var(--accent); border-radius: var(--radius);">
                     <h6 id="instruction_title" class="fw-bold mb-2"></h6>
                     <p id="instruction_text" class="mb-0 text-muted"></p>
                 </div>
 
-                {{-- Transaction ID --}}
+                {{-- Transaction Reference --}}
                 <div class="mb-3">
                     <label for="transaction_id" class="form-label">Transaction ID / Reference Number</label>
                     <input 
@@ -58,7 +58,7 @@
                     >
                 </div>
 
-                {{-- Optional Proof Upload --}}
+                {{-- Proof Upload --}}
                 <div class="mb-3">
                     <label for="proof" class="form-label">Upload Proof of Payment</label>
                     <input 
@@ -66,7 +66,7 @@
                         id="proof" 
                         name="proof" 
                         class="form-control" 
-                        accept="image/*"
+                        accept="image/*,.pdf"
                     >
                     <small class="text-muted">Accepted formats: JPG, PNG, or PDF</small>
                 </div>
@@ -82,12 +82,12 @@
                     >
                 </div>
 
-                {{-- Submit --}}
-                <button type="submit" class="btn btn-primary w-100">Confirm Payment</button>
+                {{-- Submit Button --}}
+                <button type="submit" class="btn w-100" style="background-color: var(--primary); color: var(--foreground);">Confirm Payment</button>
             </form>
 
             <div class="text-center mt-4">
-                <a href="{{ route('index') }}" class="text-decoration-none">Cancel and return to dashboard</a>
+                <a href="{{ route('index') }}" class="text-decoration-none" style="color: var(--primary);">Cancel and return to dashboard</a>
             </div>
         </div>
     </div>

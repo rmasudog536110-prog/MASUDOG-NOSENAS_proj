@@ -2,20 +2,18 @@
 
 namespace App\Models;
 
-// Added missing import for HasMany relationship
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
+     * Mass assignable attributes for the user table
      */
     protected $fillable = [
         'name',
@@ -24,22 +22,10 @@ class User extends Authenticatable
         'password',
         'role',
         'is_active',
-        'profile_picture',
-        'date_of_birth',
-        'gender',
-        'bio',
-        'height',
-        'weight',
-        'fitness_goal',
-        'experience_level',
-        'email_notifications',
-        'sms_notifications',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
+     * Attributes hidden for serialization
      */
     protected $hidden = [
         'password',
@@ -47,23 +33,26 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Attribute casting
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'last_login_at' => 'datetime',
+        'is_active' => 'boolean',
+    ];
+
+    /**
+     * Relationships
+     */
+
+    // One-to-one: user profile
+    public function profile(): HasOne
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'date_of_birth' => 'date',
-            'last_login_at' => 'datetime',
-            'email_notifications' => 'boolean',
-            'sms_notifications' => 'boolean',
-            'is_active' => 'boolean',
-        ];
+        return $this->hasOne(UserProfile::class);
     }
 
+    // One-to-many: subscriptions
     public function subscriptions(): HasMany
     {
         return $this->hasMany(UserSubscription::class);
@@ -90,28 +79,25 @@ class User extends Authenticatable
     }
 
     /**
-     * Get user's age from date of birth
+     * Helper methods
      */
+
     public function getAge(): ?int
     {
-        return $this->date_of_birth ? $this->date_of_birth->age : null;
+        return $this->profile && $this->profile->date_of_birth
+            ? $this->profile->date_of_birth->age
+            : null;
     }
 
-    /**
-     * Calculate BMI (Body Mass Index)
-     */
     public function getBMI(): ?float
     {
-        if ($this->height && $this->weight) {
-            $heightInMeters = $this->height / 100;
-            return round($this->weight / ($heightInMeters * $heightInMeters), 2);
+        if ($this->profile && $this->profile->height && $this->profile->weight) {
+            $heightInMeters = $this->profile->height / 100;
+            return round($this->profile->weight / ($heightInMeters * $heightInMeters), 2);
         }
         return null;
     }
 
-    /**
-     * Get BMI category
-     */
     public function getBMICategory(): ?string
     {
         $bmi = $this->getBMI();
@@ -124,32 +110,23 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if user is admin
+     * Role check helpers
      */
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
     }
 
-    /**
-     * Check if user is manager
-     */
     public function isManager(): bool
     {
         return $this->role === 'manager';
     }
 
-    /**
-     * Check if user is staff
-     */
     public function isStaff(): bool
     {
         return in_array($this->role, ['staff', 'manager', 'admin']);
     }
 
-    /**
-     * Check if user has admin access
-     */
     public function hasAdminAccess(): bool
     {
         return in_array($this->role, ['admin', 'manager']);

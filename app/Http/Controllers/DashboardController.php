@@ -20,24 +20,25 @@ class DashboardController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-    $userSubscription = UserSubscription::where('user_id', Auth::id())
-        ->with('plan')
-        ->latest()
-        ->first();
+        // Get latest subscription
+        $userSubscription = UserSubscription::where('user_id', $user->id)
+            ->with('plan')
+            ->latest()
+            ->first();
+
+        // If subscription exists and payment is pending, show pending dashboard
+        if ($userSubscription && $userSubscription->payment_status === 'pending') {
+            return view('index.pending_dashboard');
+        }
 
         $subscriptionExpiry = $userSubscription ? $userSubscription->end_date : null;
         
         // Determine subscription status based on payment_status and expiry
         if ($userSubscription) {
-            // Check payment status first
-            if ($userSubscription->payment_status === 'pending') {
-                $subscriptionStatus = 'pending';
-                $daysLeft = 0;
-            } elseif ($userSubscription->payment_status === 'rejected') {
+            if ($userSubscription->payment_status === 'rejected') {
                 $subscriptionStatus = 'rejected';
                 $daysLeft = 0;
             } elseif ($userSubscription->payment_status === 'approved') {
-                // Check if subscription is expired
                 if ($subscriptionExpiry && $subscriptionExpiry->isPast()) {
                     $subscriptionStatus = 'expired';
                     $daysLeft = 0;
@@ -55,8 +56,8 @@ class DashboardController extends Controller
             $subscriptionStatus = 'none';
             $daysLeft = 0;
         }
-        
-        // Get workout statistics from workout_logs table
+
+        // Get workout statistics
         $workoutStats = [
             'total_workouts' => $user->workoutLogs()->count(),
             'weekly_workouts' => $user->workoutLogs()
@@ -67,7 +68,7 @@ class DashboardController extends Controller
                 ->count('workout_date')
         ];
 
-        // Get recent workout activities
+        // Get recent activities
         $recentActivities = $user->workoutLogs()
             ->with(['exercise', 'trainingProgram'])
             ->latest('workout_date')
@@ -98,4 +99,6 @@ class DashboardController extends Controller
             'subscriptionHistory'
         ));
     }
+
+
 }

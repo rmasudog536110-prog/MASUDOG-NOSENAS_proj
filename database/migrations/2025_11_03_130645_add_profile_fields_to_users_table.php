@@ -11,19 +11,26 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('profile_picture')->nullable()->after('email');
-            $table->date('date_of_birth')->nullable()->after('profile_picture');
-            $table->enum('gender', ['male', 'female', 'other', 'prefer_not_to_say'])->nullable()->after('date_of_birth');
-            $table->text('bio')->nullable()->after('gender');
-            $table->decimal('height', 5, 2)->nullable()->after('bio')->comment('Height in cm');
-            $table->decimal('weight', 5, 2)->nullable()->after('height')->comment('Weight in kg');
-            $table->string('fitness_goal')->nullable()->after('weight');
-            $table->string('experience_level')->nullable()->after('fitness_goal');
-            $table->boolean('email_notifications')->default(true)->after('experience_level');
-            $table->boolean('sms_notifications')->default(false)->after('email_notifications');
-            $table->timestamp('last_login_at')->nullable()->after('sms_notifications');
+        Schema::create('user_profile', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id')->unique(); // link to users table
+            $table->string('profile_picture')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->enum('gender', ['male', 'female', 'other', 'prefer_not_to_say'])->nullable();
+            $table->text('bio')->nullable();
+            $table->decimal('height', 5, 2)->nullable();
+            $table->decimal('weight', 5, 2)->nullable();
+            $table->string('fitness_goal')->nullable();
+            $table->string('experience_level')->nullable();
+            $table->boolean('email_notifications')->default(true);
+            $table->boolean('sms_notifications')->default(false);
+            $table->timestamp('last_login_at')->nullable();
+            $table->timestamps();
+            
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
+
+        
     }
 
     /**
@@ -31,20 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn([
-                'profile_picture',
-                'date_of_birth',
-                'gender',
-                'bio',
-                'height',
-                'weight',
-                'fitness_goal',
-                'experience_level',
-                'email_notifications',
-                'sms_notifications',
-                'last_login_at'
-            ]);
-        });
+       Schema::dropIfExists('user_profile');
     }
 };

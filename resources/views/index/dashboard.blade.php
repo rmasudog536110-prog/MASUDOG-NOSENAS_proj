@@ -3,288 +3,6 @@
 @section('title', 'Dashboard - FitClub')
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-    <style>
-        .dashboard-container {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        .dashboard-welcome {
-            background: linear-gradient(135deg, rgba(255, 102, 0, 0.1) 0%, rgba(26, 26, 26, 0.95) 100%);
-            border: 1px solid rgba(255, 102, 0, 0.3);
-            border-radius: 1rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .dashboard-welcome::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), #ffc107, var(--primary));
-        }
-
-        .welcome-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--foreground);
-            margin-bottom: 0.5rem;
-        }
-
-        .welcome-subtitle {
-            color: var(--muted-foreground);
-            font-size: 1.125rem;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: var(--card);
-            border: 1px solid rgba(255, 102, 0, 0.2);
-            border-radius: 0.7rem;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--primary);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);
-        }
-
-        .stat-card:hover::before {
-            opacity: 1;
-        }
-
-        .stat-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            filter: drop-shadow(0 2px 4px rgba(255, 102, 0, 0.3));
-        }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: var(--muted-foreground);
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .dashboard-section {
-            background: var(--card);
-            border: 1px solid rgba(255, 102, 0, 0.2);
-            border-radius: 0.7rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--foreground);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .subscription-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border-radius: 2rem;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .badge-active {
-            background: rgba(40, 167, 69, 0.2);
-            color: #28a745;
-        }
-
-        .badge-expired {
-            background: rgba(220, 53, 69, 0.2);
-            color: #dc3545;
-        }
-
-        .badge-none {
-            background: rgba(108, 117, 125, 0.2);
-            color: #6c757d;
-        }
-
-        .badge-pending {
-            background: rgba(255, 193, 7, 0.2);
-            color: #ffc107;
-        }
-
-        .subscription-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .detail-item {
-            padding: 1rem;
-            background: rgba(255, 102, 0, 0.05);
-            border-radius: 0.5rem;
-        }
-
-        .detail-label {
-            color: var(--muted-foreground);
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .detail-value {
-            color: var(--foreground);
-            font-size: 1.125rem;
-            font-weight: 600;
-        }
-
-        .activity-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            background: rgba(255, 102, 0, 0.05);
-            border-radius: 0.5rem;
-            margin-bottom: 0.75rem;
-            transition: all 0.3s ease;
-        }
-
-        .activity-item:hover {
-            background: rgba(255, 102, 0, 0.1);
-            transform: translateX(5px);
-        }
-
-        .activity-icon {
-            font-size: 1.5rem;
-            margin-right: 1rem;
-        }
-
-        .activity-info {
-            flex: 1;
-        }
-
-        .activity-name {
-            color: var(--foreground);
-            font-weight: 600;
-            display: block;
-            margin-bottom: 0.25rem;
-        }
-
-        .activity-meta {
-            color: var(--muted-foreground);
-            font-size: 0.875rem;
-        }
-
-        .activity-date {
-            color: var(--muted-foreground);
-            font-size: 0.875rem;
-        }
-
-        .quick-actions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .action-card {
-            background: linear-gradient(135deg, rgba(255, 102, 0, 0.1) 0%, rgba(26, 26, 26, 0.5) 100%);
-            border: 1px solid rgba(255, 102, 0, 0.2);
-            border-radius: 0.7rem;
-            padding: 1.5rem;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .action-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);
-            border-color: rgba(255, 102, 0, 0.5);
-        }
-
-        .action-card-icon {
-            font-size: 2.5rem;
-            filter: drop-shadow(0 2px 4px rgba(255, 102, 0, 0.3));
-        }
-
-        .action-card-text {
-            color: var(--foreground);
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--muted-foreground);
-        }
-
-        .empty-state-icon {
-            font-size: 4rem;
-            opacity: 0.3;
-            margin-bottom: 1rem;
-        }
-
-        .progress-bar-container {
-            background: rgba(255, 102, 0, 0.1);
-            border-radius: 1rem;
-            height: 8px;
-            overflow: hidden;
-            margin-top: 0.5rem;
-        }
-
-        .progress-bar {
-            background: linear-gradient(90deg, var(--primary), #ffc107);
-            height: 100%;
-            border-radius: 1rem;
-            transition: width 0.3s ease;
-        }
-    </style>
 @endpush
 
 @section('content')
@@ -313,9 +31,23 @@
     <div class="dashboard-container">
         <!-- Welcome Section -->
         <div class="dashboard-welcome">
-            <h1 class="welcome-title">👋 Welcome back, {{ Auth::user()->name }}!</h1>
-            <p class="welcome-subtitle">Here's your fitness journey overview</p>
+
+            @if (session('success'))
+                <h1 class="welcome-title session-welcome">
+                    👋 Welcome back, {{ Auth::user()->name }}!
+                </h1>
+            @endif
+
+            @if(!empty($subtitle))
+                <p class="welcome-subtitle">{{ $subtitle }}</p>
+            @endif
+
+            <h1 class="welcome-title main-title">
+                FITCLUB <br> 
+                <span>Results start here. Push yourself because no one else will.</span>
+            </h1>
         </div>
+    </div>
 
         <!-- Stats Grid -->
         <div class="stats-grid">
@@ -357,24 +89,6 @@
                     <i class="fa-solid fa-credit-card"></i> Subscription Status
                 </h2>
 
-                <span class="subscription-badge badge-{{ 
-                    $subscriptionStatus === 'active' ? 'active' : 
-                    ($subscriptionStatus === 'expired' ? 'expired' : 
-                    ($subscriptionStatus === 'pending' ? 'pending' : 
-                    ($subscriptionStatus === 'rejected' ? 'expired' : 'none'))) 
-                }}">
-                    @if($subscriptionStatus === 'active')
-                        <i class="fa-solid fa-check-circle"></i> Premium Active
-                    @elseif($subscriptionStatus === 'pending')
-                        <i class="fa-solid fa-clock"></i> Payment Pending Approval
-                    @elseif($subscriptionStatus === 'rejected')
-                        <i class="fa-solid fa-times-circle"></i> Payment Rejected
-                    @elseif($subscriptionStatus === 'expired')
-                        <i class="fa-solid fa-times-circle"></i> Expired
-                    @else
-                        <i class="fa-solid fa-info-circle"></i> No Subscription
-                    @endif
-                </span>
             </div>
 
             @if ($userSubscription)
@@ -438,17 +152,19 @@
             @endif
         </div>
 
-        <!-- Recent Activities Section -->
+                <!-- Recent Activities Section -->
         <div class="dashboard-section">
             <div class="section-header">
                 <h2 class="section-title">
                     <i class="fa-solid fa-clock-rotate-left"></i> Recent Activities
                 </h2>
-                <div style="display: flex; gap: 0.5rem;">
+                <div class="section-actions">
                     <a href="{{ route('workout-logs.create') }}" class="btn btn-primary btn-sm">
-                        <i class="fa-solid fa-plus"></i> Log Workout
+                        <i class="fa-solid fa-plus" style="margin-right: 10px;"></i> Log Workout
                     </a>
-                    <a href="{{ route('workout-logs.index') }}" class="btn btn-outline btn-sm">View All</a>
+                    <a href="{{ route('workout-logs.index') }}" class="btn btn-primary btn-sm">
+                        <i class="fa-solid fa-magnifying-glass" style="margin-right: 10px;"></i> View All
+                    </a>
                 </div>
             </div>
 
@@ -522,14 +238,14 @@
                         <span class="action-card-text">My Workouts</span>
                     </a>
                 @endif
-
-                <a href="{{ route('profile.show') }}" class="action-card">
-                    <span class="action-card-icon">👤</span>
-                    <span class="action-card-text">Edit Profile</span>
+            
+                <a href="{{ route('profile.show') }}" class="btn btn-primary btn-sm">
+                    <i class="fa-solid fa-user" style="margin-right: 0.5rem;"></i>
+                    Edit Profile
                 </a>
 
                 @if (in_array($subscriptionStatus, ['expired', 'none']) || !$userSubscription)
-                    <a href="{{ url('#subscription-plans') }}" class="action-card">
+                    <a href="{{ url('#subscription-plans') }}" class="btn btn-primary btn-sm">
                         <span class="action-card-icon">⭐</span>
                         <span class="action-card-text">{{ $subscriptionStatus === 'expired' ? 'Renew Plan' : 'Choose a Plan' }}</span>
                     </a>

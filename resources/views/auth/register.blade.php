@@ -13,12 +13,12 @@
 <body>
     <main class="content-section">
         <div class="container">
-            <div class="form-container" style="max-width: 500px;">
-                <h1 class="text-center" style="margin-bottom: 2rem;">Join FitClub</h1>
+            <div class="form-container">
+                <h1 class="text-center">Join FitClub</h1>
 
                 
                 @if(!empty($selectedPlan))
-                    <div class="selected-plan-info" style="background-color: var(--accent); padding: 1rem; border-radius: var(--radius); margin-bottom: 2rem; text-align: center;">
+                    <div class="selected-plan-info">
                         <h3>Selected Plan: {{ data_get($selectedPlan, 'name') }}</h3>
                         <p>₱{{ number_format(data_get($selectedPlan, 'price', 0), 0) }} - {{ data_get($selectedPlan, 'description') }}</p>
                     </div>
@@ -26,7 +26,7 @@
 
                 {{-- general flash error --}}
                 @if ($errors->has('general'))
-                    <div class="flash-message error" style="margin-bottom: 1.5rem; padding: 1rem; border-radius: var(--radius);">
+                    <div class="flash-message error">
                         {{ $errors->first('general') }}
                     </div>
                 @endif
@@ -146,7 +146,7 @@
                     <button type="submit" class="btn btn-primary btn-full mt-3">{{ $buttonLabel }}</button>
                 </form>
 
-                <div class="text-muted" style="margin-top: 2rem;">
+                <div class="text-muted">
                     <p><a href="{{ url('/login') }}">Already have an account? Login here</a></p>
                 </div>
             </div>

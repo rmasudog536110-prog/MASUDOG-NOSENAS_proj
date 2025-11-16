@@ -35,11 +35,6 @@ Route::post('/login', [UserController::class, 'login'])->name('login.submit');
 
 Route::middleware('auth')->group(function(){    
     
-    // Payment routes
-    Route::get('/payment/{subscription_id}', [PaymentTransactionController::class, 'show'])->name('payment.payment');
-    Route::post('/payment/{subscription_id}', [PaymentTransactionController::class, 'process'])->name('payment.process');
-    Route::get('/payment-history', [PaymentTransactionController::class, 'index'])->name('payment.history');
-
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -52,8 +47,10 @@ Route::middleware('auth')->group(function(){
     Route::resource('workout-logs', WorkoutLogController::class);
 
     // Subscription payment routes
-    Route::get('/subscription/payment/{plan}', [App\Http\Controllers\SubscriptionPaymentController::class, 'showPaymentForm'])->name('subscription.payment.form');
-    Route::post('/subscription/payment/{plan}', [App\Http\Controllers\SubscriptionPaymentController::class, 'submitPayment'])->name('subscription.payment.submit');
+    Route::get('/subscription/payment/{plan}', [App\Http\Controllers\SubscriptionPaymentController::class, 'showPaymentForm'])
+    ->name('subscription.payment.form');
+    Route::post('/subscription/payment/{plan}', [App\Http\Controllers\SubscriptionPaymentController::class, 'submitPayment'])
+    ->name('subscription.payment.submit');
 
 });
 
@@ -66,6 +63,9 @@ Route::post('/logout', [UserController::class, 'logout'])
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware('auth')
     ->name('dashboard');
+
+Route::get('/index/pending', function() { return view('index.pending_dashboard'); })
+    ->name('pending_dashboard');
 
 Route::get('/programs', [TrainingProgramController::class, 'index'])
     ->middleware('auth')
@@ -99,6 +99,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/users/{user}/subscription/{subscription}/cancel', [App\Http\Controllers\Admin\DashboardController::class, 'cancelSubscription'])->name('cancel-subscription');
     Route::post('/users/{user}/toggle-status', [App\Http\Controllers\Admin\DashboardController::class, 'toggleUserStatus'])->name('toggle-status');
     Route::delete('/users/{user}', [App\Http\Controllers\Admin\DashboardController::class, 'deleteUser'])->name('delete-user');
+
     
     // Subscription Payment Approval
     Route::post('/subscriptions/{subscription}/approve', [App\Http\Controllers\SubscriptionPaymentController::class, 'approvePayment'])->name('subscriptions.approve');

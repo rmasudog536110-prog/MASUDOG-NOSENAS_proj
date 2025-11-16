@@ -16,7 +16,8 @@ class UserController extends Controller
     
     public function showRegister(Request $request) {
 
-        $selectedPlanId = $request->query('plan_id');
+        $selectedPlanId = $request->query('plan');
+        
         $selectedPlan = null;
 
     if ($selectedPlanId) {
@@ -49,6 +50,7 @@ class UserController extends Controller
             
         ]);
 
+        $user->profile()->create([]);
         Auth::login($user);
 
        if ($request->filled('plan_id')) {
@@ -71,24 +73,36 @@ class UserController extends Controller
     }
  
  
-    public function login(Request $request) {
+    public function login(Request $request)
+{
     $credentials = $request->only('email', 'password');
 
+ 
     if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
+        $user = Auth::user(); // get the logged-in user
+
         
-        // Redirect based on user role
-        if (Auth::user()->hasAdminAccess()) {
+        if ($user->hasAdminAccess()) {
             return redirect()->route('admin.dashboard');
         }
+
         
-        return redirect('/dashboard'); 
+        $subscription = $user->subscriptions()->latest()->first();
+        if ($subscription && $subscription->payment_status === 'pending') {
+            return redirect()->route('pending_dashboard'); // show pending_dashboard
+        }
+
+       
+        return redirect()->route('dashboard');
     }
 
+    // Login failed
     return back()->withErrors([
         'email' => 'Invalid credentials.',
     ]);
 }
+
 
  
  

@@ -18,6 +18,8 @@ class UserSubscription extends Model
         'status',
         'payment_proof',
         'payment_status',
+        'payment_method',
+        'transaction_reference',
         'admin_notes',
         'approved_at',
         'approved_by',

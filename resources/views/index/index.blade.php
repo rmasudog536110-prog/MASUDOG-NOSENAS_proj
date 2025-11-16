@@ -7,7 +7,7 @@
 
 @section('content')
 
-@include('index.header')
+@include('index.index_header')
 
     <!-- Hero Section -->
     <section class="hero" aria-label="Hero section">
@@ -46,16 +46,8 @@
                             <h3>{{ $plan['name'] }}</h3>
                             <div class="plan-price">
                                 <span class="price">₱{{ number_format($plan['price'], 2) }}</span>
-                                <span class="duration">
-                                    @if ($plan['duration_days'] == 7)
-                                        7 days
-                                    @elseif ($plan['duration_days'] == 30)
-                                        1 month
-                                    @elseif ($plan['duration_days'] == 90)
-                                        3 months
-                                    @endif
-                                </span>
                             </div>
+                            <span class="free-trial">7-Day Free Trial</span>
                         </div>
 
                         <ul class="plan-features">
@@ -89,7 +81,7 @@
                                 </a>
                             @endif
                         @else
-                            <a href="{{ route('login') }}"
+                            <a href="{{ route('register', ['plan' => $plan->id]) }}"
                             class="btn {{ $plan->is_trial ? 'btn-outline' : 'btn-primary' }}"
                             aria-label="Login to subscribe to {{ $plan['name'] }} plan">
                                 <i class="fa-solid fa-sign-in-alt"></i> {{ $plan->is_trial ? 'Login to Start Trial' : 'Login to Subscribe' }}

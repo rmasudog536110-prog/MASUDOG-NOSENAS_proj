@@ -111,8 +111,8 @@
         <!-- Admin Header -->
         <div class="admin-header">
             <h1><i class="fa-solid fa-shield-halved"></i> Admin Dashboard</h1>
-            <p>Welcome back, {{ Auth::user()->name }}! Here's your gym overview.</p>
         </div>
+
 
         <!-- Flash Messages -->
         @if (session('success'))

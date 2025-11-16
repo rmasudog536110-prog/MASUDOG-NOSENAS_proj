@@ -17,7 +17,7 @@ return new class extends Migration
                 $table->foreignId('plan_id')->constrained('subscription_plans')->onDelete('cascade');
                 $table->date('start_date');
                 $table->date('end_date');
-                $table->boolean('is_active')->default(false);
+                $table->enum('status', ['pending', 'active', 'cancelled'])->default('pending');
                 $table->timestamps();
         });
     }
