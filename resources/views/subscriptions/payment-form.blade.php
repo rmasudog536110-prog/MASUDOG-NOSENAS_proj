@@ -119,11 +119,15 @@
             </button>
         </form>
 
-        <div class="text-center mt-4">
-            <a href="{{ route('index') }}" class="text-decoration-none" style="color: var(--primary);">
-                <i class="fa-solid fa-arrow-left"></i> Cancel
-            </a>
-        </div>
+            <div class="text-center mt-4">
+                <form method="POST" action="{{ route('payment.cancel') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-outline" style="color: var(--primary);">
+                        <i class="fa-solid fa-arrow-left"></i> Cancel
+                    </button>
+                </form>
+            </div>
+
     </div>
 </div>
 

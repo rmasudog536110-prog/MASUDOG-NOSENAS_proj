@@ -20,20 +20,34 @@ class UserSubscriptionController extends Controller
 
         return view('subscriptions.show', compact('currentSubscription'));
     }
-    public function cancel()
+    public function cancel(Request $request)
     {
-        $subscription = Auth::user()->subscriptions()
-            ->where('status', 'active')
-            ->first();
+        $user = Auth::user();
 
-        if ($subscription) {
+        if ($user) {
+            // Mark subscriptions as cancelled
+            $user->subscriptions()
+                ->where('payment_status', 'pending')
+                ->update([
+                    'payment_status' => 'cancelled',
+                    'status' => 'cancelled'
+                ]);
 
-            $subscription->status = 'cancelled';
-            $subscription->save();
-            
-            return back()->with('success', 'Your subscription has been marked for cancellation and will expire on ' . $subscription->end_date->format('M d, Y') . '.');
+            // Optional: delete profile first if needed
+            if ($user->profile) {
+                $user->profile()->delete();
+            }
+
+            $user->subscriptions()->delete(); 
+    
+            $user->delete();
+
+            // Logout
+            Auth::logout();
         }
 
-        return back()->with('error', 'No active subscription found to cancel.');
+        return redirect()->route('index')->with('success', 'Your registration/payment has been cancelled.');
     }
-}
+
+
+    }

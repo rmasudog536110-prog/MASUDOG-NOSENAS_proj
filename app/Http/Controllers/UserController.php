@@ -63,10 +63,14 @@ class UserController extends Controller
                     ->with('success', 'Please upload your payment proof to activate your subscription.');
             }
         }
+                $subscription = $user->subscriptions()->latest()->first();
+                if ($subscription && $subscription->payment_status === 'pending') {
+                    return redirect()->route('pending_dashboard'); 
+
+        }
         
         return redirect('/dashboard')->with('success', 'Registered successfully.');
     }
- 
  
     public function showLogin() {
         return view('auth.login');
@@ -82,6 +86,12 @@ class UserController extends Controller
         $request->session()->regenerate();
         $user = Auth::user(); // get the logged-in user
 
+    // Block soft-deleted or cancelled users
+    if ($user->trashed() || $user->subscriptions()->where('status', 'cancelled')->exists()) {
+        Auth::logout();
+        return redirect()->route('index')
+            ->with('error', 'Your registration/payment was cancelled.');
+    }
         
         if ($user->hasAdminAccess()) {
             return redirect()->route('admin.dashboard');
@@ -93,7 +103,6 @@ class UserController extends Controller
             return redirect()->route('pending_dashboard'); // show pending_dashboard
         }
 
-       
         return redirect()->route('dashboard');
     }
 
@@ -102,9 +111,6 @@ class UserController extends Controller
         'email' => 'Invalid credentials.',
     ]);
 }
-
-
- 
  
     public function logout(Request $request) {
         Auth::logout();

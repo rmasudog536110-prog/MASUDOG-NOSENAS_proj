@@ -29,9 +29,12 @@ Route::get('/', function () {
 Route::get('/register', [UserController::class, 'showRegister'])->name('register');
 Route::post('/register', [UserController::class, 'register'])->name('register.submit');
 
+
 Route::get('/login', [UserController::class, 'showLogin'])->name('login');
 Route::post('/login', [UserController::class, 'login'])->name('login.submit');
 });
+
+
 
 Route::middleware('auth')->group(function(){    
     
@@ -51,8 +54,12 @@ Route::middleware('auth')->group(function(){
     ->name('subscription.payment.form');
     Route::post('/subscription/payment/{plan}', [App\Http\Controllers\SubscriptionPaymentController::class, 'submitPayment'])
     ->name('subscription.payment.submit');
+    
 
 });
+
+Route::post('/payment/cancel', [UserSubscriptionController::class, 'cancel'])
+    ->name('payment.cancel');
 
 
 Route::get('/logout', [UserController::class, 'logout'])->name('logout  ');
