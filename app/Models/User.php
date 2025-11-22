@@ -8,6 +8,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\UserProfile;
+use App\Models\UserSubscription;
+use App\Models\UserProgress;
+use App\Models\PaymentTransaction;
+use App\Models\WorkoutLog;
+use App\Models\BodyMeasurement;
+use App\Models\InstructorRequest;
 
 class User extends Authenticatable
 {
@@ -80,6 +87,17 @@ class User extends Authenticatable
         return $this->hasMany(BodyMeasurement::class);
     }
 
+    // Instructor-specific relationships
+    public function instructorRequests(): HasMany
+    {
+        return $this->hasMany(InstructorRequest::class, 'instructor_id');
+    }
+
+    public function customerRequests(): HasMany
+    {
+        return $this->hasMany(InstructorRequest::class, 'customer_id');
+    }
+
     /**
      * Helper methods
      */
@@ -127,6 +145,11 @@ class User extends Authenticatable
     public function isStaff(): bool
     {
         return in_array($this->role, ['staff', 'manager', 'admin']);
+    }
+
+    public function isInstructor(): bool
+    {
+        return $this->role === 'instructor';
     }
 
     public function hasAdminAccess(): bool

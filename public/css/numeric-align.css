@@ -1,0 +1,210 @@
+/* Numeric Alignment CSS Classes */
+/* Apply to all numeric displays for consistent right alignment */
+
+/* General numeric alignment */
+.numeric-align {
+    text-align: right !important;
+}
+
+/* Price formatting */
+.price-display {
+    text-align: right !important;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+.price-display .currency {
+    margin-right: 0.25rem;
+}
+
+/* Duration displays */
+.duration-display {
+    text-align: right !important;
+    font-weight: 500;
+}
+
+/* Count displays */
+.count-display {
+    text-align: right !important;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+/* Measurement displays */
+.measurement-display {
+    text-align: right !important;
+    font-weight: 500;
+}
+
+/* Table numeric cells */
+.table .numeric-cell {
+    text-align: right !important;
+}
+
+/* Progress bar percentages */
+.progress-percentage {
+    text-align: right !important;
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+
+/* Stat card numeric values */
+.stat-value {
+    text-align: right !important;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+}
+
+/* Admin dashboard numeric displays */
+.admin-stat-card .stat-value {
+    text-align: right !important;
+}
+
+/* Profile information numeric values */
+.profile-info-value {
+    text-align: right !important;
+    font-weight: 500;
+}
+
+/* Workout log numeric inputs and displays */
+.workout-numeric {
+    text-align: right !important;
+}
+
+/* Form input numeric fields */
+.form-control[type="number"],
+.form-control[inputmode="numeric"] {
+    text-align: right !important;
+}
+
+/* Subscription plan pricing */
+.plan-price {
+    text-align: right !important;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary);
+    font-family: 'Courier New', monospace;
+}
+
+/* Payment amount displays */
+.payment-amount {
+    text-align: right !important;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+/* Admin table numeric columns */
+.admin-table th.numeric-col,
+.admin-table td.numeric-col {
+    text-align: right !important;
+}
+
+/* Activity stats */
+.activity-stats .stat-number {
+    text-align: right !important;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+/* Quick stats grids */
+.quick-stats .stat-item {
+    text-align: right !important;
+}
+
+.quick-stats .stat-item .stat-label {
+    text-align: left;
+}
+
+.quick-stats .stat-item .stat-number {
+    text-align: right !important;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+}
+
+/* Right-aligned numeric containers */
+.numeric-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.numeric-container .numeric-label {
+    margin-right: 1rem;
+    text-align: left;
+}
+
+.numeric-container .numeric-value {
+    text-align: right !important;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+/* Dashboard stats grid */
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.dashboard-stats .stat-card .stat-value {
+    text-align: right !important;
+}
+
+/* Grid layouts with numeric alignment */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-row .form-group .numeric-input {
+    text-align: right !important;
+}
+
+/* Specific utility classes for different number types */
+.currency-amount {
+    text-align: right !important;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+.duration-days {
+    text-align: right !important;
+    font-weight: 500;
+}
+
+.workout-count {
+    text-align: right !important;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+.percentage-value {
+    text-align: right !important;
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .numeric-align,
+    .price-display,
+    .count-display,
+    .stat-value {
+        text-align: center !important;
+    }
+    
+    .table .numeric-cell {
+        text-align: center !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    .numeric-align,
+    .price-display,
+    .count-display,
+    .stat-value,
+    .profile-info-value {
+        text-align: right !important;
+    }
+}

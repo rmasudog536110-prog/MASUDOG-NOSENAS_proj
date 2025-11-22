@@ -1,6 +1,6 @@
 body {
-            overflow-y: auto !important;
-            min-height: 100vh;
+            overflow-y: hidden !important;
+            height: 100vh;
         }
 
         body::before {
@@ -11,15 +11,52 @@ body {
         main {
             position: relative;
             z-index: 1;
-            min-height: 100vh;
+            height: 100vh;
         }
 
         .edit-profile-container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 1rem 4rem 1rem;
+            margin: 0.5rem auto;
+            padding: 0 0.5rem;
             position: relative;
             z-index: 1;
+            height: 100vh;
+            overflow-y: hidden;
+        }
+
+        .profile-edit-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            height: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .profile-column {
+            display: contents;
+        }
+
+        /* Responsive grid layout for larger screens */
+        @media (min-width: 1200px) {
+            .profile-edit-grid {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                gap: 1rem;
+            }
+            
+            .profile-column {
+                display: block;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .profile-edit-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+            
+            .profile-column {
+                display: block;
+            }
         }
 
         .profile-edit-card {
@@ -27,19 +64,33 @@ body {
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 102, 0, 0.2);
             border-radius: 1rem;
-            padding: 2.5rem;
-            margin-bottom: 2rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            height: fit-content;
+            max-height: calc(100vh - 2rem);
+            overflow-y: auto;
         }
 
         .profile-edit-card h2 {
             color: var(--primary);
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
             border-bottom: 1px solid rgba(255, 102, 0, 0.2);
+            font-size: 1.1rem;
         }
 
+        .profile-edit-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 102, 0, 0.2);
+            font-size: 1rem;
+        }
+
+
+
         .form-section {
-            margin-bottom: 2rem;
+            margin-bottom: 1.25rem;
         }
 
         .form-section:last-child {
@@ -47,10 +98,10 @@ body {
         }
 
         .form-section-title {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: var(--primary);
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -58,37 +109,37 @@ body {
 
         .form-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
         }
 
         .image-upload-preview {
             text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .current-image {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--primary);
             margin-bottom: 1rem;
         }
 
+        .current-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            margin-bottom: 0.75rem;
+        }
+
         .image-placeholder {
-            width: 120px;
-            height: 120px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 2rem;
             color: white;
-            border: 3px solid var(--primary);
-            margin-bottom: 1rem;
+            border: 2px solid var(--primary);
+            margin-bottom: 0.75rem;
         }
 
         .file-input-wrapper {
@@ -98,13 +149,14 @@ body {
 
         .file-input-label {
             display: inline-block;
-            padding: 0.75rem 1.5rem;
+            padding: 0.5rem 1rem;
             background: var(--muted);
             color: var(--foreground);
             border: 1px solid rgba(255, 102, 0, 0.2);
             border-radius: 0.5rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-size: 0.875rem;
         }
 
         .file-input-label:hover {
@@ -120,13 +172,14 @@ body {
             background: rgba(220, 53, 69, 0.1);
             border: 1px solid rgba(220, 53, 69, 0.3);
             border-radius: 0.5rem;
-            padding: 1.5rem;
-            margin-top: 2rem;
+            padding: 1rem;
+            margin-top: 1rem;
         }
 
         .danger-zone h3 {
             color: #dc3545;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
         }
 
         .btn-danger {
@@ -143,8 +196,8 @@ body {
         .switch {
             position: relative;
             display: inline-block;
-            width: 50px;
-            height: 24px;
+            width: 40px;
+            height: 20px;
         }
 
         .switch input {
@@ -162,16 +215,16 @@ body {
             bottom: 0;
             background-color: #ccc;
             transition: .4s;
-            border-radius: 24px;
+            border-radius: 20px;
         }
 
         .slider:before {
             position: absolute;
             content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
             background-color: white;
             transition: .4s;
             border-radius: 50%;
@@ -182,17 +235,17 @@ body {
         }
 
         input:checked + .slider:before {
-            transform: translateX(26px);
+            transform: translateX(20px);
         }
 
         .notification-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem;
+            padding: 0.75rem;
             background: var(--muted);
             border-radius: 0.5rem;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
         }
 
         .notification-label {
@@ -203,18 +256,94 @@ body {
         .notification-label strong {
             color: var(--foreground);
             margin-bottom: 0.25rem;
+            font-size: 0.9rem;
         }
 
         .notification-label small {
             color: var(--muted-foreground);
+            font-size: 0.75rem;
         }
 
-        @media (max-width: 768px) {
+        /* Override Bootstrap spacing for compact layout */
+        .mb-3 {
+            margin-bottom: 0.75rem !important;
+        }
+
+        .btn {
+            padding: 0.375rem 0.75rem !important;
+            font-size: 0.75rem !important;
+            margin: 0.125rem 0.25rem 0.125rem 0 !important;
+        }
+
+        .btn-compact {
+            padding: 0.375rem 0.75rem !important;
+            font-size: 0.75rem !important;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-primary {
+            padding: 0.5rem 1rem !important;
+        }
+
+        /* Compact form controls */
+        .form-control {
+            padding: 0.375rem 0.5rem !important;
+            font-size: 0.75rem;
+        }
+
+        .form-label {
+            margin-bottom: 0.25rem !important;
+            font-size: 0.75rem;
+        }
+
+        textarea.form-control {
+            padding: 0.375rem 0.5rem !important;
+            font-size: 0.75rem;
+        }
+
+        /* Button container spacing */
+        div:has(.btn):not(.profile-actions):not(.notification-item) {
+            gap: 0.75rem !important;
+        }
+
+        @media (max-width: 767px) {
+            body {
+                overflow-y: auto !important;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .edit-profile-container {
+                margin: 0.5rem auto;
+                padding: 0 0.5rem;
+                height: auto;
+                overflow-y: visible;
+            }
+
+            .profile-edit-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
             .profile-edit-card {
-                padding: 1.5rem;
+                padding: 0.75rem;
             }
 
             .form-row {
                 grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .current-image,
+            .image-placeholder {
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+
+            .btn-compact {
+                width: 100%;
+                margin-bottom: 0.5rem;
             }
         }

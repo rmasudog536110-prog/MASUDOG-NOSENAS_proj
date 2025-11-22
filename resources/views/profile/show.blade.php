@@ -98,6 +98,28 @@
                     <span class="profile-info-label">Member Since</span>
                     <span class="profile-info-value">{{ Auth::user()->created_at->format('F Y') }}</span>
                 </div>
+
+                <div class="profile-info-item">
+                    <span class="profile-info-label">Email Notifications</span>
+                    <span class="profile-info-value">
+                        @if(Auth::user()->email_notifications)
+                            <span class="badge badge-success">Enabled</span>
+                        @else
+                            <span class="badge badge-danger">Disabled</span>
+                        @endif
+                    </span>
+                </div>
+
+                <div class="profile-info-item">
+                    <span class="profile-info-label">SMS Notifications</span>
+                    <span class="profile-info-value">
+                        @if(Auth::user()->sms_notifications)
+                            <span class="badge badge-success">Enabled</span>
+                        @else
+                            <span class="badge badge-danger">Disabled</span>
+                        @endif
+                    </span>
+                </div>
             </div>
 
             <!-- Fitness Information -->
@@ -197,38 +219,7 @@
                 @endif
             </div>
 
-            <!-- Notification Settings -->
-            <div class="profile-section">
-                <h3><i class="fa-solid fa-bell"></i> Notification Preferences</h3>
 
-                <div class="profile-info-item">
-                    <span class="profile-info-label">Email Notifications</span>
-                    <span class="profile-info-value">
-                        @if(Auth::user()->email_notifications)
-                            <span class="badge badge-success">Enabled</span>
-                        @else
-                            <span class="badge badge-danger">Disabled</span>
-                        @endif
-                    </span>
-                </div>
-
-                <div class="profile-info-item">
-                    <span class="profile-info-label">SMS Notifications</span>
-                    <span class="profile-info-value">
-                        @if(Auth::user()->sms_notifications)
-                            <span class="badge badge-success">Enabled</span>
-                        @else
-                            <span class="badge badge-danger">Disabled</span>
-                        @endif
-                    </span>
-                </div>
-
-                <div style="margin-top: 1.5rem; text-align: center;">
-                    <a href="{{ route('profile.edit') }}#notifications" class="btn btn-outline btn-sm">
-                        <i class="fa-solid fa-cog"></i> Manage Notifications
-                    </a>
-                </div>
-            </div>
         </div>
     </div>
 </section>

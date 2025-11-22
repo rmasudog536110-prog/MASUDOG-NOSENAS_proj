@@ -58,20 +58,20 @@
 
                        @auth
                             @if ($userSubscription && $userSubscription->plan_id == $plan->id && $userSubscription->payment_status == 'approved')
-                                <button class="btn btn-outline" disabled aria-label="Current active plan">
+                                <a href="{{ route('profile.show') }}" class="btn btn-outline" aria-label="View current active plan">
                                     <i class="fa-solid fa-check"></i> Current Plan
-                                </button>
+                                </a>
                             @elseif ($userSubscription && $userSubscription->plan_id == $plan->id && $userSubscription->payment_status == 'pending')
-                                <button class="btn btn-warning" disabled aria-label="Payment pending approval">
-                                    <i class="fa-solid fa-clock"></i> Pending Approval
+                                <button class="btn btn-warning" onclick="cancelPayment({{ $userSubscription->id }})" aria-label="Cancel pending payment">
+                                    <i class="fa-solid fa-clock"></i> Cancel Payment
                                 </button>
                             @elseif ($userSubscription && $userSubscription->payment_status == 'approved')
-                                <button class="btn btn-secondary" disabled aria-label="Already subscribed to another plan">
-                                    <i class="fa-solid fa-ban"></i> Already Subscribed
-                                </button>
+                                <a href="{{ route('profile.show') }}" class="btn btn-secondary" aria-label="View current subscription">
+                                    <i class="fa-solid fa-ban"></i> View Current Plan
+                                </a>
                             @elseif ($userSubscription && $userSubscription->payment_status == 'pending')
-                                <button class="btn btn-secondary" disabled aria-label="Payment pending for another plan">
-                                    <i class="fa-solid fa-hourglass-half"></i> Payment Pending
+                                <button class="btn btn-secondary" onclick="cancelPayment({{ $userSubscription->id }})" aria-label="Cancel payment pending for another plan">
+                                    <i class="fa-solid fa-hourglass-half"></i> Cancel Payment
                                 </button>
                             @else
                                 <a href="{{ route('subscription.payment.form', $plan->id) }}"
@@ -171,4 +171,35 @@
     </section>
 
     @include('index.footer')
-@endsection
+
+@push('scripts')
+<script>
+function cancelPayment(subscriptionId) {
+    if (confirm('Are you sure you want to cancel this pending payment? This action cannot be undone.')) {
+        // Create form for cancellation
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/payment/cancel';
+        
+        // Add CSRF token
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_token';
+        csrfInput.value = csrfToken;
+        form.appendChild(csrfInput);
+        
+        // Add subscription ID
+        const subscriptionInput = document.createElement('input');
+        subscriptionInput.type = 'hidden';
+        subscriptionInput.name = 'subscription_id';
+        subscriptionInput.value = subscriptionId;
+        form.appendChild(subscriptionInput);
+        
+        // Submit form
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
+@endpush

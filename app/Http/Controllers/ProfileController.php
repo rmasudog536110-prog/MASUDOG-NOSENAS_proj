@@ -42,7 +42,13 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'phone_number' => 'nullable|string|max:20',
+            'email_notifications' => 'nullable|boolean',
+            'sms_notifications' => 'nullable|boolean',
         ]);
+
+        // Convert checkbox values to boolean
+        $userData['email_notifications'] = $request->has('email_notifications');
+        $userData['sms_notifications'] = $request->has('sms_notifications');
 
         // Validate profile fields
         $profileData = $request->validate([

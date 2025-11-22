@@ -31,7 +31,7 @@ class DashboardController extends Controller
 
         // Get pending payment subscriptions
         $pendingPayments = UserSubscription::where('payment_status', 'pending')
-            ->with(['user', 'plan'])
+            ->with(['user', 'plan', 'payments'])
             ->latest()
             ->get();
 

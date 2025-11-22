@@ -41,7 +41,8 @@ class SubscriptionPaymentController extends Controller
             'plan_id' => $plan->id,
             'start_date' => now(),
             'end_date' => now()->addDays($plan->duration_days),
-            'is_active' => false, // will activate after admin approval
+            'status' => 'pending', // will activate after admin approval
+            'payment_status' => 'pending',
         ]);
 
         // Create payment transaction
@@ -71,11 +72,14 @@ class SubscriptionPaymentController extends Controller
 
         // Update subscription to active
         $subscription->update([
-            'is_active' => true,
+            'status' => 'active',
+            'payment_status' => 'approved',
+            'approved_at' => now(),
+            'approved_by' => Auth::id(),
         ]);
 
         // Update transaction status
-        $subscription->transactions()->latest()->first()->update([
+        $subscription->payments()->latest()->first()->update([
             'status' => 'completed',
         ]);
 
@@ -94,17 +98,19 @@ class SubscriptionPaymentController extends Controller
         $subscription = UserSubscription::findOrFail($subscriptionId);
 
         // Update transaction status
-        $subscription->transactions()->latest()->first()->update([
+        $subscription->payments()->latest()->first()->update([
             'status' => 'failed',
             'payment_details' => array_merge(
-                $subscription->transactions()->latest()->first()->payment_details ?? [],
+                $subscription->payments()->latest()->first()->payment_details ?? [],
                 ['admin_notes' => $request->admin_notes]
             ),
         ]);
 
         // Optionally, cancel the subscription
         $subscription->update([
-            'is_active' => false,
+            'status' => 'cancelled',
+            'payment_status' => 'rejected',
+            'admin_notes' => $request->admin_notes,
         ]);
 
         return back()->with('success', 'Payment rejected.');

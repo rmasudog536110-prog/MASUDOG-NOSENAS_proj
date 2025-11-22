@@ -19,6 +19,9 @@
     
     <!-- Global Styles -->
     <link rel="stylesheet" href="{{ asset('css/global.css') }}">
+    
+    <!-- Numeric Alignment Styles -->
+    <link rel="stylesheet" href="{{ asset('css/numeric-align.css') }}">
 
     
     <!-- Bootstrap (minimal usage) -->

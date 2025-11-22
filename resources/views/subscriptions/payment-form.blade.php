@@ -27,11 +27,11 @@
             <h3>{{ $plan->name ?? $subscription->plan->name }}</h3>
             <div class="plan-detail d-flex justify-between">
                 <span class="plan-detail-label">Duration</span>
-                <span class="plan-detail-value">{{ $plan->duration ?? 'N/A' }} days</span>
+                <span class="plan-detail-value duration-display">{{ $plan->duration ?? 'N/A' }} days</span>
             </div>
             <div class="plan-detail d-flex justify-between">
                 <span class="plan-detail-label">Price</span>
-                <span class="plan-detail-value">₱{{ number_format($plan->price ?? $subscription->plan->price, 2) }}</span>
+                <span class="plan-detail-value price-display">₱{{ number_format($plan->price ?? $subscription->plan->price, 2) }}</span>
             </div>
             @if(isset($subscription->plan->description))
             <div class="plan-detail mt-2">
@@ -109,7 +109,7 @@
             <!-- Amount Display -->
             <div class="mb-3">
                 <label class="form-label">Amount to Pay</label>
-                <input type="text" class="form-control" value="₱{{ number_format($plan->price ?? $subscription->plan->price, 2) }}" readonly
+                <input type="text" class="form-control payment-amount" value="₱{{ number_format($plan->price ?? $subscription->plan->price, 2) }}" readonly
                        style="background-color: var(--muted); color: var(--foreground); border-radius: var(--radius);">
             </div>
 

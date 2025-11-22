@@ -125,27 +125,27 @@
         <div class="admin-stats">
             <div class="admin-stat-card">
                 <div class="stat-label">Total Users</div>
-                <div class="stat-value">{{ $stats['total_users'] }}</div>
+                <div class="stat-value count-display">{{ $stats['total_users'] }}</div>
             </div>
 
             <div class="admin-stat-card">
                 <div class="stat-label">Active Subscriptions</div>
-                <div class="stat-value">{{ $stats['active_subscriptions'] }}</div>
+                <div class="stat-value count-display">{{ $stats['active_subscriptions'] }}</div>
             </div>
 
             <div class="admin-stat-card">
                 <div class="stat-label">Total Revenue</div>
-                <div class="stat-value">₱{{ number_format($stats['total_revenue'], 2) }}</div>
+                <div class="stat-value price-display">₱{{ number_format($stats['total_revenue'], 2) }}</div>
             </div>
 
             <div class="admin-stat-card">
                 <div class="stat-label">Revenue This Month</div>
-                <div class="stat-value">₱{{ number_format($stats['revenue_this_month'], 2) }}</div>
+                <div class="stat-value price-display">₱{{ number_format($stats['revenue_this_month'], 2) }}</div>
             </div>
 
             <div class="admin-stat-card" style="border-color: rgba(255, 193, 7, 0.5);">
                 <div class="stat-label">⏳ Pending Payments</div>
-                <div class="stat-value" style="color: #ffc107;">{{ $stats['pending_payments'] }}</div>
+                <div class="stat-value count-display" style="color: #ffc107;">{{ $stats['pending_payments'] }}</div>
             </div>
         </div>
 
@@ -172,14 +172,22 @@
                         <tr>
                             <td>{{ $subscription->user->name }}</td>
                             <td>{{ $subscription->plan->name }}</td>
-                            <td>₱{{ number_format($subscription->plan->price, 2) }}</td>
+                            <td class="price-display">₱{{ number_format($subscription->plan->price, 2) }}</td>
                             <td>{{ $subscription->created_at->diffForHumans() }}</td>
                             <td>
-                                <a href="{{ asset('storage/' . $subscription->payment_proof) }}" 
-                                   target="_blank" 
-                                   class="btn btn-sm btn-outline-primary">
-                                    <i class="fa-solid fa-image"></i> View Proof
-                                </a>
+                                @php
+                                    $transaction = $subscription->payments->first();
+                                    $paymentProof = $transaction ? ($transaction->payment_details['proof_path'] ?? null) : null;
+                                @endphp
+                                @if($paymentProof)
+                                    <a href="{{ asset('storage/' . $paymentProof) }}" 
+                                       target="_blank" 
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="fa-solid fa-image"></i> View Proof
+                                    </a>
+                                @else
+                                    <span class="text-muted">No proof uploaded</span>
+                                @endif
                             </td>
                             <td>
                                 <div style="display: flex; gap: 0.5rem;">

@@ -53,25 +53,25 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon">🏋️</div>
-                <div class="stat-value">{{ $workoutStats['total_workouts'] ?? 0 }}</div>
+                <div class="stat-value count-display">{{ $workoutStats['total_workouts'] ?? 0 }}</div>
                 <div class="stat-label">Total Workouts</div>
             </div>
 
             <div class="stat-card">
                 <div class="stat-icon">📅</div>
-                <div class="stat-value">{{ $workoutStats['weekly_workouts'] ?? 0 }}</div>
+                <div class="stat-value count-display">{{ $workoutStats['weekly_workouts'] ?? 0 }}</div>
                 <div class="stat-label">This Week</div>
             </div>
 
             <div class="stat-card">
                 <div class="stat-icon">🔥</div>
-                <div class="stat-value">{{ $workoutStats['days_active'] ?? 0 }}</div>
+                <div class="stat-value count-display">{{ $workoutStats['days_active'] ?? 0 }}</div>
                 <div class="stat-label">Days Active</div>
             </div>
 
             <div class="stat-card">
                 <div class="stat-icon">⭐</div>
-                <div class="stat-value">
+                <div class="stat-value count-display">
                     @if($userSubscription)
                         {{ $daysLeft }}
                     @else
@@ -107,14 +107,14 @@
                         @if ($subscriptionStatus !== 'expired')
                             <div class="detail-item">
                                 <div class="detail-label">Days Remaining</div>
-                                <div class="detail-value">{{ $daysLeft }} days</div>
+                                <div class="detail-value duration-display">{{ $daysLeft }} days</div>
                             </div>
                         @endif
                     @endif
 
                     <div class="detail-item">
                         <div class="detail-label">Amount Paid</div>
-                        <div class="detail-value">₱{{ number_format($userSubscription->plan->price ?? 0, 2) }}</div>
+                        <div class="detail-value price-display">₱{{ number_format($userSubscription->plan->price ?? 0, 2) }}</div>
                     </div>
                 </div>
 
@@ -137,8 +137,11 @@
                         </a>
                     </div>
                 @elseif ($subscriptionStatus !== 'expired' && $daysLeft > 0)
+                    @php
+                        $progressWidth = min(100, max(0, ($daysLeft / 30) * 100));
+                    @endphp
                     <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: {{ ($daysLeft / 30) * 100 }}%"></div>
+                        <div class="progress-bar" style="width: {{ $progressWidth }}%"></div>
                     </div>
                 @endif
             @else
@@ -237,6 +240,12 @@
                         <span class="action-card-icon">📊</span>
                         <span class="action-card-text">My Workouts</span>
                     </a>
+                    
+                    <!-- Instructor Request Button -->
+                    <a href="#request-instructor-modal" class="action-card" data-bs-toggle="modal">
+                        <span class="action-card-icon">👨‍🏫</span>
+                        <span class="action-card-text">Request Instructor</span>
+                    </a>
                 @endif
             
                 <a href="{{ route('profile.show') }}" class="btn btn-primary btn-sm">
@@ -255,4 +264,87 @@
     </div>
 
     @include('index.footer')
+
+    <!-- Instructor Request Modal -->
+    <div class="modal fade" id="request-instructor-modal" tabindex="-1" aria-labelledby="request-instructor-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="background: var(--card); border: 1px solid rgba(255, 102, 0, 0.2);">
+                <div class="modal-header" style="border-bottom: 1px solid rgba(255, 102, 0, 0.2);">
+                    <h5 class="modal-title" id="request-instructor-modal-label" style="color: var(--primary);">
+                        <i class="fa-solid fa-dumbbell"></i> Request Personal Instructor
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('instructor.requests.store') }}" method="POST" id="instructor-request-form">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="preferred_date" class="form-label" style="color: var(--foreground);">Preferred Date</label>
+                                <input type="date" 
+                                       class="form-control" 
+                                       id="preferred_date" 
+                                       name="preferred_date" 
+                                       min="{{ date('Y-m-d') }}"
+                                       required
+                                       style="background: rgba(255, 102, 0, 0.05); border: 1px solid rgba(255, 102, 0, 0.2); color: var(--foreground);">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="preferred_time" class="form-label" style="color: var(--foreground);">Preferred Time</label>
+                                <input type="time" 
+                                       class="form-control" 
+                                       id="preferred_time" 
+                                       name="preferred_time" 
+                                       required
+                                       style="background: rgba(255, 102, 0, 0.05); border: 1px solid rgba(255, 102, 0, 0.2); color: var(--foreground);">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="exercise_type" class="form-label" style="color: var(--foreground);">Exercise Type</label>
+                            <select class="form-select" 
+                                    id="exercise_type" 
+                                    name="exercise_type" 
+                                    required
+                                    style="background: rgba(255, 102, 0, 0.05); border: 1px solid rgba(255, 102, 0, 0.2); color: var(--foreground);">
+                                <option value="">Select Exercise Type</option>
+                                <option value="strength">💪 Strength Training</option>
+                                <option value="cardio">🏃 Cardio</option>
+                                <option value="yoga">🧘 Yoga</option>
+                                <option value="pilates">🤸 Pilates</option>
+                                <option value="crossfit">⚡ CrossFit</option>
+                                <option value="bodybuilding">🏋️ Bodybuilding</option>
+                                <option value="rehabilitation">🏥 Rehabilitation</option>
+                                <option value="weight_loss">📉 Weight Loss</option>
+                                <option value="flexibility">🤸‍♂️ Flexibility</option>
+                                <option value="functional">🔧 Functional Training</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="goals" class="form-label" style="color: var(--foreground);">Your Goals & Requirements</label>
+                            <textarea class="form-control" 
+                                      id="goals" 
+                                      name="goals" 
+                                      rows="4" 
+                                      placeholder="Tell us about your fitness goals, experience level, injuries, equipment preferences, etc."
+                                      style="background: rgba(255, 102, 0, 0.05); border: 1px solid rgba(255, 102, 0, 0.2); color: var(--foreground); resize: vertical;"
+                                      required></textarea>
+                        </div>
+                        
+                        <div class="alert alert-info" style="background: rgba(255, 102, 0, 0.1); border: 1px solid rgba(255, 102, 0, 0.3); color: var(--foreground);">
+                            <i class="fa-solid fa-info-circle"></i>
+                            <strong>How it works:</strong> Our instructors will review your request and get back to you with scheduling options and recommendations.
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="border-top: 1px solid rgba(255, 102, 0, 0.2);">
+                        <button type="button" class="btn btn-outline" data-bs-dismiss="modal" style="color: var(--muted-foreground);">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-paper-plane"></i> Submit Request
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection

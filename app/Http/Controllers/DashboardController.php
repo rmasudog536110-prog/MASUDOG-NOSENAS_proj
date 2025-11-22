@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use App\Models\UserProgress; 
 use App\Models\UserSubscription;
 use App\Models\WorkoutLog;
+use App\Models\TrainingProgram;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
@@ -18,6 +20,11 @@ class DashboardController extends Controller
         // Redirect admins and managers to admin dashboard
         if ($user->hasAdminAccess()) {
             return redirect()->route('admin.dashboard');
+        }
+
+        // Redirect instructors to instructor dashboard
+        if ($user->isInstructor()) {
+            return redirect()->route('instructor.dashboard');
         }
 
         // Get latest subscription

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 
 class DatabaseSeeder extends Seeder
@@ -16,12 +17,23 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
+        // Create Admin User with hashed password
+        User::create([
             'name' => 'Admin User',
             'email' => 'admin@fitclub.com',
             'phone_number' => '1234567890',
-            'password' => 'admin123',
+            'password' => Hash::make('admin123'),
             'role' => 'admin',
+            'is_active' => true,
+        ]);
+
+        // Create Instructor User with hashed password
+        User::create([
+            'name' => 'Instructor User',
+            'email' => 'instructor@fitclub.com',
+            'phone_number' => '1234567891',
+            'password' => Hash::make('instructor123'),
+            'role' => 'instructor',
             'is_active' => true,
         ]);
 

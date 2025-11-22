@@ -88,7 +88,7 @@
                     <div class="mb-3">
                         <label for="sets" class="form-label">Sets</label>
                         <input type="number" 
-                               class="form-control" 
+                               class="form-control numeric-align" 
                                id="sets" 
                                name="sets" 
                                value="{{ old('sets') }}"
@@ -99,7 +99,7 @@
                     <div class="mb-3">
                         <label for="reps" class="form-label">Reps</label>
                         <input type="number" 
-                               class="form-control" 
+                               class="form-control numeric-align" 
                                id="reps" 
                                name="reps" 
                                value="{{ old('reps') }}"
@@ -110,7 +110,7 @@
                     <div class="mb-3">
                         <label for="weight" class="form-label">Weight (kg)</label>
                         <input type="number" 
-                               class="form-control" 
+                               class="form-control numeric-align" 
                                id="weight" 
                                name="weight" 
                                value="{{ old('weight') }}"
@@ -124,7 +124,7 @@
                     <div class="mb-3">
                         <label for="duration_minutes" class="form-label">Duration (minutes)</label>
                         <input type="number" 
-                               class="form-control" 
+                               class="form-control numeric-align" 
                                id="duration_minutes" 
                                name="duration_minutes" 
                                value="{{ old('duration_minutes') }}"
@@ -135,7 +135,7 @@
                     <div class="mb-3">
                         <label for="distance" class="form-label">Distance (km)</label>
                         <input type="number" 
-                               class="form-control" 
+                               class="form-control numeric-align" 
                                id="distance" 
                                name="distance" 
                                value="{{ old('distance') }}"
@@ -147,7 +147,7 @@
                     <div class="mb-3">
                         <label for="calories_burned" class="form-label">Calories Burned</label>
                         <input type="number" 
-                               class="form-control" 
+                               class="form-control numeric-align" 
                                id="calories_burned" 
                                name="calories_burned" 
                                value="{{ old('calories_burned') }}"
@@ -281,7 +281,7 @@
     }
     
     // Initialize stars based on old value
-    updateStars({{ old('rating', 0) }});
+    updateStars({{ (int)old('rating', 0) }});
     
     // Quick Fill Functions
     function quickFill(type) {

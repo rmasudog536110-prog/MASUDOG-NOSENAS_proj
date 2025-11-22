@@ -1,6 +1,10 @@
 # Use official PHP with Apache
-
 FROM php:8.2-apache
+
+# Install required modules for HTTP/2 support
+RUN apt-get update && apt-get install -y \
+  libnghttp2-dev \
+  && docker-php-ext-install -j$(nproc) opcache
 
 
 
@@ -14,9 +18,14 @@ RUN apt-get update && apt-get install -y \
 
 
 
-# Enable Apache mod_rewrite (needed for Laravel routes)
+# Enable Apache modules for HTTP/2 and performance
+RUN a2enmod rewrite \
+  && a2enmod ssl \
+  && a2enmod headers \
+  && a2enmod http2
 
-RUN a2enmod rewrite
+# Configure Apache for HTTP/2 support
+RUN echo "Protocols h2 h2c http/1.1" >> /etc/apache2/apache2.conf
 
 
 
