@@ -9,30 +9,31 @@ use App\Models\User;
 use Carbon\Carbon;
 use App\Models\SubscriptionPlan;
 use Illuminate\Support\Facades\Hash;
- 
+
 
 class UserController extends Controller
 {
-    
-    public function showRegister(Request $request) {
+
+    public function showRegister(Request $request)
+    {
 
         $selectedPlanId = $request->query('plan');
-        
+
         $selectedPlan = null;
 
-    if ($selectedPlanId) {
-        $selectedPlan = SubscriptionPlan::find($selectedPlanId);
-    }
+        if ($selectedPlanId) {
+            $selectedPlan = SubscriptionPlan::find($selectedPlanId);
+        }
 
         return view('auth.register', [
-        'selectedPlan' => $selectedPlan,
-        'selectedPlanId' => $selectedPlanId,
+            'selectedPlan' => $selectedPlan,
+            'selectedPlanId' => $selectedPlanId,
         ]);
-
     }
- 
- 
-    public function register(Request $request) {
+
+
+    public function register(Request $request)
+    {
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
@@ -40,22 +41,22 @@ class UserController extends Controller
             'password' => 'required|min:6|confirmed',
             'plan_id' => ['nullable', 'integer'],
         ]);
- 
- 
+
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone_number' => $request->phone_number,
             'password' => Hash::make($request->password),
-            
+
         ]);
 
         $user->profile()->create([]);
         Auth::login($user);
 
-       if ($request->filled('plan_id')) {
+        if ($request->filled('plan_id')) {
             $plan = SubscriptionPlan::find($request->plan_id);
-            
+
             if ($plan) {
                 // Redirect to payment proof upload form instead of creating subscription
                 return redirect()
@@ -63,60 +64,60 @@ class UserController extends Controller
                     ->with('success', 'Please upload your payment proof to activate your subscription.');
             }
         }
-                $subscription = $user->subscriptions()->latest()->first();
-                if ($subscription && $subscription->payment_status === 'pending') {
-                    return redirect()->route('pending_dashboard'); 
-
-        }
-        
-        return redirect('/dashboard')->with('success', 'Registered successfully.');
-    }
- 
-    public function showLogin() {
-        return view('auth.login');
-    }
- 
- 
-    public function login(Request $request)
-{
-    $credentials = $request->only('email', 'password');
-
- 
-    if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
-        $user = Auth::user(); // get the logged-in user
-
-    // Block soft-deleted or cancelled users
-    if ($user->trashed() || $user->subscriptions()->where('status', 'cancelled')->exists()) {
-        Auth::logout();
-        return redirect()->route('index')
-            ->with('error', 'Your registration/payment was cancelled.');
-    }
-        
-        if ($user->hasAdminAccess()) {
-            return redirect()->route('admin.dashboard');
-        }
-
-        
         $subscription = $user->subscriptions()->latest()->first();
         if ($subscription && $subscription->payment_status === 'pending') {
-            return redirect()->route('pending_dashboard'); // show pending_dashboard
+            return redirect()->route('pending_dashboard');
         }
 
-        return redirect()->route('dashboard');
+        return redirect('/dashboard')->with('success', 'Registered successfully.');
     }
 
-    // Login failed
-    return back()->withErrors([
-        'email' => 'Invalid credentials.',
-    ]);
-}
- 
-    public function logout(Request $request) {
+    public function showLogin()
+    {
+        return view('auth.login');
+    }
+
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            $user = Auth::user(); // get the logged-in user
+
+            // Block soft-deleted or cancelled users
+            if ($user->trashed() || $user->subscriptions()->where('status', 'cancelled')->exists()) {
+                Auth::logout();
+                return redirect()->route('index')
+                    ->with('error', 'Your registration/payment was cancelled.');
+            }
+
+            if ($user->hasAdminAccess()) {
+                return redirect()->route('admin.dashboard');
+            }
+
+
+            $subscription = $user->subscriptions()->latest()->first();
+            if ($subscription && $subscription->payment_status === 'pending') {
+                return redirect()->route('pending_dashboard'); // show pending_dashboard
+            }
+
+            return redirect()->route('dashboard');
+        }
+
+        // Login failed
+        return back()->withErrors([
+            'email' => 'Invalid credentials.',
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/index');
     }
-
 }

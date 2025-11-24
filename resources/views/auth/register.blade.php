@@ -1,34 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up - FitClub</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/41115896cd.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-     <link rel="stylesheet" href="{{ asset('css/register.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/register.css') }}">
 </head>
+
 <body>
     <main class="content-section">
         <div class="container">
-            <div class="form-container">
+            <div>
                 <h1 class="text-center">Join FitClub</h1>
 
-                
+
                 @if(!empty($selectedPlan))
-                    <div class="selected-plan-info">
-                        <h3>Selected Plan: {{ data_get($selectedPlan, 'name') }}</h3>
-                        <p>₱{{ number_format(data_get($selectedPlan, 'price', 0), 0) }} - {{ data_get($selectedPlan, 'description') }}</p>
-                    </div>
+                <div class="selected-plan-info">
+                    <h3>Selected Plan: {{ data_get($selectedPlan, 'name') }}</h3>
+                    <p>₱{{ number_format(data_get($selectedPlan, 'price', 0), 0) }} - {{ data_get($selectedPlan, 'description') }}</p>
+                </div>
                 @endif
 
                 {{-- general flash error --}}
                 @if ($errors->has('general'))
-                    <div class="flash-message error">
-                        {{ $errors->first('general') }}
-                    </div>
+                <div class="flash-message error">
+                    {{ $errors->first('general') }}
+                </div>
                 @endif
 
                 <form method="POST" action="{{ route('register.submit') }}">
@@ -44,10 +46,9 @@
                             name="name"
                             class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
                             value="{{ old('name') }}"
-                            required
-                        >
+                            required>
                         @if ($errors->has('name'))
-                            <div class="form-error text-danger small mt-1">{{ $errors->first('name') }}</div>
+                        <div class="form-error text-danger small mt-1">{{ $errors->first('name') }}</div>
                         @endif
                     </div>
 
@@ -59,31 +60,29 @@
                             name="email"
                             class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
                             value="{{ old('email') }}"
-                            required
-                        >
+                            required>
                         @if ($errors->has('email'))
-                            <div class="form-error text-danger small mt-1">{{ $errors->first('email') }}</div>
+                        <div class="form-error text-danger small mt-1">{{ $errors->first('email') }}</div>
                         @endif
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="phone_number">Phone Number (Optional)</label>
                         <div class="input-group">
-                        <span class="input-group-text">+63</span>
-                        <input
-                            type="tel"
-                            id="phone_number"
-                            name="phone_number"
-                            class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}"
-                            maxlength="10"
-                            pattern="[0-9]{10}"
-                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0.10);"
-                            value="{{ old('phone') }}"
-                            placeholder="9284594158"
-                        >
+                            <span class="input-group-text">+63</span>
+                            <input
+                                type="tel"
+                                id="phone_number"
+                                name="phone_number"
+                                class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}"
+                                maxlength="10"
+                                pattern="[0-9]{10}"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0.10);"
+                                value="{{ old('phone') }}"
+                                placeholder="9284594158">
                         </div>
                         @if ($errors->has('phone_number'))
-                            <div class="form-error text-danger small mt-1">{{ $errors->first('phone_number') }}</div>
+                        <div class="form-error text-danger small mt-1">{{ $errors->first('phone_number') }}</div>
                         @endif
                     </div>
 
@@ -95,10 +94,9 @@
                             name="password"
                             class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
                             required
-                            minlength="6"
-                        >
+                            minlength="6">
                         @if ($errors->has('password'))
-                            <div class="form-error text-danger small mt-1">{{ $errors->first('password') }}</div>
+                        <div class="form-error text-danger small mt-1">{{ $errors->first('password') }}</div>
                         @endif
                         <p><small class="text-muted">Minimum 6 characters</small></p>
                     </div>
@@ -111,10 +109,9 @@
                             id="confirm_password"
                             name="password_confirmation"
                             class="form-control {{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}"
-                            required
-                        >
+                            required>
                         @if ($errors->has('password_confirmation'))
-                            <div class="form-error text-danger small mt-1">{{ $errors->first('password_confirmation') }}</div>
+                        <div class="form-error text-danger small mt-1">{{ $errors->first('password_confirmation') }}</div>
                         @endif
                     </div>
 
@@ -123,24 +120,23 @@
                         <select
                             id="plan_id"
                             name="plan_id"
-                            class="form-control {{ $errors->has('plan_id') ? 'is-invalid' : '' }}"
-                        >
+                            class="form-control {{ $errors->has('plan_id') ? 'is-invalid' : '' }}">
                             <option value="">-- Please Select a Plan --</option>
                             @foreach(\App\Models\SubscriptionPlan::all() as $plan)
-                                <option value="{{ $plan->id }}"
+                            <option value="{{ $plan->id }}"
                                 {{ old('plan_id', $selectedPlanId ?? '') == $plan->id ? 'selected' : '' }}>
-                                    {{ $plan->name }} — ₱{{ number_format($plan->price, 2) }}
-                                </option>
+                                {{ $plan->name }} — ₱{{ number_format($plan->price, 2) }}
+                            </option>
                             @endforeach
                         </select>
 
                         @if ($errors->has('plan_id'))
-                            <div class="form-error text-danger small mt-1">{{ $errors->first('plan_id') }}</div>
+                        <div class="form-error text-danger small mt-1">{{ $errors->first('plan_id') }}</div>
                         @endif
                     </div>
 
                     @php
-                        $buttonLabel = 'Create Account';
+                    $buttonLabel = 'Create Account';
                     @endphp
 
                     <button type="submit" class="btn btn-primary btn-full mt-3">{{ $buttonLabel }}</button>
@@ -153,4 +149,5 @@
         </div>
     </main>
 </body>
+
 </html>
