@@ -26,7 +26,8 @@ html {
   scroll-behavior: smooth;
 }
 
-html, body {
+html,
+body {
   width: 100%;
   height: 100%;
 }
@@ -179,12 +180,14 @@ a {
 
 .plan-price {
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 .plan-price .price {
   font-size: 2rem;
   color: var(--primary);
   font-weight: bold;
+
 }
 
 .plan-features {
@@ -333,21 +336,27 @@ a {
   .hero h1 {
     font-size: 2.2rem;
   }
+
   .hero p {
     font-size: 1rem;
   }
+
   .btn-primary {
     padding: 0.75rem 2rem;
   }
+
   .plans-grid {
     grid-template-columns: 1fr;
   }
+
   .programs-grid {
     grid-template-columns: 1fr;
   }
+
   .features-grid {
     grid-template-columns: 1fr;
   }
+
   .feature-card {
     max-width: 100%;
   }
