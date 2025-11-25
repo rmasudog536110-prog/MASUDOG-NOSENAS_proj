@@ -17,7 +17,7 @@ class BeginnerExercisesSeeder extends Seeder
                 'difficulty' => 'beginner',
                 'equipment' => 'none',
                 'instruction' => 'Stand upright, jump with legs apart and arms overhead, then return to start.',
-                'video_url' => 'https://youtu.be/uLVt6u15L98?v=JepLMn_ZvcgHr0jp', // Updated Link
+                'video_url' => 'https://www.youtube.com/watch?v=dmYwZH_Bnd0', // Updated Link
                 'img_url' => 'images/exercises/jumping_jacks.jpg',
                 'is_active' => true,
             ],
@@ -39,7 +39,7 @@ class BeginnerExercisesSeeder extends Seeder
                 'difficulty' => 'beginner',
                 'equipment' => 'none',
                 'instruction' => 'Start in a plank position, lower to your knees, then lower your chest toward the floor and push back up.',
-                'video_url' => 'https://www.youtube.com/watch?v=T_8V_nB52hI', // Updated Link
+                'video_url' => 'https://www.youtube.com/watch?v=aclHkVakuS0', // Updated Link
                 'img_url' => 'images/exercises/kneeling_pushups.jpg',
                 'is_active' => true,
             ],
@@ -50,7 +50,7 @@ class BeginnerExercisesSeeder extends Seeder
                 'difficulty' => 'beginner',
                 'equipment' => 'none',
                 'instruction' => 'Hold a push-up position, resting on your forearms and toes, keeping your body in a straight line.',
-                'video_url' => 'https://www.youtube.com/watch?v=pLpC8bWd3E4', // Updated Link
+                'video_url' => 'https://www.youtube.com/watch?v=ASdvN_XEl_c', // Updated Link
                 'img_url' => 'images/exercises/plank.jpg',
                 'is_active' => true,
             ],
@@ -61,7 +61,7 @@ class BeginnerExercisesSeeder extends Seeder
                 'difficulty' => 'beginner',
                 'equipment' => 'none',
                 'instruction' => 'Lie on your back, hands behind your head. Lift your shoulders off the floor, engaging your abs, then lower back down.',
-                'video_url' => 'https://www.youtube.com/watch?v=ANB_wO64tG8', // Updated Link
+                'video_url' => 'https://www.youtube.com/watch?v=Xyd_fa5zoEU', // Updated Link
                 'img_url' => 'images/exercises/crunches.jpg',
                 'is_active' => true,
             ],
@@ -72,7 +72,7 @@ class BeginnerExercisesSeeder extends Seeder
                 'difficulty' => 'beginner',
                 'equipment' => 'none',
                 'instruction' => 'Step one foot back and lower your hips until both knees are bent at about a 90-degree angle, then return to the start.',
-                'video_url' => 'https://www.youtube.com/watch?v=JK85g6MvO_o', // Updated Link
+                'video_url' => 'https://www.youtube.com/watch?v=LQ3b-2-i2ZA', // Updated Link
                 'img_url' => 'images/exercises/reverse_lunges.jpg',
                 'is_active' => true,
             ],
@@ -83,7 +83,7 @@ class BeginnerExercisesSeeder extends Seeder
                 'difficulty' => 'beginner',
                 'equipment' => 'none',
                 'instruction' => 'Lie on your back with bent knees. Push through your heels to lift your hips toward the ceiling, forming a straight line from shoulders to knees.',
-                'video_url' => 'https://www.youtube.com/watch?v=kE-b_h096_M', // Updated Link
+                'video_url' => 'https://www.youtube.com/watch?v=WH_7832J0IY', // Updated Link
                 'img_url' => 'images/exercises/glute_bridge.jpg',
                 'is_active' => true,
             ],
@@ -94,7 +94,7 @@ class BeginnerExercisesSeeder extends Seeder
                 'difficulty' => 'beginner',
                 'equipment' => 'none',
                 'instruction' => 'Run in place, bringing your knees up toward your chest as high as possible.',
-                'video_url' => 'https://www.youtube.com/watch?v=yYvJ94h-bT4', // Updated Link
+                'video_url' => 'https://www.youtube.com/watch?v=8WbCr4HsZ24', // Updated Link
                 'img_url' => 'images/exercises/high_knees.jpg',
                 'is_active' => true,
             ],
@@ -105,7 +105,7 @@ class BeginnerExercisesSeeder extends Seeder
                 'difficulty' => 'beginner',
                 'equipment' => 'wall',
                 'instruction' => 'Lean against a wall with your knees bent at a 90-degree angle, as if sitting in an invisible chair. Hold the position.',
-                'video_url' => 'https://www.youtube.com/watch?v=vMhHNf_o-gY', // Updated Link
+                'video_url' => 'https://www.youtube.com/watch?v=mmgqnTtoAq4', // Updated Link
                 'img_url' => 'images/exercises/wall_sit.jpg',
                 'is_active' => true,
             ],
@@ -116,7 +116,7 @@ class BeginnerExercisesSeeder extends Seeder
                 'difficulty' => 'beginner',
                 'equipment' => 'none',
                 'instruction' => 'Start on all fours. Extend your opposite arm and leg straight out, keeping your back flat. Alternate sides.',
-                'video_url' => 'https://www.youtube.com/watch?v=n-P2_Gq7a-8', // Updated Link
+                'video_url' => 'https://www.youtube.com/watch?v=OJrvJY2Pc5M', // Updated Link
                 'img_url' => 'images/exercises/bird_dog.jpg',
                 'is_active' => true,
             ],
@@ -127,7 +127,7 @@ class BeginnerExercisesSeeder extends Seeder
                 'difficulty' => 'beginner',
                 'equipment' => 'none',
                 'instruction' => 'Stand straight. Rise up onto the balls of your feet, then slowly lower your heels back down.',
-                'video_url' => 'https://www.youtube.com/watch?v=GAJ_wF8r8O0', // Updated Link
+                'video_url' => 'https://www.youtube.com/watch?v=3LICFX-ba_g', // Updated Link
                 'img_url' => 'images/exercises/calf_raises.jpg',
                 'is_active' => true,
             ],
@@ -138,7 +138,7 @@ class BeginnerExercisesSeeder extends Seeder
                 'difficulty' => 'beginner',
                 'equipment' => 'none',
                 'instruction' => 'Start in a plank position. Slowly bring one knee toward your chest, then return and alternate with the other knee.',
-                'video_url' => 'https://www.youtube.com/watch?v=f-R2JjYy_zQ', // Updated Link
+                'video_url' => 'https://www.youtube.com/watch?v=nmwgirgXLYM', // Updated Link
                 'img_url' => 'images/exercises/mountain_climbers_slow.jpg',
                 'is_active' => true,
             ],
@@ -149,7 +149,7 @@ class BeginnerExercisesSeeder extends Seeder
                 'difficulty' => 'beginner',
                 'equipment' => 'none',
                 'instruction' => 'Lie on your side. Keeping your leg straight and core tight, lift your top leg toward the ceiling, then slowly lower it.',
-                'video_url' => 'https://www.youtube.com/watch?v=9r8t4bK8K_k', // Updated Link
+                'video_url' => 'https://www.youtube.com/watch?v=qL-JZ2Vak9o', // Updated Link
                 'img_url' => 'images/exercises/lateral_leg_lifts.jpg',
                 'is_active' => true,
             ],
@@ -160,7 +160,7 @@ class BeginnerExercisesSeeder extends Seeder
                 'difficulty' => 'beginner',
                 'equipment' => 'none',
                 'instruction' => 'Stand with arms straight out to the sides. Make small, controlled circular motions with your arms, then reverse direction.',
-                'video_url' => 'https://www.youtube.com/watch?v=yU56m9v7x4s', // Updated Link
+                'video_url' => 'https://www.youtube.com/watch?v=2sj2iVd-4k4', // Updated Link
                 'img_url' => 'images/exercises/arm_circles.jpg',
                 'is_active' => true,
             ],
@@ -171,7 +171,7 @@ class BeginnerExercisesSeeder extends Seeder
                 'difficulty' => 'beginner',
                 'equipment' => 'towel or band (optional)',
                 'instruction' => 'Use a towel/band under one foot, holding ends in hands. Curl hands toward shoulders against resistance. Alternatively, use a sturdy table edge (hands under, pull up).',
-                'video_url' => 'https://www.youtube.com/watch?v=yYw7k6g8X0M', // Updated Link
+                'video_url' => 'https://www.youtube.com/watch?v=hJbRp-Z4jxY', // Updated Link
                 'img_url' => 'images/exercises/bicep_curl_bodyweight.jpg',
                 'is_active' => true,
             ],

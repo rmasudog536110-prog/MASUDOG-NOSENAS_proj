@@ -192,37 +192,35 @@
                                 <i class="fas fa-video me-2 text-primary"></i>
                                 Exercise Demo
                             </h5>
-                            @php
-                                $videoId = '';
-                                if (!empty($exercise['video_url'])) {
-                                    if (str_contains($exercise['video_url'], 'youtube.com/watch?v=')) {
-                                        $videoId = explode('v=', $exercise['video_url'])[1];
-                                        if (str_contains($videoId, '&')) {
+                            @if(!empty($exercise['video_url']))
+                                <div class="position-relative" style="padding-bottom: 56.25%; height: 0;">
+                                    @php
+                                        // Convert YouTube URL to embed URL with autoplay
+                                        $embedUrl = $exercise['video_url'];
+                                        if (strpos($embedUrl, 'youtube.com/watch?v=') !== false) {
+                                            $videoId = explode('v=', $embedUrl)[1];
                                             $videoId = explode('&', $videoId)[0];
-                                        }
-                                    } elseif (str_contains($exercise['video_url'], 'youtu.be/')) {
-                                        $videoId = explode('youtu.be/', $exercise['video_url'])[1];
-                                        if (str_contains($videoId, '?')) {
+                                            $embedUrl = "https://www.youtube.com/embed/{$videoId}?autoplay=1&mute=1&controls=1&showinfo=0&rel=0";
+                                        } elseif (strpos($embedUrl, 'youtu.be/') !== false) {
+                                            $videoId = explode('youtu.be/', $embedUrl)[1];
                                             $videoId = explode('?', $videoId)[0];
+                                            $embedUrl = "https://www.youtube.com/embed/{$videoId}?autoplay=1&mute=1&controls=1&showinfo=0&rel=0";
                                         }
-                                    }
-                                }
-                            @endphp
-
-                            @if($videoId)
-                                <div class="ratio ratio-16x9">
-                                    <iframe 
-                                        src="https://www.youtube.com/embed/{{ $videoId }}?autoplay=0"
-                                        title="{{ $exercise['name'] }} Demo"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    @endphp
+                                    <iframe
+                                        class="position-absolute top-0 start-0 w-100 h-100 rounded"
+                                        src="{{ $embedUrl }}"
+                                        frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                         allowfullscreen>
                                     </iframe>
                                 </div>
                             @else
                                 <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 200px;">
-                                    <div class="text-center">
+                                    <div class="text-center text-muted">
                                         <i class="fas fa-video-slash fa-3x mb-2"></i>
                                         <p class="mb-1">No video available</p>
+                                        <small class="text-muted">Video tutorial coming soon</small>
                                     </div>
                                 </div>
                             @endif
@@ -287,64 +285,14 @@
         </div>
     </section>
 
-    <!-- YouTube Video Modal -->
-    <div id="videoModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center;">
-        <div style="position: relative; width: 90%; max-width: 900px;">
-            <button onclick="closeVideoModal()" style="position: absolute; top: -40px; right: 0; background: transparent; border: none; color: white; font-size: 2rem; cursor: pointer;">
-                <i class="fas fa-times"></i>
-            </button>
-            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-                <iframe id="videoFrame" 
-                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                </iframe>
-            </div>
-        </div>
-    </div>
-
     {{-- Timer + Step JS --}}
     <script src="{{ asset('js/exercise-timer.js') }}"></script>
     
     <script>
-        function openVideoModal(videoUrl) {
-            const modal = document.getElementById('videoModal');
-            const iframe = document.getElementById('videoFrame');
-            
-            // Convert YouTube URL to embed URL
-            let embedUrl = videoUrl;
-            if (videoUrl.includes('youtube.com/watch?v=')) {
-                const videoId = videoUrl.split('v=')[1].split('&')[0];
-                embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-            } else if (videoUrl.includes('youtu.be/')) {
-                const videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
-                embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-            }
-            
-            iframe.src = embedUrl;
-            modal.style.display = 'flex';
-        }
-
-        function closeVideoModal() {
-            const modal = document.getElementById('videoModal');
-            const iframe = document.getElementById('videoFrame');
-            
-            iframe.src = '';
-            modal.style.display = 'none';
-        }
-
-        // Close modal on outside click
-        document.getElementById('videoModal')?.addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeVideoModal();
-            }
-        });
-
-        // Close modal on ESC key
+        // Close modal on ESC key (kept for any future modals)
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                closeVideoModal();
+                // Functionality removed - no modal exists
             }
         });
     </script>

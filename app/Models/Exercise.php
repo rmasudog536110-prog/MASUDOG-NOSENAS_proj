@@ -18,6 +18,7 @@ class Exercise extends Model
         'video_url',
         'img_url',
         'is_active',
+        'icon',
     ];
 
     public function progress(): HasMany
