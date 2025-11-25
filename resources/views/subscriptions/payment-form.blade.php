@@ -165,6 +165,14 @@
             break;
     }
 }
+
+    history.pushState(null, "", location.href);
+
+    window.onpopstate = function () {
+        window.location.href = "{{ route('payment.cancel') }}";
+    };
+
+
 </script>
 
 @endsection

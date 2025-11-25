@@ -21,33 +21,38 @@ class UserSubscriptionController extends Controller
         return view('subscriptions.show', compact('currentSubscription'));
     }
     public function cancel(Request $request)
-    {
-        $user = Auth::user();
+{
+    $user = Auth::user();
 
-        if ($user) {
-            // Mark subscriptions as cancelled
-            $user->subscriptions()
-                ->where('payment_status', 'pending')
-                ->update([
-                    'payment_status' => 'cancelled',
-                    'status' => 'cancelled'
-                ]);
+    if ($user) {
 
-            // Optional: delete profile first if needed
-            if ($user->profile) {
-                $user->profile()->delete();
-            }
-
-            $user->subscriptions()->delete(); 
-    
-            $user->delete();
-
-            // Logout
-            Auth::logout();
+        // 1. Delete profile if it exists
+        if ($user->profile) {
+            $user->profile()->delete();
         }
 
-        return redirect()->route('index')->with('success', 'Your registration/payment has been cancelled.');
+
+        $user->subscriptions()->delete();
+        $user->transactions()->delete();
+        $user->workoutLogs()->delete();
+        $user->progress()->delete();
+        $user->workoutLogs()->delete();
+        $user->bodyMeasurements()->delete();
+        $user->instructorRequests()->delete();
+
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+
+        $user->delete();
     }
+
+    return redirect()->route('index')
+        ->with('success', 'Your registration and all information have been deleted.');
+}
+
 
 
     }

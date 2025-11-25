@@ -32,46 +32,52 @@ class UserController extends Controller
     }
  
  
-    public function register(Request $request) {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'phone_number' => 'required|max:10|unique:users',
-            'password' => 'required|min:6|confirmed',
-            'plan_id' => ['nullable', 'integer'],
-        ]);
- 
- 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone_number' => $request->phone_number,
-            'password' => Hash::make($request->password),
-            
-        ]);
+public function register(Request $request)
+{
+    $request->validate([
+        'name' => 'required',
+        'email' => 'required|email|unique:users',
+        'phone_number' => 'required|max:10|unique:users',
+        'password' => 'required|min:6|confirmed',
+        'plan_id' => ['nullable', 'integer'],
+    ]);
 
-        $user->profile()->create([]);
-        Auth::login($user);
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'phone_number' => $request->phone_number,
+        'password' => Hash::make($request->password),
+    ]);
 
-       if ($request->filled('plan_id')) {
-            $plan = SubscriptionPlan::find($request->plan_id);
-            
-            if ($plan) {
-                // Redirect to payment proof upload form instead of creating subscription
-                return redirect()
-                    ->route('subscription.payment.form', ['plan' => $plan->id])
-                    ->with('success', 'Please upload your payment proof to activate your subscription.');
-            }
+    $user->profile()->create([]);
+
+    if ($request->filled('plan_id')) {
+        $plan = SubscriptionPlan::find($request->plan_id);
+
+        if ($plan) {
+            Auth::login($user);
+
+            return redirect()
+                ->route('subscription.payment.form', ['plan' => $plan->id])
+                ->with('success', 'Please upload your payment proof to activate your subscription.');
         }
-                $subscription = $user->subscriptions()->latest()->first();
-                if ($subscription && $subscription->payment_status === 'pending') {
-                    return redirect()->route('pending_dashboard'); 
-
-        }
-        
-        return redirect('/dashboard')->with('success', 'Registered successfully.');
     }
- 
+
+    $subscription = $user->subscriptions()->latest()->first();
+
+    if ($subscription && $subscription->payment_status === 'pending') {
+        Auth::login($user);
+        return redirect()->route('pending_dashboard');
+    }
+
+    if ($subscription && $subscription->payment_status === 'null') {
+        Auth::login($user);
+        return redirect()->route('subscription.payment.form');
+    }
+
+    return redirect('/dashboard')->with('success', 'Registered successfully.');
+}
+
     public function showLogin() {
         return view('auth.login');
     }

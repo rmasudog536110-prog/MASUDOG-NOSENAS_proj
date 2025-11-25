@@ -19,8 +19,8 @@
                     <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
                     <i class="fa-solid fa-house-user" style="font-size: 2rem"></i> 
                     </a>
-                    <a href="{{ route('workout-logs.index') }}" class="nav-link {{ request()->is('workout-logs*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-dumbbell"></i> Workouts
+                    <a href="{{ route('customer.instructor-requests') }}" class="nav-link {{ request()->is('instructor-requests') ? 'active' : '' }}">
+                        <i class="fa-solid fa-dumbbell"></i> Instructor
                     </a>
                     <a href="{{ route('profile.show') }}" class="nav-link {{ request()->is('profile*') ? 'active' : '' }}">
                         <i class="fa-solid fa-user"></i> Profile

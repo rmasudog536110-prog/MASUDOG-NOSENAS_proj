@@ -4,6 +4,11 @@
 
 @section('content')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/exercise-details.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/programs.css') }}">
+@endpush
+
 @include('index.header')
 
     <section class="py-5 bg-light">
@@ -19,14 +24,14 @@
                     <div class="d-flex align-items-center mb-4">
                         <span class="fs-1 me-4">{{ $exercise['icon'] }}</span>
                         <div>
-                            <h1 class="display-5 fw-bold text-dark mb-2">{{ $exercise['name'] }}</h1>
+                            <h1 class="display-5 fw-bold mb-2">{{ $exercise['name'] }}</h1>
                             <div class="d-flex gap-2">
                                 <span class="badge 
                                     @switch($exercise['category'])
                                         @case('strength') bg-info @break
-                                        @case('cardio') bg-danger @break
-                                        @case('flexibility') bg-success @break
-                                        @case('functional') bg-warning text-dark @break
+                                        @case('cardio') bg-info @break
+                                        @case('flexibility') bg-info @break
+                                        @case('functional') bg-info @break
                                         @default bg-primary
                                     @endswitch fs-6 px-3 py-2">
                                     {{ ucfirst($exercise['category']) }}
@@ -34,8 +39,8 @@
                                 <span class="badge 
                                     @switch($exercise['difficulty'])
                                         @case('beginner') bg-success @break
-                                        @case('intermediate') bg-warning text-dark @break
-                                        @case('expert') bg-danger @break
+                                        @case('intermediate') bg-success @break
+                                        @case('expert') bg-success @break
                                         @default bg-primary
                                     @endswitch fs-6 px-3 py-2">
                                     {{ ucfirst($exercise['difficulty']) }}
@@ -44,7 +49,7 @@
                         </div>
                     </div>
 
-                    <p class="lead text-muted mb-4">{{ $exercise['description'] }}</p>
+                    <p class="lead mb-4">{{ $exercise['description'] }}</p>
 
                     <div class="row g-4">
                         <div class="col-md-4">
@@ -62,13 +67,13 @@
                         <div class="col-md-4">
                             <div class="bg-light p-4 rounded">
                                 <h6 class="fw-bold mb-2">Equipment</h6>
-                                <p class="text-muted mb-0">{{ $exercise['equipment'] }}</p>
+                                <p class="mb-0">{{ $exercise['equipment'] }}</p>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="bg-light p-4 rounded">
                                 <h6 class="fw-bold mb-2">Recommended</h6>
-                                <p class="text-muted mb-0">
+                                <p class="mb-0">
                                     {{ $exercise['defaultSets'] }} sets × {{ $exercise['defaultReps'] }}
                                 </p>
                             </div>
@@ -93,8 +98,8 @@
                                 <div id="timerDisplay" class="display-3 fw-bold text-primary mb-2">
                                     0:{{ str_pad($exercise['defaultDuration'], 2, '0', STR_PAD_LEFT) }}
                                 </div>
-                                <div id="timerStatus" class="h5 text-muted">Ready to Start</div>
-                                <div id="setCounter" class="text-muted">
+                                <div id="timerStatus" class="h5">Ready to Start</div>
+                                <div id="setCounter">
                                     Set 1 of {{ $exercise['defaultSets'] }}
                                 </div>
                             </div>
@@ -117,7 +122,7 @@
                             
                             <!-- Keyboard Shortcuts Info -->
                             <div class="text-center mb-3">
-                                <small class="text-muted">
+                                <small>
                                     <i class="fas fa-keyboard me-1"></i>
                                     <strong>Shortcuts:</strong> Space = Start/Pause | R = Reset | ← → = Navigate Steps
                                 </small>
@@ -187,21 +192,35 @@
                                 <i class="fas fa-video me-2 text-primary"></i>
                                 Exercise Demo
                             </h5>
-                            @if(!empty($exercise['video_url']))
-                                <div class="bg-dark rounded position-relative" style="height: 250px; cursor: pointer; overflow: hidden;" onclick="openVideoModal('{{ $exercise['video_url'] }}')">
-                                    <div class="position-absolute top-50 start-50 translate-middle text-center">
-                                        <div class="bg-danger rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                                            <i class="fas fa-play text-white fa-2x"></i>
-                                        </div>
-                                        <p class="text-white mt-3 mb-0 fw-bold">Click to Watch Tutorial</p>
-                                    </div>
-                                    <div class="position-absolute bottom-0 start-0 end-0 bg-dark bg-opacity-75 p-2">
-                                        <small class="text-white"><i class="fab fa-youtube me-1"></i> YouTube Tutorial</small>
-                                    </div>
+                            @php
+                                $videoId = '';
+                                if (!empty($exercise['video_url'])) {
+                                    if (str_contains($exercise['video_url'], 'youtube.com/watch?v=')) {
+                                        $videoId = explode('v=', $exercise['video_url'])[1];
+                                        if (str_contains($videoId, '&')) {
+                                            $videoId = explode('&', $videoId)[0];
+                                        }
+                                    } elseif (str_contains($exercise['video_url'], 'youtu.be/')) {
+                                        $videoId = explode('youtu.be/', $exercise['video_url'])[1];
+                                        if (str_contains($videoId, '?')) {
+                                            $videoId = explode('?', $videoId)[0];
+                                        }
+                                    }
+                                }
+                            @endphp
+
+                            @if($videoId)
+                                <div class="ratio ratio-16x9">
+                                    <iframe 
+                                        src="https://www.youtube.com/embed/{{ $videoId }}?autoplay=0"
+                                        title="{{ $exercise['name'] }} Demo"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowfullscreen>
+                                    </iframe>
                                 </div>
                             @else
                                 <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 200px;">
-                                    <div class="text-center text-muted">
+                                    <div class="text-center">
                                         <i class="fas fa-video-slash fa-3x mb-2"></i>
                                         <p class="mb-1">No video available</p>
                                     </div>

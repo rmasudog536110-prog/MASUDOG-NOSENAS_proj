@@ -47,7 +47,6 @@
                             <div class="plan-price">
                                 <span class="price">₱{{ number_format($plan['price'], 2) }}</span>
                             </div>
-                            <span class="free-trial">7-Day Free Trial</span>
                         </div>
 
                         <ul class="plan-features">

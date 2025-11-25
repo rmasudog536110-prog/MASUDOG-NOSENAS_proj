@@ -11,9 +11,9 @@
      <link rel="stylesheet" href="{{ asset('css/register.css') }}">
 </head>
 <body>
-    <main class="content-section">
-        <div class="container">
-            <div class="form-container">
+    <main>
+        <div>
+            <div>
                 <h1 class="text-center">Join FitClub</h1>
 
                 
@@ -69,7 +69,17 @@
                     <div class="form-group mb-3">
                         <label for="phone_number">Phone Number (Optional)</label>
                         <div class="input-group">
-                        <span class="input-group-text">+63</span>
+                        
+                        <div class="input-group-text">
+                            <select name="country_num" class="input-group-text">
+                                <option value="+63">+63</option>
+                                <option value="+1">+1</option>
+                                <option value="+44">+44</option>
+                                <option value="+61">+61</option>
+                                <option value="+81">+81</option>
+                                <option value="+91">+91</option>
+                            </select>
+                        </div>
                         <input
                             type="tel"
                             id="phone_number"

@@ -38,7 +38,10 @@ Route::post('/register', [UserController::class, 'register'])->name('register.su
 
 Route::get('/login', [UserController::class, 'showLogin'])->name('login');
 Route::post('/login', [UserController::class, 'login'])->name('login.submit');
+
 });
+
+
 
 
 
@@ -75,6 +78,8 @@ Route::middleware('auth')->group(function(){
 Route::post('/payment/cancel', [UserSubscriptionController::class, 'cancel'])
     ->name('payment.cancel');
 
+Route::get('/payment/cancel', [UserSubscriptionController::class, 'cancel'])
+    ->name('payment.cancel');
 
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/logout', [UserController::class, 'logout'])

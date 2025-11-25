@@ -1,0 +1,203 @@
+/* Workout Log Page Styling */
+
+/* Container */
+.workout-form-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+/* Card */
+.workout-form-card {
+    background: var(--card);
+    color: var(--foreground);
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--muted);
+}
+
+/* Flash Message */
+.flash-message {
+    padding: 1rem 1.2rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.flash-message.error {
+    background: rgba(255, 0, 0, 0.12);
+    border: 1px solid rgba(255, 0, 0, 0.25);
+    color: #ff7777;
+}
+
+/* Section Title */
+.form-section {
+    margin-bottom: 2.5rem;
+}
+
+.form-section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Form Row Layout */
+.form-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.form-row .mb-3 {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Inputs */
+.form-control,
+textarea,
+select {
+    background: var(--muted);
+    border: 1px solid var(--muted-foreground);
+    color: var(--foreground);
+    padding: 0.65rem 0.75rem;
+    border-radius: 0.75rem;
+    transition: 0.25s;
+}
+
+.form-control:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.25);
+    outline: none;
+}
+
+/* Quick Fill Buttons */
+.quick-fill-btn {
+    padding: 0.5rem 1.2rem;
+    background: var(--primary);
+    border: none;
+    border-radius: 0.75rem;
+    color: var(--primary-foreground);
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.quick-fill-btn:hover {
+    background: #e44300;
+    transform: translateY(-2px);
+}
+
+/* Difficulty Options */
+.difficulty-options {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.difficulty-option {
+    width: 120px;
+    padding: 1rem;
+    border: 2px solid rgba(255, 102, 0, 0.2);
+    border-radius: 1rem;
+    background: var(--muted);
+    text-align: center;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.difficulty-option:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+/* Rating Stars */
+.rating-input {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rating-star {
+    font-size: 2rem;
+    cursor: pointer;
+    transition: 0.2s;
+    color: #777;
+}
+
+.rating-star.active {
+    color: var(--primary);
+    text-shadow: 0 0 10px rgba(255, 102, 0, 0.5);
+}
+
+.rating-star:hover {
+    transform: scale(1.15);
+}
+
+/* Buttons */
+.btn {
+    padding: 0.6rem 1.4rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: 0.25s;
+}
+
+.btn-primary {
+    background: var(--primary);
+    border: none;
+    color: var(--primary-foreground);
+}
+
+.btn-primary:hover {
+    background: #e44300;
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+}
+
+.btn-outline:hover {
+    background: var(--primary);
+    color: var(--primary-foreground);
+    transform: translateY(-2px);
+}
+
+.scroll-indicator {
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    cursor: pointer;
+    z-index: 999;
+}
+
+.arrow-down {
+    width: 30px;
+    height: 30px;
+    border-left: 3px solid var(--primary);
+    border-bottom: 3px solid var(--primary);
+    transform: rotate(-45deg);
+    margin: 0 auto;
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0) rotate(-45deg);
+    }
+    50% {
+        transform: translateY(10px) rotate(-45deg);
+    }
+}
