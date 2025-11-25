@@ -50,22 +50,22 @@
         <div class="d-flex justify-content-center mb-5 flex-wrap gap-2">
 
             <a href="{{ url('programs?difficulty=all') }}"
-            class="btn {{ ($filter === 'all') ? 'btn-primary' : 'btn-outline-primary' }}">
+            class="btn {{ ($difficulty === 'all') ? 'btn-primary' : 'btn-outline-primary' }}">
                 <i class="fas fa-bullseye me-1"></i> All Levels
             </a>
 
             <a href="{{ url('programs?difficulty=beginner') }}"
-            class="btn {{ ($filter === 'beginner') ? 'btn-success' : 'btn-outline-success' }}">
+            class="btn {{ ($difficulty === 'beginner') ? 'btn-success' : 'btn-outline-success' }}">
                 <i class="fas fa-seedling me-1"></i> Beginner
             </a>
 
             <a href="{{ url('programs?difficulty=intermediate') }}"
-            class="btn {{ ($filter === 'intermediate') ? 'btn-warning' : 'btn-outline-warning' }}">
+            class="btn {{ ($difficulty === 'intermediate') ? 'btn-warning' : 'btn-outline-warning' }}">
                 <i class="fas fa-chart-line me-1"></i> Intermediate
             </a>
 
             <a href="{{ url('programs?difficulty=expert') }}"
-            class="btn {{ ($filter === 'expert') ? 'btn-danger' : 'btn-outline-danger' }}">
+            class="btn {{ ($difficulty === 'expert') ? 'btn-danger' : 'btn-outline-danger' }}">
                 <i class="fas fa-star me-1"></i> Expert
             </a>
 
@@ -83,7 +83,7 @@
                                 <!-- Icon + Title -->
                                 <div class="d-flex align-items-center mb-3">
                                     <span class="fs-2 me-3">{{ $program['icon'] }}</span>
-                                    <h5 class="fw-bold mb-0">{{ $program['title'] }}</h5>
+                                    <h5 class="fw-bold mb-0">{{ $program['name'] }}</h5>
                                 </div>
 
                                 <!-- Description -->
@@ -94,14 +94,6 @@
                                 <!-- Program Details -->
                                 <div class="mb-4">
                                     <div class="row g-2">
-                                        <div class="col-6">
-                                            <small class="text-muted">Duration:</small>
-                                            <div class="fw-medium">{{ $program['duration'] }}</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <small class="text-muted">Workouts:</small>
-                                            <div class="fw-medium">{{ $program['workouts'] }}</div>
-                                        </div>
                                         <div class="col-12 mt-2">
                                             <small class="text-muted">Equipment:</small>
                                             <div class="fw-medium">{{ $program['equipment'] }}</div>

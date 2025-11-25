@@ -104,7 +104,7 @@ Route::get('/programs', [TrainingProgramController::class, 'index'])
     ->middleware('auth')
     ->name('programs');
     
-Route::get('/programs/{difficulty}', [ExerciseController::class, 'filterByDifficulty'])
+Route::get('/programs/{difficulty}', [ExerciseController::class, 'show'])
     ->middleware('auth')
     ->name('programs');
 
