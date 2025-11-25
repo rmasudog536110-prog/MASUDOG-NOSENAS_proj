@@ -9,7 +9,7 @@ class ExerciseController extends Controller
 {
 
     public function index(Request $request)
-    {
+    {   
 
         $query = Exercise::where('is_active', true);
 
@@ -56,6 +56,55 @@ class ExerciseController extends Controller
         
         return view('index.exercise_details', ['exercise' => $exerciseData]);
     }
+
+    public function filterByDifficulty($difficulty)
+{
+    // Make sure accepted values
+    $allowedLevels = ['beginner', 'intermediate', 'expert'];
+
+    if (!in_array($difficulty, $allowedLevels)) {
+        abort(404);
+    }
+
+    // Fetch programs filtered by difficulty
+    $programs = TrainingProgram::where('is_active', true)
+        ->where('level', $difficulty)
+        ->get();
+
+    // Transform to the same array format your Blade expects
+    $filteredPrograms = $programs->map(function($program) {
+
+        $description = $program->description;
+        if (is_array($description) && isset($description['overview'])) {
+            $descriptionText = $description['overview'];
+        } else {
+            $descriptionText = $description;
+        }
+
+        $icons = [
+            'beginner' => '🌱',
+            'intermediate' => '📈',
+            'advanced' => '⭐',
+            'expert' => '🔥',
+            'hardcore' => '💪'
+        ];
+
+        return [
+            'id' => $program->id,
+            'icon' => $icons[$program->level] ?? '🏋️',
+            'title' => $program->title,
+            'description' => $descriptionText,
+            'duration' => $program->duration_weeks . ' weeks',
+            'workouts' => $program->workout_counts . '/week',
+            'equipment' => $program->equipment_required ?? 'Basic equipment',
+            'level' => $program->level,
+            'difficulty' => $program->level
+        ];
+    });
+
+    return view('index.programs', [
+        'filteredPrograms' => $filteredPrograms,
+        'filter' => $difficulty
+    ]);
 }
-
-
+}

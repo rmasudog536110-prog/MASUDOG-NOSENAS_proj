@@ -13,13 +13,9 @@
 </head>
 
 <body>
-<<<<<<< HEAD
     <main>
         <div>
-=======
-    <main class="content-section">
-        <div class="container">
->>>>>>> b850ba789a4048d11f46f43b8f344a028b7bc9e3
+
             <div>
                 <h1 class="text-center">Join FitClub</h1>
 
@@ -74,7 +70,7 @@
                     <div class="form-group mb-3">
                         <label for="phone_number">Phone Number (Optional)</label>
                         <div class="input-group">
-<<<<<<< HEAD
+
                         
                         <div class="input-group-text">
                             <select name="country_num" class="input-group-text">
@@ -97,19 +93,6 @@
                             value="{{ old('phone') }}"
                             placeholder="9284594158"
                         >
-=======
-                            <span class="input-group-text">+63</span>
-                            <input
-                                type="tel"
-                                id="phone_number"
-                                name="phone_number"
-                                class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}"
-                                maxlength="10"
-                                pattern="[0-9]{10}"
-                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0.10);"
-                                value="{{ old('phone') }}"
-                                placeholder="9284594158">
->>>>>>> b850ba789a4048d11f46f43b8f344a028b7bc9e3
                         </div>
                         @if ($errors->has('phone_number'))
                         <div class="form-error text-danger small mt-1">{{ $errors->first('phone_number') }}</div>

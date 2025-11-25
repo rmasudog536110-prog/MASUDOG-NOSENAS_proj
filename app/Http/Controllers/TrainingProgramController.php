@@ -14,13 +14,13 @@ class TrainingProgramController extends Controller
     {
         $query = TrainingProgram::where('is_active', true);
         
-        $filter = $request->get('level', 'all');
+        $filter = $request->get('difficulty', 'all');
         
         if ($filter !== 'all') {
-            $query->where('level', $filter);
+            $query->where('difficulty', $filter);
         }
         
-        $programs = $query->orderBy('level')->get();
+        $programs = $query->orderBy('difficulty')->get();
         
         // Format programs for the view
         $filteredPrograms = $programs->map(function($program) {
@@ -45,9 +45,7 @@ class TrainingProgramController extends Controller
             $icons = [
                 'beginner' => '🌱',
                 'intermediate' => '📈',
-                'advanced' => '⭐',
                 'expert' => '🔥',
-                'hardcore' => '💪'
             ];
             
             return [

@@ -9,28 +9,27 @@ use App\Models\User;
 use Carbon\Carbon;
 use App\Models\SubscriptionPlan;
 use Illuminate\Support\Facades\Hash;
-
+ 
 
 class UserController extends Controller
 {
-
-    public function showRegister(Request $request)
-    {
+    
+    public function showRegister(Request $request) {
 
         $selectedPlanId = $request->query('plan');
-
+        
         $selectedPlan = null;
 
-        if ($selectedPlanId) {
-            $selectedPlan = SubscriptionPlan::find($selectedPlanId);
-        }
+    if ($selectedPlanId) {
+        $selectedPlan = SubscriptionPlan::find($selectedPlanId);
+    }
 
         return view('auth.register', [
-            'selectedPlan' => $selectedPlan,
-            'selectedPlanId' => $selectedPlanId,
+        'selectedPlan' => $selectedPlan,
+        'selectedPlanId' => $selectedPlanId,
         ]);
+
     }
-<<<<<<< HEAD
  
  
 public function register(Request $request)
@@ -42,28 +41,6 @@ public function register(Request $request)
         'password' => 'required|min:6|confirmed',
         'plan_id' => ['nullable', 'integer'],
     ]);
-=======
-
-
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'phone_number' => 'required|max:10|unique:users',
-            'password' => 'required|min:6|confirmed',
-            'plan_id' => ['nullable', 'integer'],
-        ]);
-
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone_number' => $request->phone_number,
-            'password' => Hash::make($request->password),
-
-        ]);
->>>>>>> b850ba789a4048d11f46f43b8f344a028b7bc9e3
 
     $user = User::create([
         'name' => $request->name,
@@ -72,7 +49,6 @@ public function register(Request $request)
         'password' => Hash::make($request->password),
     ]);
 
-<<<<<<< HEAD
     $user->profile()->create([]);
 
     if ($request->filled('plan_id')) {
@@ -98,6 +74,7 @@ public function register(Request $request)
         Auth::login($user);
         return redirect()->route('subscription.payment.form');
     }
+
 
     return redirect('/dashboard')->with('success', 'Registered successfully.');
 }
@@ -128,72 +105,25 @@ public function register(Request $request)
         }
 
         
-=======
-        if ($request->filled('plan_id')) {
-            $plan = SubscriptionPlan::find($request->plan_id);
-
-            if ($plan) {
-                // Redirect to payment proof upload form instead of creating subscription
-                return redirect()
-                    ->route('subscription.payment.form', ['plan' => $plan->id])
-                    ->with('success', 'Please upload your payment proof to activate your subscription.');
-            }
-        }
->>>>>>> b850ba789a4048d11f46f43b8f344a028b7bc9e3
         $subscription = $user->subscriptions()->latest()->first();
         if ($subscription && $subscription->payment_status === 'pending') {
-            return redirect()->route('pending_dashboard');
+            return redirect()->route('pending_dashboard'); // show pending_dashboard
         }
 
-        return redirect('/dashboard')->with('success', 'Registered successfully.');
+        return redirect()->route('dashboard');
     }
 
-    public function showLogin()
-    {
-        return view('auth.login');
-    }
-
-
-    public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
-
-
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            $user = Auth::user(); // get the logged-in user
-
-            // Block soft-deleted or cancelled users
-            if ($user->trashed() || $user->subscriptions()->where('status', 'cancelled')->exists()) {
-                Auth::logout();
-                return redirect()->route('index')
-                    ->with('error', 'Your registration/payment was cancelled.');
-            }
-
-            if ($user->hasAdminAccess()) {
-                return redirect()->route('admin.dashboard');
-            }
-
-
-            $subscription = $user->subscriptions()->latest()->first();
-            if ($subscription && $subscription->payment_status === 'pending') {
-                return redirect()->route('pending_dashboard'); // show pending_dashboard
-            }
-
-            return redirect()->route('dashboard');
-        }
-
-        // Login failed
-        return back()->withErrors([
-            'email' => 'Invalid credentials.',
-        ]);
-    }
-
-    public function logout(Request $request)
-    {
+    // Login failed
+    return back()->withErrors([
+        'email' => 'Invalid credentials.',
+    ]);
+}
+ 
+    public function logout(Request $request) {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/index');
     }
+
 }
