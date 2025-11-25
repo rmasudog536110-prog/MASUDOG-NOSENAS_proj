@@ -138,11 +138,7 @@
                 <div class="stat-value price-display">₱{{ number_format($stats['total_revenue'], 2) }}</div>
             </div>
 
-            <div class="admin-stat-card">
-                <div class="stat-label">Revenue This Month</div>
-                <div class="stat-value price-display">₱{{ number_format($stats['revenue_this_month'], 2) }}</div>
-            </div>
-
+            
             <div class="admin-stat-card" style="border-color: rgba(255, 193, 7, 0.5);">
                 <div class="stat-label">⏳ Pending Payments</div>
                 <div class="stat-value count-display" style="color: #ffc107;">{{ $stats['pending_payments'] }}</div>

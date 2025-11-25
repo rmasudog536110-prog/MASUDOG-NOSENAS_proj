@@ -32,6 +32,63 @@ document.addEventListener('DOMContentLoaded', function() {
     if (instructionSteps.length > 0) {
         instructionSteps[0].classList.add('active');
     }
+
+    // Add event listeners for timer settings
+    const setsInput = document.getElementById('setsInput');
+    const workInput = document.getElementById('workInput');
+    const restInput = document.getElementById('restInput');
+    
+    if (setsInput) {
+        setsInput.addEventListener('input', function() {
+            // Validate sets input
+            let value = parseInt(this.value);
+            if (isNaN(value) || value < 1) this.value = 1;
+            if (value > 10) this.value = 10;
+        });
+        
+        setsInput.addEventListener('change', function() {
+            totalSets = parseInt(this.value) || 3;
+            updateSetCounter();
+            showNotification(`Sets updated to ${totalSets}.`);
+        });
+    }
+    
+    if (workInput) {
+        workInput.addEventListener('input', function() {
+            // Validate work duration input
+            let value = parseInt(this.value);
+            if (isNaN(value) || value < 10) this.value = 10;
+            if (value > 300) this.value = 300;
+        });
+        
+        workInput.addEventListener('change', function() {
+            const newDuration = parseInt(this.value) || 30;
+            defaultDuration = newDuration;
+            if (!timerInterval) { // Only update if timer is not running
+                timeRemaining = defaultDuration;
+                updateTimerDisplay();
+            } else {
+                // Show notification that timer is running
+                showNotification('Timer is running. Reset to apply new duration.');
+            }
+        });
+    }
+    
+    if (restInput) {
+        restInput.addEventListener('input', function() {
+            // Validate rest duration input
+            let value = parseInt(this.value);
+            if (isNaN(value) || value < 15) this.value = 15;
+            if (value > 180) this.value = 180;
+        });
+        
+        restInput.addEventListener('change', function() {
+            const newRestDuration = parseInt(this.value) || 60;
+            // Rest duration is used in completeSet function
+            // This will be applied on next set completion
+            showNotification(`Rest duration updated to ${newRestDuration} seconds.`);
+        });
+    }
 });
 
 function startTimer() {
@@ -121,6 +178,8 @@ function completeSet() {
     timerInterval = null;
     
     const timerStatus = document.getElementById('timerStatus');
+    const restInput = document.getElementById('restInput');
+    const restDuration = restInput ? parseInt(restInput.value) : 60;
     
     if (currentSet < totalSets) {
         // Rest period
@@ -132,7 +191,7 @@ function completeSet() {
         playCompletionSound();
         
         // Show rest notification
-        showNotification('Set Complete! Take a 60 second rest.');
+        showNotification(`Set Complete! Take a ${restDuration} second rest.`);
         
         // Auto-start next set after rest
         setTimeout(() => {
@@ -141,7 +200,7 @@ function completeSet() {
             updateSetCounter();
             updateTimerDisplay();
             startTimer();
-        }, 60000); // 60 seconds rest
+        }, restDuration * 1000); // Use dynamic rest duration
         
     } else {
         // Workout complete

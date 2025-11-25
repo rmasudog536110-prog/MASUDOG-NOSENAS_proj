@@ -12,7 +12,7 @@ class SubscriptionPlanSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('subscription_plans')->insert([
+        DB::table('subscription_plans')->insertOrIgnore([
     [
         'name' => 'Basic Plan',
         'description' => 'Perfect for beginners who want access to basic exercise lessons and limited support.',
