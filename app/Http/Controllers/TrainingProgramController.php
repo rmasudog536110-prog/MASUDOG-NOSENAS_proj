@@ -5,22 +5,23 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\TrainingProgram;
 use App\Models\ProgramEnrollment;
+use App\Models\Exercise;
 use Illuminate\Http\Request;
 
 class TrainingProgramController extends Controller
 {
 
-    public function index(Request $request)
+    public function index (Request $request)
     {
-        $query = TrainingProgram::where('is_active', true);
+        $query = Exercise::where('is_active', true);
         
-        $filter = $request->get('level', 'all');
+        $difficulty = $request->get('difficulty', 'all');
         
-        if ($filter !== 'all') {
-            $query->where('level', $filter);
+        if ($difficulty !== 'all') {
+            $query->where('difficulty', $difficulty);
         }
         
-        $programs = $query->orderBy('level')->get();
+        $programs = $query->orderBy('difficulty')->get();
         
         // Format programs for the view
         $filteredPrograms = $programs->map(function($program) {
@@ -45,26 +46,23 @@ class TrainingProgramController extends Controller
             $icons = [
                 'beginner' => '🌱',
                 'intermediate' => '📈',
-                'advanced' => '⭐',
                 'expert' => '🔥',
-                'hardcore' => '💪'
             ];
             
+
             return [
                 'id' => $program->id,
-                'icon' => $icons[$program->level] ?? '🏋️',
-                'title' => $program->title,
+                'icon' => $icons[$program->difficulty] ?? '🏋️',
+                'name' => $program->name,
                 'description' => $descriptionText,
-                'duration' => $program->duration_weeks . ' weeks',
-                'workouts' => $program->workout_counts . '/week',
-                'equipment' => $program->equipment_required ?? 'Basic equipment',
-                'level' => ucfirst($program->level),
+                'equipment' => $program->equipment,
+                'difficulty' => ucfirst($program->level),
             ];
         });
 
         return view('index.programs', [
             'filteredPrograms' => $filteredPrograms,
-            'filter' => $filter
+            'difficulty' => $difficulty
         ]);
     }
     public function show(TrainingProgram $program)
@@ -78,15 +76,13 @@ class TrainingProgramController extends Controller
         // Format program data
         $programData = [
             'id' => $program->id,
-            'title' => $program->title,
+            'name' => $program->name,
             'description' => is_array($program->description) && isset($program->description['overview'])
                 ? $program->description['overview']
                 : (is_string($program->description) ? $program->description : 'Professional training program'),
-            'level' => $program->level,
-            'duration' => $program->duration_weeks . ' weeks',
-            'workouts' => $program->workout_counts . '/week',
-            'equipment' => $program->equipment_required ?? 'Basic equipment',
-            'icon' => $this->getLevelIcon($program->level),
+            'difficulty' => $program->difficulty,
+            'equipment' => $program->equipment ?? 'Basic equipment',
+            'icon' => $this->getLevelIcon($program->difficulty),
         ];
 
         return view('index.program_detail', [

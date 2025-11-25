@@ -32,7 +32,7 @@
     <div class="profile-edit-grid">
         <!-- Personal Information Column -->
         <div class="profile-column">
-            <div class="profile-edit-card">
+            <div>
                 <h2><i class="fa-solid fa-user-edit"></i> Edit Profile</h2>
                 <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -149,7 +149,7 @@
 
         <!-- Notification Settings Column -->
         <div class="profile-column">
-            <div class="profile-edit-card">
+            <div>
                 <h3 class="form-section-title">
                     <i class="fa-solid fa-bell"></i> Notification Settings
                 </h3>
@@ -201,7 +201,7 @@
 
         <!-- Fitness Information Column -->
         <div class="profile-column">
-            <div class="profile-edit-card">
+            <div>
                 <h3 class="form-section-title">
                     <i class="fa-solid fa-dumbbell"></i> Fitness Information
                 </h3>
@@ -275,7 +275,7 @@
 
         <!-- Change Password Column -->
         <div class="profile-column">
-            <div class="profile-edit-card">
+            <div>
                 <h3 class="form-section-title">
                     <i class="fa-solid fa-lock"></i> Change Password
                 </h3>

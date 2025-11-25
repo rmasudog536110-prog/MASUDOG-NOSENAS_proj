@@ -8,7 +8,6 @@
 
 @section('content')
 
-@include('index.header')
 
 <div class="workout-form-container">
     <!-- Flash Messages -->

@@ -38,17 +38,17 @@
                         {{ $plan['name'] === 'Quarterly' ? 'popular' : '' }}
                         {{ $plan['is_trial'] ? 'trial-plan' : '' }}">
 
-                @if ($plan['name'] === 'Quarterly')
+                @if ($plan['name'] === 'Pro Plan')
                 <div class="plan-badge">Most Popular</div>
                 @endif
 
-                <div class="plan-header">
-                    <h3>{{ $plan['name'] }}</h3>
-                    <div>
-                        <span class="price">₱{{ number_format($plan['price'], 2) }}</span>
-                    </div>
-                    <span class="free-trial">7-Day Free Trial</span>
-                </div>
+                        <div class="plan-header">
+                            <h3>{{ $plan['name'] }}</h3>
+                            <div>
+                                <span class="price">₱{{ number_format($plan['price'], 2) }}</span>
+                            </div>
+                            <span class="free-trial">7-Day Free Trial</span>
+                        </div>
 
                 <ul class="plan-features">
                     @foreach ($plan['features'] as $feature)

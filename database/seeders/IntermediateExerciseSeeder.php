@@ -17,7 +17,7 @@
                     'difficulty' => 'intermediate',
                     'equipment' => 'none',
                     'instruction' => 'Lower your body until your chest nearly touches the floor, maintaining a straight line, then push back up.',
-                    'video_url' => 'https://www.youtube.com/watch?v=_l3ySVKYVJ8',
+                    'video_url' => 'https://www.youtube.com/watch?v=IODxDxX7oi4', // Updated Link
                     'img_url' => 'images/exercises/pushups.jpg',
                     'is_active' => true,
                 ],
@@ -138,7 +138,7 @@
                     'difficulty' => 'intermediate',
                     'equipment' => 'box or bench',
                     'instruction' => 'Stand in front of a box. Swing your arms and jump explosively onto the box, landing softly. Step back down.',
-                    'video_url' => 'https://www.youtube.com/watch?v=F3zV97_s52I',
+                    'video_url' => 'https://www.youtube.com/watch?v=eqk97Y_0-Gg', // Corrected Link
                     'img_url' => 'images/exercises/box_jumps.jpg',
                     'is_active' => true,
                 ],

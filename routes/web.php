@@ -39,14 +39,17 @@ Route::middleware('guest')->group(function () {
     Route::get('reset-password/{token}/{email}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
     Route::post('reset-password', [PasswordResetController::class, 'resetPassword'])->name('password.update');
 
-    Route::get('/login', [UserController::class, 'showLogin'])->name('login');
-    Route::post('/login', [UserController::class, 'login'])->name('login.submit');
+
+Route::get('/register', [UserController::class, 'showRegister'])->name('register');
+Route::post('/register', [UserController::class, 'register'])->name('register.submit');
+
+
+Route::get('/login', [UserController::class, 'showLogin'])->name('login');
+Route::post('/login', [UserController::class, 'login'])->name('login.submit');
 });
 
-
-
-
 Route::middleware('auth')->group(function () {
+
 
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
@@ -79,6 +82,8 @@ Route::middleware('auth')->group(function () {
 Route::post('/payment/cancel', [UserSubscriptionController::class, 'cancel'])
     ->name('payment.cancel');
 
+Route::get('/payment/cancel', [UserSubscriptionController::class, 'cancel'])
+    ->name('payment.cancel');
 
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/logout', [UserController::class, 'logout'])
@@ -94,17 +99,14 @@ Route::get('/index/pending', function () {
 })
     ->name('pending_dashboard');
 
+//View Programs
 Route::get('/programs', [TrainingProgramController::class, 'index'])
     ->middleware('auth')
     ->name('programs');
-
-Route::get('/programs/{program}', [TrainingProgramController::class, 'show'])
+    
+Route::get('/programs/{difficulty}', [ExerciseController::class, 'show'])
     ->middleware('auth')
-    ->name('programs.show');
-
-Route::post('/programs/{program}/enroll', [TrainingProgramController::class, 'enroll'])
-    ->middleware('auth')
-    ->name('programs.enroll');
+    ->name('programs');
 
 Route::get('/exercises', [ExerciseController::class, 'index'])
     ->middleware('auth')
@@ -133,6 +135,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/users/{user}/toggle-status', [AdminDashboardController::class, 'toggleUserStatus'])->name('toggle-status');
     Route::delete('/users/{user}', [AdminDashboardController::class, 'deleteUser'])->name('delete-user');
 
+    // Create Programs
+    Route::get('/programs/{program}', [TrainingProgramController::class, 'show'])
+    ->middleware('auth')
+    ->name('programs.show');
+
+    Route::post('/programs/{program}/enroll', [TrainingProgramController::class, 'enroll'])
+    ->middleware('auth')
+    ->name('programs.enroll');
 
     // Subscription Payment Approval
     Route::post('/subscriptions/{subscription}/approve', [SubscriptionPaymentController::class, 'approvePayment'])->name('subscriptions.approve');

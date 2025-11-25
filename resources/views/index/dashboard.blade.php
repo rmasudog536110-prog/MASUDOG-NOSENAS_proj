@@ -162,8 +162,8 @@
                     <i class="fa-solid fa-clock-rotate-left"></i> Recent Activities
                 </h2>
                 <div class="section-actions">
-                    <a href="{{ route('workout-logs.create') }}" class="btn btn-primary btn-sm">
-                        <i class="fa-solid fa-plus" style="margin-right: 10px;"></i> Log Workout
+                    <a href="{{ route('customer.instructor-requests') }}" class="btn btn-primary btn-sm">
+                        <i class="fa-solid fa-plus" style="margin-right: 10px;"></i> Request Instructor
                     </a>
                     <a href="{{ route('workout-logs.index') }}" class="btn btn-primary btn-sm">
                         <i class="fa-solid fa-magnifying-glass" style="margin-right: 10px;"></i> View All

@@ -4,107 +4,11 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-    <style>
-        .admin-header {
-            background: linear-gradient(135deg, #ff6600 0%, #e65c00 100%);
-            padding: 2rem;
-            border-radius: 1rem;
-            margin-bottom: 2rem;
-            color: white;
-        }
-
-        .admin-header h1 {
-            margin: 0 0 0.5rem 0;
-            color: white;
-        }
-
-        .admin-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .admin-stat-card {
-            background: var(--card);
-            border: 1px solid rgba(255, 102, 0, 0.3);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .admin-stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);
-        }
-
-        .stat-label {
-            color: var(--muted-foreground);
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .admin-actions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .admin-action-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 1.5rem;
-            background: var(--card);
-            border: 1px solid rgba(255, 102, 0, 0.2);
-            border-radius: var(--radius);
-            color: var(--foreground);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .admin-action-btn:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-3px);
-        }
-
-        .recent-users-table {
-            width: 100%;
-            background: var(--card);
-            border-radius: var(--radius);
-            overflow: hidden;
-        }
-
-        .recent-users-table th {
-            background: rgba(255, 102, 0, 0.1);
-            padding: 1rem;
-            text-align: left;
-            color: var(--primary);
-        }
-
-        .recent-users-table td {
-            padding: 1rem;
-            border-bottom: 1px solid rgba(255, 102, 0, 0.1);
-        }
-
-        .recent-users-table tr:last-child td {
-            border-bottom: none;
-        }
-    </style>
 @endpush
 
 @section('content')
 
-@include('index.header')
+@include('admin.admin_header')
 
 <section class="content-section">
     <div class="container">

@@ -13,8 +13,9 @@
 </head>
 
 <body>
-    <main class="content-section">
-        <div class="container">
+    <main>
+        <div>
+
             <div>
                 <h1 class="text-center">Join FitClub</h1>
 
@@ -69,17 +70,29 @@
                     <div class="form-group mb-3">
                         <label for="phone_number">Phone Number (Optional)</label>
                         <div class="input-group">
-                            <span class="input-group-text">+63</span>
-                            <input
-                                type="tel"
-                                id="phone_number"
-                                name="phone_number"
-                                class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}"
-                                maxlength="10"
-                                pattern="[0-9]{10}"
-                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0.10);"
-                                value="{{ old('phone') }}"
-                                placeholder="9284594158">
+
+                        
+                        <div class="input-group-text">
+                            <select name="country_num" class="input-group-text">
+                                <option value="+63">+63</option>
+                                <option value="+1">+1</option>
+                                <option value="+44">+44</option>
+                                <option value="+61">+61</option>
+                                <option value="+81">+81</option>
+                                <option value="+91">+91</option>
+                            </select>
+                        </div>
+                        <input
+                            type="tel"
+                            id="phone_number"
+                            name="phone_number"
+                            class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}"
+                            maxlength="10"
+                            pattern="[0-9]{10}"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0.10);"
+                            value="{{ old('phone') }}"
+                            placeholder="9284594158"
+                        >
                         </div>
                         @if ($errors->has('phone_number'))
                         <div class="form-error text-danger small mt-1">{{ $errors->first('phone_number') }}</div>
