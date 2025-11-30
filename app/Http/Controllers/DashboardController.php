@@ -45,7 +45,8 @@ class DashboardController extends Controller
             if ($userSubscription->payment_status === 'rejected') {
                 $subscriptionStatus = 'rejected';
                 $daysLeft = 0;
-            } elseif ($userSubscription->payment_status === 'approved') {
+            } 
+            elseif ($userSubscription->payment_status === 'approved') {
                 if ($subscriptionExpiry && $subscriptionExpiry->isPast()) {
                     $subscriptionStatus = 'expired';
                     $daysLeft = 0;

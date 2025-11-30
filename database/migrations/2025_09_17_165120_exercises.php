@@ -21,9 +21,10 @@ return new class extends Migration
             $table->text('instruction');
             $table->string('video_url');
             $table->string('img_url');
+            $table->string('icon')->nullable();
+            $table->string('muscle_group')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
-            
         });
     }
 

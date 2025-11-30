@@ -215,14 +215,22 @@
     <!-- Program Hero Section -->
     <div class="program-hero">
         <div class="program-icon">{{ $program['icon'] }}</div>
-        <h1 class="program-title">{{ $program['name'] }}</h1>
-        <span class="level-badge level-{{ $program['difficulty'] }}">
-            {{ ucfirst($program['difficulty']) }} Difficulty
+        <h1 class="program-title">{{ $program['title'] }}</h1>
+        <span class="level-badge level-{{ $program['level'] }}">
+            {{ ucfirst($program['level']) }} Level
         </span>
         <p class="program-description">{{ $program['description'] }}</p>
 
         <!-- Stats Grid -->
         <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-value">{{ $program['duration'] }}</div>
+                <div class="stat-label">Program Duration</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">{{ $program['workouts'] }}</div>
+                <div class="stat-label">Workouts Per Week</div>
+            </div>
             <div class="stat-box">
                 <div class="stat-value"><i class="fa-solid fa-dumbbell"></i></div>
                 <div class="stat-label">{{ $program['equipment'] }}</div>
@@ -271,6 +279,10 @@
         <div class="benefits-grid">
             <div class="benefit-item">
                 <div class="benefit-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                <div class="benefit-text">
+                    <h4>Structured Schedule</h4>
+                    <p>Follow a proven {{ $program['duration'] }} program designed by fitness experts</p>
+                </div>
             </div>
             <div class="benefit-item">
                 <div class="benefit-icon"><i class="fa-solid fa-chart-line"></i></div>
@@ -281,6 +293,10 @@
             </div>
             <div class="benefit-item">
                 <div class="benefit-icon"><i class="fa-solid fa-dumbbell"></i></div>
+                <div class="benefit-text">
+                    <h4>{{ $program['workouts'] }} Workouts</h4>
+                    <p>Balanced training frequency for optimal results and recovery</p>
+                </div>
             </div>
             <div class="benefit-item">
                 <div class="benefit-icon"><i class="fa-solid fa-trophy"></i></div>
@@ -293,6 +309,16 @@
     </div>
 
     <!-- Program Details -->
+    <div class="info-section">
+        <h2><i class="fa-solid fa-info-circle"></i> Program Details</h2>
+        <div style="color: var(--muted-foreground); line-height: 1.8;">
+            <p><strong style="color: var(--foreground);">Level:</strong> {{ ucfirst($program['level']) }} - Perfect for those with {{ $program['level'] }} experience</p>
+            <p><strong style="color: var(--foreground);">Duration:</strong> {{ $program['duration'] }} of progressive training</p>
+            <p><strong style="color: var(--foreground);">Frequency:</strong> {{ $program['workouts'] }} to maximize results</p>
+            <p><strong style="color: var(--foreground);">Equipment:</strong> {{ $program['equipment'] }}</p>
+            <p><strong style="color: var(--foreground);">Focus:</strong> Comprehensive fitness development with balanced training</p>
+        </div>
+    </div>
 
     <!-- Call to Action -->
     @if(!$isEnrolled)

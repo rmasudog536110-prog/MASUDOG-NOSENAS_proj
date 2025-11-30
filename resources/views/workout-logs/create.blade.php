@@ -8,7 +8,6 @@
 
 @section('content')
 
-
 <div class="workout-form-container">
     <!-- Flash Messages -->
     @if ($errors->any())

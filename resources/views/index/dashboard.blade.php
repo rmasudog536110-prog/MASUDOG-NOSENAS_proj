@@ -7,7 +7,11 @@
 
 @section('content')
 
+
+@if ($subscriptionStatus === 'expired' || 'cancelled' || 'pending')
 @include('index.header')
+@endif
+
 
     {{-- Flash Messages --}}
     @if (session('success'))

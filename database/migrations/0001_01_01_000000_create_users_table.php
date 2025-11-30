@@ -18,6 +18,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->bigInteger('phone_number')->default(null);
+            $table->enum('role', ['customer', 'instructor', 'staff', 'manager', 'admin'])->default('customer')->after('email');
+            $table->boolean('is_active')->default(true);
             $table->softDeletes(); 
             $table->rememberToken();
             $table->timestamps();

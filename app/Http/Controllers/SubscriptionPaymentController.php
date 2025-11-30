@@ -41,7 +41,7 @@ class SubscriptionPaymentController extends Controller
             'plan_id' => $plan->id,
             'start_date' => now(),
             'end_date' => now()->addDays($plan->duration_days),
-            'status' => 'pending', // will activate after admin approval
+            'status' => 'pending',
             'payment_status' => 'pending',
         ]);
 

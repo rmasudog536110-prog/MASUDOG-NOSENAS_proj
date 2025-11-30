@@ -3,13 +3,7 @@
 @section('title', 'Add New Exercise - Admin')
 
 @push('styles')
-<style>
-    .form-select option {
-        background: #2d2d2d;
-        color: white;
-        padding: 0.5rem;
-    }
-</style>
+    <link rel="stylesheet" href="{{ asset('css/exercises.css') }}">
 @endpush
 
 @section('content')
