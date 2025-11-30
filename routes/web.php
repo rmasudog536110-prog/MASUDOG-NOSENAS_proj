@@ -113,6 +113,10 @@ Route::get('/exercises', [ExerciseController::class, 'index'])
     ->middleware('auth')
     ->name('exercises');
 
+Route::get('/index/exercises', [ExerciseController::class, 'index'])
+    ->middleware('auth')
+    ->name('index.exercises');
+
 Route::get('/exercises/{exercise}', [ExerciseController::class, 'show'])
     ->middleware('auth')
     ->name('exercises.show');

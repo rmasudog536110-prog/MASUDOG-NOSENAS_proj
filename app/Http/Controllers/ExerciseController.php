@@ -13,6 +13,16 @@ class ExerciseController extends Controller
 
         $query = Exercise::where('is_active', true);
 
+        // Search functionality
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('name', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('description', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('equipment', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('muscle_group', 'LIKE', "%{$searchTerm}%");
+            });
+        }
 
         if ($request->filled('difficulty')) {
             $query->where('difficulty', $request->difficulty);
@@ -22,12 +32,13 @@ class ExerciseController extends Controller
             $query->where('category', $request->category);
         }
 
-        $exercises = $query->paginate(10);
+        // Preserve pagination with search parameters
+        $exercises = $query->paginate(10)->withQueryString();
         $filter = $request->get('category', 'all');
 
         return view('index.exercises', [
             'exercises' => $exercises,
-            'currentFilters' => $request->only(['difficulty', 'category']),
+            'currentFilters' => $request->only(['difficulty', 'category', 'search']),
             'filter' => $filter,
         ]);
     }

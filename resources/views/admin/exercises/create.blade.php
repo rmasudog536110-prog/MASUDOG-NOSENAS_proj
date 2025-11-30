@@ -62,6 +62,7 @@
                                     <label class="form-label fw-bold">Category *</label>
                                     <select name="category" class="form-select @error('category') is-invalid @enderror" required>
                                         <option value="">Select Category</option>
+                                        <option value="warmup" {{ old('category') == 'warmup' ? 'selected' : '' }}>Warmup</option>
                                         <option value="strength" {{ old('category') == 'strength' ? 'selected' : '' }}>Strength</option>
                                         <option value="cardio" {{ old('category') == 'cardio' ? 'selected' : '' }}>Cardio</option>
                                         <option value="flexibility" {{ old('category') == 'flexibility' ? 'selected' : '' }}>Flexibility</option>

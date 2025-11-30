@@ -33,7 +33,7 @@ class ExerciseController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'category' => 'required|in:strength,cardio,flexibility,plyometrics,functional,core',
+            'category' => 'required|in:warmup,strength,cardio,flexibility,plyometrics,functional,core',
             'difficulty' => 'required|in:beginner,intermediate,expert',
             'equipment' => 'required|string|max:255',
             'muscle_group' => 'nullable|string|max:255',
@@ -72,7 +72,7 @@ class ExerciseController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'category' => 'required|in:strength,cardio,flexibility,plyometrics,functional,core',
+            'category' => 'required|in:warmup,strength,cardio,flexibility,plyometrics,functional,core',
             'difficulty' => 'required|in:beginner,intermediate,expert',
             'equipment' => 'required|string|max:255',
             'muscle_group' => 'nullable|string|max:255',

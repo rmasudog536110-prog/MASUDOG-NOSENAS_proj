@@ -92,67 +92,140 @@
                 <h2 class="section-title">
                     <i class="fa-solid fa-credit-card"></i> Subscription Status
                 </h2>
-
             </div>
 
             @if ($userSubscription)
-                <div class="subscription-details">
-                    <div class="detail-item">
-                        <div class="detail-label">Plan</div>
-                        <div class="detail-value">{{ $userSubscription->plan->name }}</div>
+                <div class="subscription-card">
+                    <div class="subscription-header">
+                        <div class="subscription-plan">
+                            <div class="plan-icon">
+                                @if ($userSubscription->plan->name === 'Pro Plan')
+                                    <i class="fa-solid fa-crown"></i>
+                                @elseif ($userSubscription->plan->name === 'Basic Plan')
+                                    <i class="fa-solid fa-star"></i>
+                                @else
+                                    <i class="fa-solid fa-rocket"></i>
+                                @endif
+                            </div>
+                            <div class="plan-info">
+                                <h3 class="plan-name">{{ $userSubscription->plan->name }}</h3>
+                                <div class="plan-price">₱{{ number_format($userSubscription->plan->price ?? 0, 2) }}</div>
+                            </div>
+                        </div>
+                        <div class="subscription-status-badge">
+                            @php
+                                $statusClass = match($subscriptionStatus) {
+                                    'active' => 'status-active',
+                                    'expired' => 'status-expired',
+                                    'pending' => 'status-pending',
+                                    'rejected' => 'status-rejected',
+                                    'cancelled' => 'status-cancelled',
+                                    default => 'status-unknown'
+                                };
+                            @endphp
+                            <span class="status-badge {{ $statusClass }}">
+                                @if ($subscriptionStatus === 'active')
+                                    <i class="fa-solid fa-check-circle"></i> Active
+                                @elseif ($subscriptionStatus === 'expired')
+                                    <i class="fa-solid fa-times-circle"></i> Expired
+                                @elseif ($subscriptionStatus === 'pending')
+                                    <i class="fa-solid fa-clock"></i> Pending
+                                @elseif ($subscriptionStatus === 'rejected')
+                                    <i class="fa-solid fa-exclamation-circle"></i> Rejected
+                                @else
+                                    <i class="fa-solid fa-question-circle"></i> {{ ucfirst($subscriptionStatus) }}
+                                @endif
+                            </span>
+                        </div>
                     </div>
 
-                    @if ($subscriptionExpiry)
-                        <div class="detail-item">
-                            <div class="detail-label">{{ $subscriptionStatus === 'expired' ? 'Expired On' : 'Expires On' }}</div>
-                            <div class="detail-value">{{ $subscriptionExpiry->format('M j, Y') }}</div>
+                    <div class="subscription-details-grid">
+                        @if ($subscriptionExpiry)
+                            <div class="detail-card">
+                                <div class="detail-card-icon">
+                                    <i class="fa-solid fa-calendar-alt"></i>
+                                </div>
+                                <div class="detail-card-content">
+                                    <div class="detail-card-label">{{ $subscriptionStatus === 'expired' ? 'Expired On' : 'Expires On' }}</div>
+                                    <div class="detail-card-value">{{ $subscriptionExpiry->format('M j, Y') }}</div>
+                                </div>
+                            </div>
+
+                            @if ($subscriptionStatus !== 'expired')
+                                <div class="detail-card">
+                                    <div class="detail-card-icon">
+                                        <i class="fa-solid fa-hourglass-half"></i>
+                                    </div>
+                                    <div class="detail-card-content">
+                                        <div class="detail-card-label">Days Remaining</div>
+                                        <div class="detail-card-value">{{ $daysLeft }} days</div>
+                                    </div>
+                                </div>
+                            @endif
+                        @endif
+
+                        <div class="detail-card">
+                            <div class="detail-card-icon">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                            </div>
+                            <div class="detail-card-content">
+                                <div class="detail-card-label">Amount Paid</div>
+                                <div class="detail-card-value price-display">₱{{ number_format($userSubscription->plan->price ?? 0, 2) }}</div>
+                            </div>
                         </div>
 
-                        @if ($subscriptionStatus !== 'expired')
-                            <div class="detail-item">
-                                <div class="detail-label">Days Remaining</div>
-                                <div class="detail-value duration-display">{{ $daysLeft }} days</div>
+                        <div class="detail-card">
+                            <div class="detail-card-icon">
+                                <i class="fa-solid fa-calendar-check"></i>
                             </div>
-                        @endif
+                            <div class="detail-card-content">
+                                <div class="detail-card-label">Started On</div>
+                                <div class="detail-card-value">{{ \Carbon\Carbon::parse($userSubscription->start_date)->format('M j, Y') }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if ($subscriptionStatus === 'pending')
+                        <div class="subscription-alert alert-pending">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                            <div class="alert-content">
+                                <strong>Payment Verification:</strong> Your payment proof is being reviewed by our admin team. You'll be notified once approved.
+                            </div>
+                        </div>
+                    @elseif ($subscriptionStatus === 'rejected' && $userSubscription->admin_notes)
+                        <div class="subscription-alert alert-rejected">
+                            <i class="fa-solid fa-exclamation-triangle"></i>
+                            <div class="alert-content">
+                                <strong>Payment Rejected:</strong> {{ $userSubscription->admin_notes }}
+                                <div class="alert-actions">
+                                    <a href="{{ url('#subscription-plans') }}" class="btn btn-primary btn-sm">
+                                        <i class="fa-solid fa-redo"></i> Try Again
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @elseif ($subscriptionStatus === 'expired')
+                        <div class="subscription-alert alert-expired">
+                            <i class="fa-solid fa-clock"></i>
+                            <div class="alert-content">
+                                <strong>Subscription Expired:</strong> Your subscription has expired. Renew to continue enjoying our services.
+                                <div class="alert-actions">
+                                    <a href="{{ url('#subscription-plans') }}" class="btn btn-primary btn-sm">
+                                        <i class="fa-solid fa-star"></i> Renew Plan
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     @endif
-
-                    <div class="detail-item">
-                        <div class="detail-label">Amount Paid</div>
-                        <div class="detail-value price-display">₱{{ number_format($userSubscription->plan->price ?? 0, 2) }}</div>
-                    </div>
                 </div>
-
-                @if ($subscriptionStatus === 'pending')
-                    <div style="background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; padding: 1rem; border-radius: 0.5rem; margin-top: 1rem;">
-                        <p style="color: var(--foreground); margin: 0;">
-                            <i class="fa-solid fa-hourglass-half"></i> Your payment proof is being reviewed by our admin team. You'll be notified once approved.
-                        </p>
-                    </div>
-                @elseif ($subscriptionStatus === 'rejected' && $userSubscription->admin_notes)
-                    <div style="background: rgba(220, 53, 69, 0.1); border-left: 4px solid #dc3545; padding: 1rem; border-radius: 0.5rem; margin-top: 1rem;">
-                        <p style="color: var(--foreground); margin: 0 0 0.5rem 0; font-weight: 600;">
-                            <i class="fa-solid fa-exclamation-triangle"></i> Payment Rejected
-                        </p>
-                        <p style="color: var(--muted-foreground); margin: 0;">
-                            <strong>Reason:</strong> {{ $userSubscription->admin_notes }}
-                        </p>
-                        <a href="{{ url('#subscription-plans') }}" class="btn btn-primary" style="margin-top: 1rem;">
-                            <i class="fa-solid fa-redo"></i> Try Again
-                        </a>
-                    </div>
-                @elseif ($subscriptionStatus !== 'expired' && $daysLeft > 0)
-                    @php
-                        $progressWidth = min(100, max(0, ($daysLeft / 30) * 100));
-                    @endphp
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: {{ $progressWidth }}%"></div>
-                    </div>
-                @endif
             @else
-                <div class="empty-state">
-                    <div class="empty-state-icon">💳</div>
-                    <p>You don't have an active subscription.</p>
-                    <a href="{{ url('#subscription-plans') }}" class="btn btn-primary" style="margin-top: 1rem;">
+                <div class="empty-state-card">
+                    <div class="empty-state-icon">
+                        <i class="fa-solid fa-credit-card"></i>
+                    </div>
+                    <h3>No Active Subscription</h3>
+                    <p>You don't have an active subscription. Choose a plan to unlock all features.</p>
+                    <a href="{{ url('#subscription-plans') }}" class="btn btn-primary">
                         <i class="fa-solid fa-star"></i> Choose a Plan
                     </a>
                 </div>
