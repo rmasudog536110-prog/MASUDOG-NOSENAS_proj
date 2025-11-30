@@ -52,7 +52,7 @@
             <!-- Search Bar -->
             <div class="row justify-content-center mb-4">
                 <div class="col-lg-8 col-md-10">
-                    <form action="{{ route('exercises') }}" method="GET" class="d-flex gap-0">
+                    <form action="{{ route('index.exercises') }}" method="GET" class="d-flex gap-0">
                         <div class="input-group">
                             <span class="input-group-text">
                                 <i class="fas fa-search"></i>

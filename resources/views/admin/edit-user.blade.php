@@ -54,7 +54,8 @@
 
 @section('content')
 
-@include('index.header')
+@include('admin.admin_header')
+
 
 <div class="edit-container">
     <div style="margin-bottom: 2rem;">

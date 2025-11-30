@@ -57,7 +57,8 @@
 
 @section('content')
 
-@include('index.header')
+@include('admin.admin_header')
+
 
 <section class="content-section">
     <div class="container">

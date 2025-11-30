@@ -44,7 +44,7 @@ public function activeMembersPDF()
         $now = Carbon::now();
         $soon = Carbon::now()->addDays(7); // next 7 days
 
-        $subscriptions = UserSubscription::where('status', 'active')
+        $subscriptions = UserSubscription::where('status', 'approved')
             ->whereBetween('end_date', [$now, $soon])
             ->with('user', 'subscriptionPlan')
             ->get();

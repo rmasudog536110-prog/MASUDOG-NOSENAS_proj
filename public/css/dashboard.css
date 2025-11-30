@@ -499,7 +499,7 @@ h3 {
             border-radius: 12px;
             box-shadow: 0 12px 28px rgba(0,0,0,0.3);
             opacity: 0;
-            visibility: hidden;
+            visibility: visible;
             transition: 0.25s ease-in-out;
             z-index: 50;
         }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('payment_method');
             $table->decimal('amount');
             $table->string('currency', 3)->default('PHP');
-            $table->enum('status', ['pending', 'processing', 'completed', 'failed', 'refunded'])->default('pending');
+            $table->enum('status', ['pending', 'processing', 'completed', 'failed', 'refunded', 'approved'])->default('pending');
             $table->json('payment_details')->nullable();
             $table->timestamps();
 

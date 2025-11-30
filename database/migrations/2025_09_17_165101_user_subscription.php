@@ -18,10 +18,9 @@ return new class extends Migration
                 $table->date('start_date');
                 $table->date('end_date');
                 $table->string('payment_proof')->nullable(); 
-                $table->string('payment_method', 50);
+                $table->enum('payment_method', ['gcash', 'paymaya', 'credit_card', 'bank_transfer']);
                 $table->string('transaction_reference', 100)->nullable(); 
-                $table->enum('status', ['pending', 'active', 'cancelled','expired', 'null', 'approved', 'failed', 'rejected'])->default('null');
-                $table->text('admin_notes')->nullable();
+                $table->enum('status', ['active', 'cancelled','expired', 'null'])->default('null');
                 $table->timestamp('approved_at')->nullable();
                 $table->foreignId('approved_by')->nullable()->constrained('users');
                 $table->timestamps();

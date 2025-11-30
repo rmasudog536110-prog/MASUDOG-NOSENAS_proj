@@ -13,7 +13,7 @@
                 @auth
                     <a href="{{ route('admin.programs.index') }}" class="nav-link {{ request()->is('programs*') ? 'active' : '' }}">
                         <i class="fa-solid fa-layer-group"></i> Programs</a>
-                    <a href="{{ route('exercises') }}" class="nav-link {{ request()->is('exercises*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.exercises.index') }}" class="nav-link {{ request()->is('exercises*') ? 'active' : '' }}">
                         <i class="fa-solid fa-weight-hanging"></i> Exercises</a>
                     <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
                     <i class="fa-solid fa-house-user" style="font-size: 2rem"></i> 

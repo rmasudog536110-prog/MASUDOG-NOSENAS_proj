@@ -221,13 +221,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($recentUsers as $user)
+                    @forelse($instructor as $instructors)
                         <tr>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->phone_number ?? 'N/A' }}</td>
+                            <td>{{ $instructors->name }}</td>
+                            <td>{{ $instructors->email }}</td>
+                            <td>{{ $instructors->phone_number ?? 'N/A' }}</td>
                             <td>
-                                <a href="{{ route('admin.edit-user', $user) }}" class="btn btn-outline btn-sm">
+                                <a href="{{ route('admin.edit-user', $instructors) }}" class="btn btn-outline btn-sm">
                                     <i class="fa-solid fa-edit"></i> Edit
                                 </a>
                             </td>

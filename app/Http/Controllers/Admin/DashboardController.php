@@ -16,14 +16,17 @@ class DashboardController extends Controller
     {
         $stats = [
             'total_users' => User::where('role', 'customer')->count(),
-            'active_subscriptions' => UserSubscription::where('end_date', '>', now())->count(),
-            'total_revenue' => PaymentTransaction::where('status', 'active')->sum('amount'),
-            'revenue_this_month' => PaymentTransaction::where('status', 'completed')
+            'total_revenue' => PaymentTransaction::where('status', 'approved')->sum('amount'),
+            'revenue_this_month' => PaymentTransaction::where('status', 'approved')
                 ->whereMonth('created_at', now()->month)
                 ->sum('amount'),
             'pending_payments' => UserSubscription::where('status', 'pending')->count(),
         ];
-        
+
+        $stats['active_subscriptions'] = UserSubscription::where('status', 'approved')
+            ->where('end_date', '>', now())
+            ->count();
+
         $stats['new_customers_today'] = User::where('role', 'customer')
                 ->whereDate('created_at', today())
                 ->count();
@@ -32,12 +35,12 @@ class DashboardController extends Controller
                 ->whereMonth('created_at', now()->month)
                 ->count();
 
-        $stats['expiring_soon'] = UserSubscription::where('status', 'active')
+        $stats['expiring_soon'] = UserSubscription::where('status', 'approved')
             ->whereBetween('end_date', [now(), now()->addDays(7)])
             ->count();
 
         $stats['monthly_revenue'] = PaymentTransaction::where('status', 'approved')
-            ->whereMonth('updated_at', now()->month)
+            ->whereMonth('updated_at', now()->month)    
             ->sum('amount');
 
         $stats['oldest_pending'] = UserSubscription::where('status', 'pending')
@@ -50,13 +53,18 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        $instructor = User::where('role', 'instructor')
+            ->latest()
+            ->take(5)
+            ->get();
+
         // Get pending payment subscriptions
         $pendingPayments = UserSubscription::where('status', 'pending')
             ->with(['user', 'plan', 'payments'])
             ->latest()
             ->get();
 
-        return view('admin.dashboard', compact('stats', 'recentUsers', 'pendingPayments'));
+        return view('admin.dashboard', compact('stats', 'recentUsers', 'pendingPayments', 'instructor'));
     }
 
     public function users()

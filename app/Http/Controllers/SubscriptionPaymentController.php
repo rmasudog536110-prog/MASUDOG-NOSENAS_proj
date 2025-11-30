@@ -71,7 +71,7 @@ class SubscriptionPaymentController extends Controller
 
         // Update subscription to active
         $subscription->update([
-            'status' => 'active' || 'approved',
+            'status' => 'approved',
             'approved_at' => now(),
             'approved_by' => Auth::id(),
         ]);
