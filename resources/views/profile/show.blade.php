@@ -9,7 +9,11 @@
 
 @section('content')
 
+@if (Auth::user() && Auth::user()->hasAdminAccess())
+@include('admin.admin_header')
+@else
 @include('index.header')
+@endif
 
 <section class="content-section">
     <div class="container">

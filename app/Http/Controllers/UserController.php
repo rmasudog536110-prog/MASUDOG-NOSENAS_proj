@@ -65,12 +65,12 @@ public function register(Request $request)
 
     $subscription = $user->subscriptions()->latest()->first();
 
-    if ($subscription && $subscription->payment_status === 'pending') {
+    if ($subscription && $subscription->status === 'pending') {
         Auth::login($user);
         return redirect()->route('pending_dashboard');
     }
 
-    if ($subscription && $subscription->payment_status === 'null') {
+    if ($subscription && $subscription->status === 'null') {
         Auth::login($user);
         return redirect()->route('subscription.payment.form');
     }
@@ -106,7 +106,7 @@ public function register(Request $request)
 
         
         $subscription = $user->subscriptions()->latest()->first();
-        if ($subscription && $subscription->payment_status === 'pending') {
+        if ($subscription && $subscription->status === 'pending') {
             return redirect()->route('pending_dashboard'); // show pending_dashboard
         }
 

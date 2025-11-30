@@ -34,26 +34,26 @@ class DashboardController extends Controller
             ->first();
 
         // If subscription exists and payment is pending, show pending dashboard
-        if ($userSubscription && $userSubscription->payment_status === 'pending') {
+        if ($userSubscription && $userSubscription->status === 'pending') {
             return view('index.pending_dashboard');
         }
 
         $subscriptionExpiry = $userSubscription ? $userSubscription->end_date : null;
         
-        // Determine subscription status based on payment_status and expiry
         if ($userSubscription) {
-            if ($userSubscription->payment_status === 'rejected') {
+            if ($userSubscription->status === 'rejected') {
                 $subscriptionStatus = 'rejected';
                 $daysLeft = 0;
             } 
-            elseif ($userSubscription->payment_status === 'approved') {
+            
+            elseif ($userSubscription->status === 'approved') {
                 if ($subscriptionExpiry && $subscriptionExpiry->isPast()) {
                     $subscriptionStatus = 'expired';
                     $daysLeft = 0;
                 } else {
                     $subscriptionStatus = 'active';
                     $daysLeft = $subscriptionExpiry 
-                        ? max(0, round(now()->diffInHours($subscriptionExpiry) / 24, 0))
+                        ? max(0, round(now()->diffInHours(\Carbon::parse($subscriptionExpiry)) / 24, 0))
                         : 0;
                 }
             } else {

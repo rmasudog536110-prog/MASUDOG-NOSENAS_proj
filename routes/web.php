@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ProgramController;
 use App\Http\Controllers\Admin\ExerciseController as AdminExerciseController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\ReportController;
 
 
 Route::middleware('guest')->group(function () {
@@ -165,3 +166,18 @@ Route::middleware(['auth', 'instructor'])->prefix('instructor')->name('instructo
     Route::post('/requests/{instructorRequest}/decline', [InstructorDashboardController::class, 'declineRequest'])->name('requests.decline');
     Route::post('/requests/{instructorRequest}/complete', [InstructorDashboardController::class, 'completeRequest'])->name('requests.complete');
 });
+
+//Reports Routes
+Route::prefix('admin/reports')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('/active-members', [ReportController::class, 'activeMembers'])->name('reports.active_members');
+    Route::get('/expiring-soon', [ReportController::class, 'expiringSoon'])->name('reports.expiring_soon');
+    Route::get('/payments', [ReportController::class, 'payments'])->name('reports.payments');
+    Route::get('/pending-payments', [ReportController::class, 'pendingPayments'])->name('reports.pending_payments');
+    Route::get('/revenue', [ReportController::class, 'revenue'])->name('reports.revenue');
+    Route::get('/subscription-status', [ReportController::class, 'subscriptionStatus'])->name('reports.subscription_status');
+    Route::get('/full', [ReportController::class, 'full'])->name('reports.full_report');
+
+//PDF Export Route
+    Route::get('/reports/active-members/pdf', [App\Http\Controllers\ReportController::class, 'activeMembersPDF'])->name('reports.active_members.pdf');
+});
+

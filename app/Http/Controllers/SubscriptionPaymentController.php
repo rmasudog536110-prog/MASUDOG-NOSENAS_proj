@@ -42,7 +42,6 @@ class SubscriptionPaymentController extends Controller
             'start_date' => now(),
             'end_date' => now()->addDays($plan->duration_days),
             'status' => 'pending',
-            'payment_status' => 'pending',
         ]);
 
         // Create payment transaction
@@ -72,15 +71,14 @@ class SubscriptionPaymentController extends Controller
 
         // Update subscription to active
         $subscription->update([
-            'status' => 'active',
-            'payment_status' => 'approved',
+            'status' => 'active' || 'approved',
             'approved_at' => now(),
             'approved_by' => Auth::id(),
         ]);
 
         // Update transaction status
         $subscription->payments()->latest()->first()->update([
-            'status' => 'completed',
+            'status' => 'approved',
         ]);
 
         return back()->with('success', 'Subscription approved successfully!');
@@ -108,8 +106,7 @@ class SubscriptionPaymentController extends Controller
 
         // Optionally, cancel the subscription
         $subscription->update([
-            'status' => 'cancelled',
-            'payment_status' => 'rejected',
+            'status' => 'cancelled' || 'rejected',
             'admin_notes' => $request->admin_notes,
         ]);
 

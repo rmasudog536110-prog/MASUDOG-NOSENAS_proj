@@ -29,7 +29,7 @@
                             <td>₱{{ number_format($transaction->amount, 2) }}</td>
                             <td>{{ ucfirst($transaction->payment_method) }}</td>
                             <td>
-                                @if ($transaction->status === 'completed')
+                                @if ($transaction->status === 'active')
                                     <span class="badge bg-success">Completed</span>
                                 @elseif ($transaction->status === 'pending')
                                     <span class="badge bg-warning text-dark">Pending</span>

@@ -27,26 +27,56 @@
 
         <!-- Stats -->
         <div class="admin-stats">
-            <div class="admin-stat-card">
-                <div class="stat-label">Total Users</div>
-                <div class="stat-value count-display">{{ $stats['total_users'] }}</div>
-            </div>
 
-            <div class="admin-stat-card">
-                <div class="stat-label">Active Subscriptions</div>
-                <div class="stat-value count-display">{{ $stats['active_subscriptions'] }}</div>
-            </div>
+                <div class="admin-stat-card">
+                    <h2 class="stat-label">Total Users</h2>
+                    <h3 class="stat-value count-display">{{ $stats['total_users'] }}</h3>
 
-            <div class="admin-stat-card">
-                <div class="stat-label">Total Revenue</div>
-                <div class="stat-value price-display">₱{{ number_format($stats['total_revenue'], 2) }}</div>
-            </div>
-
+                    <div class="hover-report-popup">
+                        <h4>Summary Report</h4>
+                        <p>Total registered users: <strong>{{ $stats['total_users'] }}</strong></p>
+                        <p>New today: <strong>{{ $stats['new_users_today'] ?? 0 }}</strong></p>
+                        <p>New this month: <strong>{{ $stats['new_users_month'] ?? 0 }}</strong></p>
+                        <a href="{{ route('reports.active_members') }}" class="popup-link">View Detailed Report →</a>
+                    </div>
+                </div>
             
-            <div class="admin-stat-card" style="border-color: rgba(255, 193, 7, 0.5);">
-                <div class="stat-label">⏳ Pending Payments</div>
-                <div class="stat-value count-display" style="color: #ffc107;">{{ $stats['pending_payments'] }}</div>
-            </div>
+                <div class="admin-stat-card">
+                    <h2 class="stat-label">Active Subscriptions</h2>
+                    <h3 class="stat-value count-display">{{ $stats['active_subscriptions'] }}</h3>
+
+                    <div class="hover-report-popup">
+                        <h4>Summary Report</h4>
+                        <p>Total Active Subscription: <strong>{{ $stats['active_subscriptions'] }}</strong></p>
+                        <p>Expiring in 7 days: <strong>{{ $stats['expiring_soon'] }}</strong></p>
+                        <a href="{{ route('reports.expiring_soon') }}" class="popup-link">View Detailed Report →</a>
+                    </div>                  
+                </div>
+
+                 <div class="admin-stat-card">
+                    <h2 class="stat-label">Total Revenue</h2>
+                    <h3 class="stat-value price-display">₱{{ number_format($stats['total_revenue'], 2) }}</h3>
+                
+                    <div class="hover-report-popup">
+                        <h4>Summary Report</h4>
+                        <p>Total Income: <strong>₱{{ number_format($stats['total_revenue'], 2) }}</strong></p>
+                        <p>This Month: <strong>₱{{ number_format($stats['monthly_revenue'], 2) }}</strong></p>
+                        <a href="{{ route('reports.revenue') }}" class="popup-link">View Detailed Report →</a>
+                    </div>
+                </div>
+            
+                <div class="admin-stat-card">
+                    <h2 class="stat-label">⏳ Pending Payments</h2>
+                    <h3 class="stat-value count-display" style="color: #ffc107;">{{ $stats['pending_payments'] }}</h3>
+                
+
+                    <div class="hover-report-popup">
+                        <h4>Summary Report</h4>
+                        <p>Pending Verifications: <strong>{{ $stats['pending_payments'] }}</strong></p>
+                        <p>Oldest Pending: <strong>{{ $stats['oldest_pending'] }}</strong></p>
+                        <a href="{{ route('reports.pending_payments') }}" class="popup-link">Review Payments →</a>
+                    </div>
+                </div>
         </div>
 
         <!-- Pending Payments -->
@@ -125,9 +155,9 @@
                 <i class="fa-solid fa-list"></i>
                 Manage Exercises
             </a>
-            <a href="{{ route('dashboard') }}" class="admin-action-btn">
+            <a href="{{ route('reports.full_report') }}" class="admin-action-btn">
                 <i class="fa-solid fa-arrow-left"></i>
-                Back to Site
+                View Full Detailed Report
             </a>
         </div>
 
@@ -171,6 +201,51 @@
                 <div style="text-align: center; margin-top: 1.5rem;">
                     <a href="{{ route('admin.users') }}" class="btn btn-primary">
                         View All Users
+                    </a>
+                </div>
+            @endif
+        </div>
+    
+
+
+           <!-- Gym Instructors -->
+        <div class="dashboard-card" style="margin-top: 20px;">
+            <h3> Gym Instructors </h3>
+            <table class="recent-users-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($recentUsers as $user)
+                        <tr>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ $user->phone_number ?? 'N/A' }}</td>
+                            <td>
+                                <a href="{{ route('admin.edit-user', $user) }}" class="btn btn-outline btn-sm">
+                                    <i class="fa-solid fa-edit"></i> Edit
+                                </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: var(--muted-foreground);">
+                               No Gym Instructors Yet
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
+            @if($recentUsers->count() > 0)
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <a href="{{ route('admin.users') }}" class="btn btn-primary">
+                        View All Instructors
                     </a>
                 </div>
             @endif

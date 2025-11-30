@@ -54,7 +54,7 @@ class InstructorRequestController extends Controller
         ]);
 
         // Assign to the first available instructor (you can implement more sophisticated logic)
-        $instructor = \App\Models\User::where('role', 'instructor')
+        $instructor = User::where('role', 'instructor')
             ->where('is_active', true)
             ->first();
 

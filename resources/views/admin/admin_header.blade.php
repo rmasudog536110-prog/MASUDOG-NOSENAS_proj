@@ -11,7 +11,7 @@
 
             <nav class="nav">
                 @auth
-                    <a href="{{ route('programs') }}" class="nav-link {{ request()->is('programs*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.programs.index') }}" class="nav-link {{ request()->is('programs*') ? 'active' : '' }}">
                         <i class="fa-solid fa-layer-group"></i> Programs</a>
                     <a href="{{ route('exercises') }}" class="nav-link {{ request()->is('exercises*') ? 'active' : '' }}">
                         <i class="fa-solid fa-weight-hanging"></i> Exercises</a>

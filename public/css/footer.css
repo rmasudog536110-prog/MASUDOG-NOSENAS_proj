@@ -53,6 +53,23 @@
     text-decoration: underline;
 }
 
+.footer-reports {
+    
+    color: var(--primary-foreground);
+    padding: 10px;
+    text-align: end;
+    justify-content: end;
+
+}
+
+.report-footer {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    gap: 550px;
+    
+}
+
 .social-links {
     display: flex;
     justify-content: left;

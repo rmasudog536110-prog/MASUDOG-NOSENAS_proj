@@ -338,7 +338,7 @@
             <div style="background: var(--muted); padding: 1rem; border-radius: 0.5rem;">
                 <div style="color: var(--muted-foreground); font-size: 0.875rem;">Total Spent</div>
                 <div style="font-size: 2rem; font-weight: 700; color: var(--primary);">
-                    ₱{{ number_format($user->transactions()->where('status', 'completed')->sum('amount'), 2) }}
+                    ₱{{ number_format($user->transactions()->where('status', 'active')->sum('amount'), 2) }}
                 </div>
             </div>
 

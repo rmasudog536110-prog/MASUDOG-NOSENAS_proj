@@ -8,7 +8,11 @@
 
 @section('content')
 
+@if (Auth::user() && Auth::user()->hasAdminAccess())
+@include('admin.admin_header')
+@else
 @include('index.header')
+@endif
 
     <!-- Flash Messages -->
     @if (session('success'))

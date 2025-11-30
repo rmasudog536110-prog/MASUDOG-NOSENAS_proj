@@ -486,6 +486,50 @@ h3 {
             transition: all 0.3s ease;
         }
 
+        .hover-report-popup {
+            position: absolute;
+            top: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 260px;
+            background: var(--card);
+            color: var(--foreground);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.25s ease-in-out;
+            z-index: 50;
+        }
+
+        .admin-stat-card:hover .hover-report-popup {
+            opacity: 1;
+            visibility: visible;
+            top: 100%;
+        }
+
+        .hover-report-popup h4 {
+            margin: 0 0 0.5rem;
+            font-weight: bold;
+        }
+
+        .hover-report-popup p {
+            margin: 0.4rem 0;
+            font-size: 0.9rem;
+        }
+
+        .popup-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: var(--primary);
+            text-decoration: underline;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+
         .admin-stat-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);

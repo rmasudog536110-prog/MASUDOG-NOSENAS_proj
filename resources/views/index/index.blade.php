@@ -57,19 +57,19 @@
                 </ul>
 
                 @auth
-                @if ($userSubscription && $userSubscription->plan_id == $plan->id && $userSubscription->payment_status == 'approved')
+                @if ($userSubscription && $userSubscription->plan_id == $plan->id && $userSubscription->status == 'approved')
                 <a href="{{ route('profile.show') }}" class="btn btn-outline" aria-label="View current active plan">
                     <i class="fa-solid fa-check"></i> Current Plan
                 </a>
-                @elseif ($userSubscription && $userSubscription->plan_id == $plan->id && $userSubscription->payment_status == 'pending')
+                @elseif ($userSubscription && $userSubscription->plan_id == $plan->id && $userSubscription->status == 'pending')
                 <button class="btn btn-warning" onclick="cancelPayment({{ $userSubscription->id }})" aria-label="Cancel pending payment">
                     <i class="fa-solid fa-clock"></i> Cancel Payment
                 </button>
-                @elseif ($userSubscription && $userSubscription->payment_status == 'approved')
+                @elseif ($userSubscription && $userSubscription->status == 'approved')
                 <a href="{{ route('profile.show') }}" class="btn btn-secondary" aria-label="View current subscription">
                     <i class="fa-solid fa-ban"></i> View Current Plan
                 </a>
-                @elseif ($userSubscription && $userSubscription->payment_status == 'pending')
+                @elseif ($userSubscription && $userSubscription->status == 'pending')
                 <button class="btn btn-secondary" onclick="cancelPayment({{ $userSubscription->id }})" aria-label="Cancel payment pending for another plan">
                     <i class="fa-solid fa-hourglass-half"></i> Cancel Payment
                 </button>

@@ -17,12 +17,33 @@ class DashboardController extends Controller
         $stats = [
             'total_users' => User::where('role', 'customer')->count(),
             'active_subscriptions' => UserSubscription::where('end_date', '>', now())->count(),
-            'total_revenue' => PaymentTransaction::where('status', 'completed')->sum('amount'),
+            'total_revenue' => PaymentTransaction::where('status', 'active')->sum('amount'),
             'revenue_this_month' => PaymentTransaction::where('status', 'completed')
                 ->whereMonth('created_at', now()->month)
                 ->sum('amount'),
-            'pending_payments' => UserSubscription::where('payment_status', 'pending')->count(),
+            'pending_payments' => UserSubscription::where('status', 'pending')->count(),
         ];
+        
+        $stats['new_customers_today'] = User::where('role', 'customer')
+                ->whereDate('created_at', today())
+                ->count();
+
+        $stats['new_customers_month'] = User::where('role', 'customer')
+                ->whereMonth('created_at', now()->month)
+                ->count();
+
+        $stats['expiring_soon'] = UserSubscription::where('status', 'active')
+            ->whereBetween('end_date', [now(), now()->addDays(7)])
+            ->count();
+
+        $stats['monthly_revenue'] = PaymentTransaction::where('status', 'approved')
+            ->whereMonth('updated_at', now()->month)
+            ->sum('amount');
+
+        $stats['oldest_pending'] = UserSubscription::where('status', 'pending')
+            ->oldest()
+            ->first()
+            ?->created_at?->diffForHumans() ?? 'N/A';
 
         $recentUsers = User::where('role', 'customer')
             ->latest()
@@ -30,7 +51,7 @@ class DashboardController extends Controller
             ->get();
 
         // Get pending payment subscriptions
-        $pendingPayments = UserSubscription::where('payment_status', 'pending')
+        $pendingPayments = UserSubscription::where('status', 'pending')
             ->with(['user', 'plan', 'payments'])
             ->latest()
             ->get();
