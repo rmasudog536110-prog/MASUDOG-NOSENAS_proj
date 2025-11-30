@@ -9,7 +9,6 @@
 
 @section('content')
 
-
 <div class="edit-profile-container">
     <!-- Flash Messages -->
     @if (session('success'))
@@ -20,7 +19,7 @@
 
     @if ($errors->any())
         <div class="flash-message error">
-            <ul style="margin: 0; padding-left: 1.5rem;">
+            <ul style="margin: 0; padding-left: 1rem;">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -28,348 +27,203 @@
         </div>
     @endif
 
-    <!-- Profile Edit Layout -->
-    <div class="profile-edit-grid">
-        <!-- Personal Information Column -->
-        <div class="profile-column">
-            <div>
-                <h2><i class="fa-solid fa-user-edit"></i> Edit Profile</h2>
-                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
+    <!-- 3-Column Grid Layout -->
+    <div class="profile-grid">
+        <!-- Column 1: Profile Card -->
+        <div class="profile-card">
+            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                
+                <div class="card-header">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profile</span>
+                </div>
 
-                    <!-- Profile Picture -->
-                    <div class="form-section">
-                        <div class="image-upload-preview">
-                            @if(Auth::user()->profile_picture)
-                                <img src="{{ Storage::url(Auth::user()->profile_picture) }}" 
-                                     alt="Profile Picture" 
-                                     class="current-image"
-                                     id="imagePreview">
-                            @else
-                                <div class="image-placeholder" id="imagePlaceholder">
-                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                                </div>
-                                <img src="#" alt="Preview" class="current-image" id="imagePreview" style="display: none;">
-                            @endif
-
-                            <div class="file-input-wrapper">
-                                <label class="file-input-label">
-                                    <i class="fa-solid fa-camera"></i> Choose Photo
-                                    <input type="file" name="profile_picture" accept="image/*" onchange="previewImage(event)">
-                                </label>
-                            </div>
-                            <p style="color: var(--muted-foreground); font-size: 0.75rem; margin-top: 0.5rem;">
-                                Max size: 2MB. Formats: JPG, PNG, GIF
-                            </p>
+                <!-- Profile Picture -->
+                <div class="profile-pic-section">
+                    @if(Auth::user()->profile_picture)
+                        <img src="{{ Storage::url(Auth::user()->profile_picture) }}" 
+                             alt="Profile" 
+                             class="profile-pic"
+                             id="imagePreview">
+                    @else
+                        <div class="profile-pic-placeholder" id="imagePlaceholder">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                         </div>
+                        <img src="#" alt="Preview" class="profile-pic" id="imagePreview" style="display: none;">
+                    @endif
+                    <label class="pic-upload-btn">
+                        <i class="fa-solid fa-camera"></i>
+                        <input type="file" name="profile_picture" accept="image/*" onchange="previewImage(event)">
+                    </label>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" name="name" value="{{ old('name', Auth::user()->name) }}" required>
                     </div>
 
-                    <!-- Personal Information -->
-                    <div class="form-section">
-                        <h3 class="form-section-title">
-                            <i class="fa-solid fa-id-card"></i> Personal Information
-                        </h3>
-
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Full Name *</label>
-                            <input type="text" 
-                                   class="form-control" 
-                                   id="name" 
-                                   name="name" 
-                                   value="{{ old('name', Auth::user()->name) }}" 
-                                   required>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email *</label>
-                                <input type="email" 
-                                       class="form-control" 
-                                       id="email" 
-                                       name="email" 
-                                       value="{{ old('email', Auth::user()->email) }}" 
-                                       required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="phone_number" class="form-label">Phone Number</label>
-                                <input type="text" 
-                                       class="form-control" 
-                                       id="phone_number" 
-                                       name="phone_number" 
-                                       value="{{ old('phone_number', Auth::user()->phone_number) }}">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="mb-3">
-                                <label for="date_of_birth" class="form-label">Date of Birth</label>
-                                <input type="date" 
-                                       class="form-control" 
-                                       id="date_of_birth" 
-                                       name="date_of_birth" 
-                                       value="{{ old('date_of_birth', Auth::user()->date_of_birth?->format('Y-m-d')) }}"
-                                       max="{{ date('Y-m-d') }}">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="gender" class="form-label">Gender</label>
-                                <select class="form-control" id="gender" name="gender">
-                                    <option value="">Select Gender</option>
-                                    <option value="male" {{ old('gender', Auth::user()->gender) === 'male' ? 'selected' : '' }}>Male</option>
-                                    <option value="female" {{ old('gender', Auth::user()->gender) === 'female' ? 'selected' : '' }}>Female</option>
-                                    <option value="other" {{ old('gender', Auth::user()->gender) === 'other' ? 'selected' : '' }}>Other</option>
-                                    <option value="prefer_not_to_say" {{ old('gender', Auth::user()->gender) === 'prefer_not_to_say' ? 'selected' : '' }}>Prefer not to say</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="bio" class="form-label">Bio</label>
-                            <textarea class="form-control" 
-                                      id="bio" 
-                                      name="bio" 
-                                      rows="2" 
-                                      maxlength="500" 
-                                      placeholder="Tell us about yourself...">{{ old('bio', Auth::user()->bio) }}</textarea>
-                            <small style="color: var(--muted-foreground);">Max 500 characters</small>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-compact">
-                            <i class="fa-solid fa-save"></i> Save Changes
-                        </button>
-                        <a href="{{ route('profile.show') }}" class="btn btn-outline btn-compact">
-                            <i class="fa-solid fa-times"></i> Cancel
-                        </a>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" value="{{ old('email', Auth::user()->email) }}" required>
                     </div>
-                </form>
-            </div>
-        </div>
 
-        <!-- Notification Settings Column -->
-        <div class="profile-column">
-            <div>
-                <h3 class="form-section-title">
-                    <i class="fa-solid fa-bell"></i> Notification Settings
-                </h3>
-
-                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
-
-                    <div class="form-section">
-                        <div class="mb-3">
-                            <div class="notification-item">
-                                <div class="notification-label">
-                                    <strong>Email Notifications</strong>
-                                    <small>Receive updates about your workouts, subscriptions, and more</small>
-                                </div>
-                                <label class="switch">
-                                    <input type="checkbox" 
-                                           name="email_notifications" 
-                                           value="1" 
-                                           {{ Auth::user()->email_notifications ? 'checked' : '' }}>
-                                    <span class="slider"></span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <div class="notification-item">
-                                <div class="notification-label">
-                                    <strong>SMS Notifications</strong>
-                                    <small>Get text messages for important updates</small>
-                                </div>
-                                <label class="switch">
-                                    <input type="checkbox" 
-                                           name="sms_notifications" 
-                                           value="1" 
-                                           {{ Auth::user()->sms_notifications ? 'checked' : '' }}>
-                                    <span class="slider"></span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-compact">
-                            <i class="fa-solid fa-save"></i> Save Settings
-                        </button>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" name="phone_number" value="{{ old('phone_number', Auth::user()->phone_number) }}">
                     </div>
-                </form>
-            </div>
-        </div>
 
-        <!-- Fitness Information Column -->
-        <div class="profile-column">
-            <div>
-                <h3 class="form-section-title">
-                    <i class="fa-solid fa-dumbbell"></i> Fitness Information
-                </h3>
-
-                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
-
-                    <div class="form-section">
-                        <div class="form-row">
-                            <div class="mb-3">
-                                <label for="height" class="form-label">Height (cm)</label>
-                                <input type="number" 
-                                       class="form-control" 
-                                       id="height" 
-                                       name="height" 
-                                       value="{{ old('height', Auth::user()->height) }}"
-                                       min="50"
-                                       max="300"
-                                       step="0.1"
-                                       placeholder="170">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="weight" class="form-label">Weight (kg)</label>
-                                <input type="number" 
-                                       class="form-control" 
-                                       id="weight" 
-                                       name="weight" 
-                                       value="{{ old('weight', Auth::user()->weight) }}"
-                                       min="20"
-                                       max="500"
-                                       step="0.1"
-                                       placeholder="70">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="mb-3">
-                                <label for="fitness_goal" class="form-label">Fitness Goal</label>
-                                <select class="form-control" id="fitness_goal" name="fitness_goal">
-                                    <option value="">Select Goal</option>
-                                    <option value="Weight Loss" {{ old('fitness_goal', Auth::user()->fitness_goal) === 'Weight Loss' ? 'selected' : '' }}>Weight Loss</option>
-                                    <option value="Muscle Gain" {{ old('fitness_goal', Auth::user()->fitness_goal) === 'Muscle Gain' ? 'selected' : '' }}>Muscle Gain</option>
-                                    <option value="Strength" {{ old('fitness_goal', Auth::user()->fitness_goal) === 'Strength' ? 'selected' : '' }}>Strength</option>
-                                    <option value="Endurance" {{ old('fitness_goal', Auth::user()->fitness_goal) === 'Endurance' ? 'selected' : '' }}>Endurance</option>
-                                    <option value="General Fitness" {{ old('fitness_goal', Auth::user()->fitness_goal) === 'General Fitness' ? 'selected' : '' }}>General Fitness</option>
-                                    <option value="Flexibility" {{ old('fitness_goal', Auth::user()->fitness_goal) === 'Flexibility' ? 'selected' : '' }}>Flexibility</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="experience_level" class="form-label">Experience Level</label>
-                                <select class="form-control" id="experience_level" name="experience_level">
-                                    <option value="">Select Level</option>
-                                    <option value="beginner" {{ old('experience_level', Auth::user()->experience_level) === 'beginner' ? 'selected' : '' }}>Beginner</option>
-                                    <option value="intermediate" {{ old('experience_level', Auth::user()->experience_level) === 'intermediate' ? 'selected' : '' }}>Intermediate</option>
-                                    <option value="advanced" {{ old('experience_level', Auth::user()->experience_level) === 'advanced' ? 'selected' : '' }}>Advanced</option>
-                                    <option value="expert" {{ old('experience_level', Auth::user()->experience_level) === 'expert' ? 'selected' : '' }}>Expert</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-compact">
-                            <i class="fa-solid fa-save"></i> Save Fitness Data
-                        </button>
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" name="date_of_birth" value="{{ old('date_of_birth', Auth::user()->date_of_birth?->format('Y-m-d')) }}" max="{{ date('Y-m-d') }}">
                     </div>
-                </form>
-            </div>
-        </div>
 
-        <!-- Change Password Column -->
-        <div class="profile-column">
-            <div>
-                <h3 class="form-section-title">
-                    <i class="fa-solid fa-lock"></i> Change Password
-                </h3>
-
-                <form action="{{ route('profile.password') }}" method="POST">
-                    @csrf
-                    @method('PUT')
-
-                    <div class="form-section">
-                        <div class="mb-3">
-                            <label for="current_password" class="form-label">Current Password *</label>
-                            <input type="password" 
-                                   class="form-control" 
-                                   id="current_password" 
-                                   name="current_password" 
-                                   required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="password" class="form-label">New Password *</label>
-                            <input type="password" 
-                                   class="form-control" 
-                                   id="password" 
-                                   name="password" 
-                                   required
-                                   minlength="6">
-                            <small style="color: var(--muted-foreground);">Minimum 6 characters</small>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="password_confirmation" class="form-label">Confirm New Password *</label>
-                            <input type="password" 
-                                   class="form-control" 
-                                   id="password_confirmation" 
-                                   name="password_confirmation" 
-                                   required>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-compact">
-                            <i class="fa-solid fa-key"></i> Update Password
-                        </button>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select name="gender">
+                            <option value="">Select</option>
+                            <option value="male" {{ old('gender', Auth::user()->gender) === 'male' ? 'selected' : '' }}>Male</option>
+                            <option value="female" {{ old('gender', Auth::user()->gender) === 'female' ? 'selected' : '' }}>Female</option>
+                            <option value="other" {{ old('gender', Auth::user()->gender) === 'other' ? 'selected' : '' }}>Other</option>
+                        </select>
                     </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
+                    <div class="form-group full-width">
+                        <label>Bio</label>
+                        <textarea name="bio" rows="2" maxlength="500" placeholder="About you...">{{ old('bio', Auth::user()->bio) }}</textarea>
+                    </div>
+                </div>
 
-
-    <!-- Danger Zone -->
-    <div class="profile-edit-card">
-        <div class="danger-zone">
-            <h3><i class="fa-solid fa-exclamation-triangle"></i> Danger Zone</h3>
-            <p style="color: var(--muted-foreground); margin-bottom: 1rem;">
-                Once you delete your account, there is no going back. Please be certain.
-            </p>
-
-            <button type="button" class="btn btn-danger" onclick="confirmDelete()">
-                <i class="fa-solid fa-trash"></i> Delete Account
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Delete Confirmation Modal -->
-<div id="deleteModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center;">
-    <div style="background: var(--card); padding: 2rem; border-radius: 1rem; max-width: 500px; margin: 1rem;">
-        <h3 style="color: #dc3545; margin-bottom: 1rem;">Delete Account</h3>
-        <p style="color: var(--foreground); margin-bottom: 1.5rem;">
-            Are you sure you want to delete your account? This action cannot be undone.
-        </p>
-
-        <form action="{{ route('profile.destroy') }}" method="POST">
-            @csrf
-            @method('DELETE')
-
-            <div class="mb-3">
-                <label for="delete_password" class="form-label">Enter your password to confirm:</label>
-                <input type="password" 
-                       class="form-control" 
-                       id="delete_password" 
-                       name="password" 
-                       required>
-            </div>
-
-            <div style="display: flex; gap: 1rem;">
-                <button type="submit" class="btn btn-danger" style="flex: 1;">
-                    Yes, Delete My Account
+                <button type="submit" class="btn-primary">
+                    <i class="fa-solid fa-save"></i> Save
                 </button>
-                <button type="button" class="btn btn-outline" onclick="closeDeleteModal()" style="flex: 1;">
-                    Cancel
+            </form>
+        </div>
+
+        <!-- Column 2: Fitness Card -->
+        <div class="profile-card">
+            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                
+                <div class="card-header">
+                    <i class="fa-solid fa-dumbbell"></i>
+                    <span>Fitness</span>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Height (cm)</label>
+                        <input type="number" name="height" value="{{ old('height', Auth::user()->height) }}" min="50" max="300" step="0.1" placeholder="170">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Weight (kg)</label>
+                        <input type="number" name="weight" value="{{ old('weight', Auth::user()->weight) }}" min="20" max="500" step="0.1" placeholder="70">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Fitness Goal</label>
+                        <select name="fitness_goal">
+                            <option value="">Select Goal</option>
+                            <option value="Weight Loss" {{ old('fitness_goal', Auth::user()->fitness_goal) === 'Weight Loss' ? 'selected' : '' }}>Weight Loss</option>
+                            <option value="Muscle Gain" {{ old('fitness_goal', Auth::user()->fitness_goal) === 'Muscle Gain' ? 'selected' : '' }}>Muscle Gain</option>
+                            <option value="Strength" {{ old('fitness_goal', Auth::user()->fitness_goal) === 'Strength' ? 'selected' : '' }}>Strength</option>
+                            <option value="Endurance" {{ old('fitness_goal', Auth::user()->fitness_goal) === 'Endurance' ? 'selected' : '' }}>Endurance</option>
+                            <option value="General Fitness" {{ old('fitness_goal', Auth::user()->fitness_goal) === 'General Fitness' ? 'selected' : '' }}>General Fitness</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Experience Level</label>
+                        <select name="experience_level">
+                            <option value="">Select Level</option>
+                            <option value="beginner" {{ old('experience_level', Auth::user()->experience_level) === 'beginner' ? 'selected' : '' }}>Beginner</option>
+                            <option value="intermediate" {{ old('experience_level', Auth::user()->experience_level) === 'intermediate' ? 'selected' : '' }}>Intermediate</option>
+                            <option value="advanced" {{ old('experience_level', Auth::user()->experience_level) === 'advanced' ? 'selected' : '' }}>Advanced</option>
+                            <option value="expert" {{ old('experience_level', Auth::user()->experience_level) === 'expert' ? 'selected' : '' }}>Expert</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    <i class="fa-solid fa-save"></i> Save
                 </button>
+            </form>
+        </div>
+
+        <!-- Column 3: Password + Notifications Card -->
+        <div class="profile-card">
+            <div class="card-header">
+                <i class="fa-solid fa-cog"></i>
+                <span>Settings</span>
             </div>
-        </form>
+
+            <!-- Password Section -->
+            <form action="{{ route('profile.password') }}" method="POST" class="password-form">
+                @csrf
+                @method('PUT')
+                
+                <div class="section-title">Change Password</div>
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Current Password</label>
+                        <input type="password" name="current_password" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>New Password</label>
+                        <input type="password" name="password" required minlength="6">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Confirm Password</label>
+                        <input type="password" name="password_confirmation" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    <i class="fa-solid fa-key"></i> Update Password
+                </button>
+            </form>
+
+            <!-- Notifications Section -->
+            <form action="{{ route('profile.update') }}" method="POST" class="notifications-form">
+                @csrf
+                @method('PUT')
+                
+                <div class="section-title">Notifications</div>
+                <div class="toggles">
+                    <div class="toggle-item">
+                        <div class="toggle-info">
+                            <div class="toggle-label">Email Notifications</div>
+                            <small>Workout updates & more</small>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="email_notifications" value="1" {{ Auth::user()->email_notifications ? 'checked' : '' }}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-item">
+                        <div class="toggle-info">
+                            <div class="toggle-label">SMS Notifications</div>
+                            <small>Important text alerts</small>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="sms_notifications" value="1" {{ Auth::user()->sms_notifications ? 'checked' : '' }}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    <i class="fa-solid fa-save"></i> Save Settings
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 
