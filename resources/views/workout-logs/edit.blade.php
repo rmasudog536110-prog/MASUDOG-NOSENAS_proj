@@ -1,6 +1,6 @@
 @extends('skeleton.layout')
 
-@section('title', 'Log New Workout - FitClub')
+@section('title', 'Edit Workout - FitClub')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/workout-form.css') }}">
@@ -29,12 +29,13 @@
 
         <!-- Header -->
         <div class="workout-form-header">
-            <h1><i class="fa-solid fa-dumbbell"></i> Log New Workout</h1>
-            <p>Track your exercise session details and monitor your progress</p>
+            <h1><i class="fa-solid fa-edit"></i> Edit Workout</h1>
+            <p>Update your exercise session details and track your progress</p>
         </div>
 
-        <form action="{{ route('workout-logs.store') }}" method="POST">
+        <form action="{{ route('workout-logs.update', $workoutLog->id) }}" method="POST">
             @csrf
+            @method('PUT')
 
             <!-- Basic Information -->
             <div class="form-section">
@@ -51,7 +52,7 @@
                                class="form-control" 
                                id="workout_date" 
                                name="workout_date" 
-                               value="{{ old('workout_date', date('Y-m-d')) }}"
+                               value="{{ old('workout_date', $workoutLog->workout_date->format('Y-m-d')) }}"
                                max="{{ date('Y-m-d') }}"
                                required>
                         <span class="validation-feedback" id="workout_date-feedback">
@@ -67,7 +68,7 @@
                         <select class="form-control" id="exercise_id" name="exercise_id">
                             <option value="">Select Exercise (Optional)</option>
                             @foreach($exercises as $exercise)
-                                <option value="{{ $exercise->id }}" {{ old('exercise_id') == $exercise->id ? 'selected' : '' }}>
+                                <option value="{{ $exercise->id }}" {{ old('exercise_id', $workoutLog->exercise_id) == $exercise->id ? 'selected' : '' }}>
                                     {{ $exercise->name }}
                                 </option>
                             @endforeach
@@ -80,7 +81,7 @@
                         <select class="form-control" id="training_program_id" name="training_program_id">
                             <option value="">Select Program (Optional)</option>
                             @foreach($programs as $program)
-                                <option value="{{ $program->id }}" {{ old('training_program_id') == $program->id ? 'selected' : '' }}>
+                                <option value="{{ $program->id }}" {{ old('training_program_id', $workoutLog->training_program_id) == $program->id ? 'selected' : '' }}>
                                     {{ $program->title }}
                                 </option>
                             @endforeach
@@ -103,7 +104,7 @@
                                    class="form-control numeric-align" 
                                    id="sets" 
                                    name="sets" 
-                                   value="{{ old('sets') }}"
+                                   value="{{ old('sets', $workoutLog->sets) }}"
                                    min="1"
                                    placeholder="e.g., 3">
                             <span class="validation-feedback" id="sets-feedback">
@@ -120,7 +121,7 @@
                                    class="form-control numeric-align" 
                                    id="reps" 
                                    name="reps" 
-                                   value="{{ old('reps') }}"
+                                   value="{{ old('reps', $workoutLog->reps) }}"
                                    min="1"
                                    placeholder="e.g., 10">
                             <span class="validation-feedback" id="reps-feedback">
@@ -137,7 +138,7 @@
                                    class="form-control numeric-align" 
                                    id="weight" 
                                    name="weight" 
-                                   value="{{ old('weight') }}"
+                                   value="{{ old('weight', $workoutLog->weight) }}"
                                    min="0"
                                    step="0.5"
                                    placeholder="e.g., 50">
@@ -156,7 +157,7 @@
                                class="form-control numeric-align" 
                                id="duration_minutes" 
                                name="duration_minutes" 
-                               value="{{ old('duration_minutes') }}"
+                               value="{{ old('duration_minutes', $workoutLog->duration_minutes) }}"
                                min="1"
                                placeholder="e.g., 45">
                     </div>
@@ -167,7 +168,7 @@
                                class="form-control numeric-align" 
                                id="distance" 
                                name="distance" 
-                               value="{{ old('distance') }}"
+                               value="{{ old('distance', $workoutLog->distance) }}"
                                min="0"
                                step="0.1"
                                placeholder="e.g., 5.0">
@@ -179,7 +180,7 @@
                                class="form-control numeric-align" 
                                id="calories_burned" 
                                name="calories_burned" 
-                               value="{{ old('calories_burned') }}"
+                               value="{{ old('calories_burned', $workoutLog->calories_burned) }}"
                                min="0"
                                placeholder="e.g., 300">
                     </div>
@@ -228,26 +229,26 @@
                                    id="difficulty-slider" 
                                    min="1" 
                                    max="3" 
-                                   value="{{ old('difficulty') == 'easy' ? '1' : (old('difficulty') == 'medium' ? '2' : (old('difficulty') == 'hard' ? '3' : '0')) }}"
+                                   value="{{ old('difficulty', $workoutLog->difficulty) == 'easy' ? '1' : (old('difficulty', $workoutLog->difficulty) == 'medium' ? '2' : (old('difficulty', $workoutLog->difficulty) == 'hard' ? '3' : '0')) }}"
                                    step="1">
                         </div>
                         
                         <div class="difficulty-progress">
-                            <div class="difficulty-progress-bar {{ old('difficulty') ?? 'easy' }}" id="difficulty-progress-bar"></div>
+                            <div class="difficulty-progress-bar {{ old('difficulty', $workoutLog->difficulty) ?? 'easy' }}" id="difficulty-progress-bar"></div>
                         </div>
                         
                         <div class="difficulty-levels">
-                            <div class="difficulty-level easy {{ old('difficulty') == 'easy' ? 'active' : '' }}" data-level="easy">
+                            <div class="difficulty-level easy {{ old('difficulty', $workoutLog->difficulty) == 'easy' ? 'active' : '' }}" data-level="easy">
                                 <span class="difficulty-icon">😊</span>
                                 <div class="difficulty-label">Easy</div>
                                 <div class="difficulty-description">Light workout</div>
                             </div>
-                            <div class="difficulty-level medium {{ old('difficulty') == 'medium' ? 'active' : '' }}" data-level="medium">
+                            <div class="difficulty-level medium {{ old('difficulty', $workoutLog->difficulty) == 'medium' ? 'active' : '' }}" data-level="medium">
                                 <span class="difficulty-icon">😅</span>
                                 <div class="difficulty-label">Medium</div>
                                 <div class="difficulty-description">Moderate intensity</div>
                             </div>
-                            <div class="difficulty-level hard {{ old('difficulty') == 'hard' ? 'active' : '' }}" data-level="hard">
+                            <div class="difficulty-level hard {{ old('difficulty', $workoutLog->difficulty) == 'hard' ? 'active' : '' }}" data-level="hard">
                                 <span class="difficulty-icon">😰</span>
                                 <div class="difficulty-label">Hard</div>
                                 <div class="difficulty-description">Challenging workout</div>
@@ -257,16 +258,16 @@
                     
                     <!-- Hidden radio buttons for form submission -->
                     <div style="display: none;">
-                        <input type="radio" name="difficulty" value="easy" {{ old('difficulty') == 'easy' ? 'checked' : '' }} id="difficulty-easy">
-                        <input type="radio" name="difficulty" value="medium" {{ old('difficulty') == 'medium' ? 'checked' : '' }} id="difficulty-medium">
-                        <input type="radio" name="difficulty" value="hard" {{ old('difficulty') == 'hard' ? 'checked' : '' }} id="difficulty-hard">
+                        <input type="radio" name="difficulty" value="easy" {{ old('difficulty', $workoutLog->difficulty) == 'easy' ? 'checked' : '' }} id="difficulty-easy">
+                        <input type="radio" name="difficulty" value="medium" {{ old('difficulty', $workoutLog->difficulty) == 'medium' ? 'checked' : '' }} id="difficulty-medium">
+                        <input type="radio" name="difficulty" value="hard" {{ old('difficulty', $workoutLog->difficulty) == 'hard' ? 'checked' : '' }} id="difficulty-hard">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Rating (1-5 stars)</label>
                     <div class="rating-input">
-                        <input type="hidden" name="rating" id="rating" value="{{ old('rating', 0) }}">
+                        <input type="hidden" name="rating" id="rating" value="{{ old('rating', $workoutLog->rating ?? 0) }}">
                         <span class="rating-star" data-rating="1">★</span>
                         <span class="rating-star" data-rating="2">★</span>
                         <span class="rating-star" data-rating="3">★</span>
@@ -283,7 +284,7 @@
                                   id="notes" 
                                   name="notes" 
                                   rows="4" 
-                                  placeholder="How did you feel? Any observations or improvements?">{{ old('notes') }}</textarea>
+                                  placeholder="How did you feel? Any observations or improvements?">{{ old('notes', $workoutLog->notes) }}</textarea>
                         <span class="validation-feedback" id="notes-feedback">
                             <i class="fa-solid fa-check"></i>
                         </span>
@@ -295,11 +296,14 @@
             <!-- Submit Buttons -->
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">
-                    <i class="fa-solid fa-save"></i> Save Workout
+                    <i class="fa-solid fa-save"></i> Update Workout
                 </button>
                 <a href="{{ route('workout-logs.index') }}" class="btn btn-outline">
                     <i class="fa-solid fa-times"></i> Cancel
                 </a>
+                <button type="button" class="btn btn-outline" onclick="confirmDelete()">
+                    <i class="fa-solid fa-trash"></i> Delete
+                </button>
             </div>
         </form>
     </div>
@@ -538,10 +542,34 @@
         // Add loading state
         submitBtn.classList.add('loading');
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Updating...';
         
         // Show notification
-        showNotification('Saving your workout...', 'info');
+        showNotification('Updating your workout...', 'info');
+    }
+    
+    // Delete confirmation
+    function confirmDelete() {
+        if (confirm('Are you sure you want to delete this workout? This action cannot be undone.')) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ route('workout-logs.destroy', $workoutLog->id) }}';
+            
+            const csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = '{{ csrf_token() }}';
+            
+            const methodField = document.createElement('input');
+            methodField.type = 'hidden';
+            methodField.name = '_method';
+            methodField.value = 'DELETE';
+            
+            form.appendChild(csrfToken);
+            form.appendChild(methodField);
+            document.body.appendChild(form);
+            form.submit();
+        }
     }
     
     // Rating System (Enhanced)
@@ -587,8 +615,8 @@
         }
     }
     
-    // Initialize stars based on old value
-    updateStars({{ (int)old('rating', 0) }});
+    // Initialize stars based on current value
+    updateStars({{ $workoutLog->rating ?? 0 }});
     
     // Alternative Difficulty Selector
     const difficultySlider = document.getElementById('difficulty-slider');
@@ -711,71 +739,6 @@
                 }
             }
         });
-        
-        // Auto-save draft (optional enhancement)
-        let autoSaveTimer;
-        inputs.forEach(input => {
-            input.addEventListener('input', function() {
-                clearTimeout(autoSaveTimer);
-                autoSaveTimer = setTimeout(() => {
-                    saveDraft();
-                }, 2000);
-            });
-        });
-    });
-    
-    // Auto-save draft functionality
-    function saveDraft() {
-        const formData = new FormData(document.querySelector('form'));
-        const draft = {};
-        
-        for (let [key, value] of formData.entries()) {
-            if (value) draft[key] = value;
-        }
-        
-        localStorage.setItem('workoutDraft', JSON.stringify(draft));
-        console.log('Draft saved automatically');
-    }
-    
-    // Load draft on page load
-    function loadDraft() {
-        const draft = localStorage.getItem('workoutDraft');
-        if (!draft) return;
-        
-        try {
-            const data = JSON.parse(draft);
-            Object.entries(data).forEach(([key, value]) => {
-                const field = document.getElementById(key);
-                if (field && !field.value) {
-                    field.value = value;
-                    validateField(key);
-                }
-            });
-            
-            updateFormProgress();
-            updateVolumeCalculator();
-            showNotification('Draft restored from previous session', 'info');
-        } catch (e) {
-            console.error('Error loading draft:', e);
-        }
-    }
-    
-    // Load draft on page load
-    loadDraft();
-    
-    // Clear draft on successful submission
-    window.addEventListener('beforeunload', function(e) {
-        const form = document.querySelector('form');
-        if (form && form.querySelector('.btn.loading')) {
-            // Form is being submitted, don't show warning
-            return;
-        }
-        
-        const draft = localStorage.getItem('workoutDraft');
-        if (draft) {
-            e.preventDefault();
-            e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
-        }
     });
     
     // Add CSS animations

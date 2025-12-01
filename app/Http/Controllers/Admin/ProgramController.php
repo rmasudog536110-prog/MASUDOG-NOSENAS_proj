@@ -26,6 +26,11 @@ class ProgramController extends Controller
         return view('admin.programs.create');
     }
 
+    public function show(TrainingProgram $program)
+    {
+        return view('admin.programs.show', compact('program'));
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([

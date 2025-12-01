@@ -192,11 +192,6 @@
 
                 <div class="stats-grid">
                     <div class="stat-box">
-                        <div class="stat-box-value">{{ Auth::user()->workoutLogs()->count() }}</div>
-                        <div class="stat-box-label">Total Workouts</div>
-                    </div>
-
-                    <div class="stat-box">
                         <div class="stat-box-value">{{ Auth::user()->bodyMeasurements()->count() }}</div>
                         <div class="stat-box-label">Measurements</div>
                     </div>
@@ -204,6 +199,11 @@
                     <div class="stat-box">
                         <div class="stat-box-value">{{ Auth::user()->subscriptions()->count() }}</div>
                         <div class="stat-box-label">Subscriptions</div>
+                    </div>
+
+                    <div class="stat-box">
+                        <div class="stat-box-value">{{ Auth::user()->instructorRequests()->count() }}</div>
+                        <div class="stat-box-label">Instructor Requests</div>
                     </div>
 
                     <div class="stat-box">

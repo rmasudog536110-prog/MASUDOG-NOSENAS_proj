@@ -27,9 +27,9 @@
         <div class="workout-logs-header">
             <div>
                 <h1>Workout Logs</h1>
-                <p style="color: var(--muted-foreground);">Track your fitness journey</p>
+                <p>Track your fitness journey</p>
             </div>
-            <a href="{{ route('workout-logs.create') }}" class="btn btn-primary">
+            <a href="{{ route('workout-logs.create') }}" class="btn btn-primary btn-large">
                 <i class="fa-solid fa-plus"></i> Log New Workout
             </a>
         </div>
@@ -37,20 +37,32 @@
         <!-- Stats Overview -->
         <div class="workout-stats-grid">
             <div class="workout-stat-card">
+                <div class="workout-stat-icon">
+                    <i class="fa-solid fa-fire"></i>
+                </div>
                 <span class="workout-stat-value">{{ $stats['total_workouts'] }}</span>
                 <span class="workout-stat-label">Total Workouts</span>
             </div>
             <div class="workout-stat-card">
+                <div class="workout-stat-icon">
+                    <i class="fa-solid fa-calendar-week"></i>
+                </div>
                 <span class="workout-stat-value">{{ $stats['this_week'] }}</span>
                 <span class="workout-stat-label">This Week</span>
             </div>
             <div class="workout-stat-card">
+                <div class="workout-stat-icon">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
                 <span class="workout-stat-value">{{ $stats['this_month'] }}</span>
                 <span class="workout-stat-label">This Month</span>
             </div>
             <div class="workout-stat-card">
+                <div class="workout-stat-icon">
+                    <i class="fa-solid fa-burn"></i>
+                </div>
                 <span class="workout-stat-value">{{ number_format($stats['total_calories']) }}</span>
-                <span class="workout-stat-label">Total Calories Burned</span>
+                <span class="workout-stat-label">Calories Burned</span>
             </div>
         </div>
 
@@ -190,12 +202,12 @@
                 <i class="fa-solid fa-dumbbell"></i>
             </div>
             <h2>No Workouts Logged Yet</h2>
-            <p style="color: var(--muted-foreground); margin-bottom: 2rem;">
-                Start tracking your fitness journey by logging your first workout!
-            </p>
-            <a href="{{ route('workout-logs.create') }}" class="btn btn-primary">
-                <i class="fa-solid fa-plus"></i> Log Your First Workout
-            </a>
+            <p>Start tracking your fitness journey by logging your first workout!</p>
+            <div class="empty-state-actions">
+                <a href="{{ route('workout-logs.create') }}" class="btn btn-primary btn-large">
+                    <i class="fa-solid fa-plus"></i> Log Your First Workout
+                </a>
+            </div>
         </div>
         @endif
     </div>

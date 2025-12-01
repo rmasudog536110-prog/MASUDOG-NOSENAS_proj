@@ -229,7 +229,7 @@
             </div>
             <div class="stat-box">
                 <div class="stat-value">{{ $program['workouts'] }}</div>
-                <div class="stat-label">Workouts Per Week</div>
+                <div class="stat-label">Sessions Per Week</div>
             </div>
             <div class="stat-box">
                 <div class="stat-value"><i class="fa-solid fa-dumbbell"></i></div>
@@ -245,14 +245,11 @@
                 <i class="fa-solid fa-check-circle"></i> You're Enrolled in This Program!
             </div>
             <p style="color: var(--muted-foreground); margin-top: 1rem;">
-                Track your progress and complete workouts
+                Track your progress and achieve your fitness goals
             </p>
             <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap;">
-                <a href="{{ route('workout-logs.create') }}" class="enroll-btn">
-                    <i class="fa-solid fa-plus"></i> Log Workout
-                </a>
-                <a href="{{ route('workout-logs.index') }}" class="btn btn-outline" style="padding: 1rem 2rem; font-size: 1.125rem;">
-                    <i class="fa-solid fa-list"></i> View My Workouts
+                <a href="{{ route('programs') }}" class="btn btn-outline" style="padding: 1rem 2rem; font-size: 1.125rem;">
+                    <i class="fa-solid fa-list"></i> View All Programs
                 </a>
                 <a href="{{ route('dashboard') }}" class="btn btn-outline" style="padding: 1rem 2rem; font-size: 1.125rem;">
                     <i class="fa-solid fa-chart-line"></i> Dashboard
@@ -261,7 +258,7 @@
         @else
             <h2 style="color: var(--foreground); margin-bottom: 1rem;">Ready to Start Your Journey?</h2>
             <p style="color: var(--muted-foreground); margin-bottom: 2rem;">
-                Enroll now and get access to structured workouts, progress tracking, and expert guidance!
+                Enroll now and get access to structured training programs, progress tracking, and expert guidance!
             </p>
             <form action="{{ route('programs.enroll', $programModel) }}" method="POST" style="display: inline;">
                 @csrf
@@ -288,13 +285,13 @@
                 <div class="benefit-icon"><i class="fa-solid fa-chart-line"></i></div>
                 <div class="benefit-text">
                     <h4>Progress Tracking</h4>
-                    <p>Monitor your improvements with detailed workout logs and statistics</p>
+                    <p>Monitor your improvements with detailed progress tracking and statistics</p>
                 </div>
             </div>
             <div class="benefit-item">
                 <div class="benefit-icon"><i class="fa-solid fa-dumbbell"></i></div>
                 <div class="benefit-text">
-                    <h4>{{ $program['workouts'] }} Workouts</h4>
+                    <h4>{{ $program['workouts'] }} Sessions</h4>
                     <p>Balanced training frequency for optimal results and recovery</p>
                 </div>
             </div>
@@ -314,7 +311,7 @@
         <div style="color: var(--muted-foreground); line-height: 1.8;">
             <p><strong style="color: var(--foreground);">Level:</strong> {{ ucfirst($program['level']) }} - Perfect for those with {{ $program['level'] }} experience</p>
             <p><strong style="color: var(--foreground);">Duration:</strong> {{ $program['duration'] }} of progressive training</p>
-            <p><strong style="color: var(--foreground);">Frequency:</strong> {{ $program['workouts'] }} to maximize results</p>
+            <p><strong style="color: var(--foreground);">Frequency:</strong> {{ $program['workouts'] }} sessions per week to maximize results</p>
             <p><strong style="color: var(--foreground);">Equipment:</strong> {{ $program['equipment'] }}</p>
             <p><strong style="color: var(--foreground);">Focus:</strong> Comprehensive fitness development with balanced training</p>
         </div>

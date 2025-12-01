@@ -56,25 +56,7 @@
         <!-- Stats Grid -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-icon">🏋️</div>
-                <div class="stat-value count-display">{{ $workoutStats['total_workouts'] ?? 0 }}</div>
-                <div class="stat-label">Total Workouts</div>
-            </div>
-
-            <div class="stat-card">
                 <div class="stat-icon">📅</div>
-                <div class="stat-value count-display">{{ $workoutStats['weekly_workouts'] ?? 0 }}</div>
-                <div class="stat-label">This Week</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">🔥</div>
-                <div class="stat-value count-display">{{ $workoutStats['days_active'] ?? 0 }}</div>
-                <div class="stat-label">Days Active</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">⭐</div>
                 <div class="stat-value count-display">
                     @if($userSubscription)
                         {{ $daysLeft }}
@@ -83,6 +65,30 @@
                     @endif
                 </div>
                 <div class="stat-label">Days Left</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">💳</div>
+                <div class="stat-value count-display">
+                    @if($userSubscription)
+                        {{ $userSubscription->plan->name }}
+                    @else
+                        No Plan
+                    @endif
+                </div>
+                <div class="stat-label">Current Plan</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">👨‍🏫</div>
+                <div class="stat-value count-display">{{ $instructorRequests ?? 0 }}</div>
+                <div class="stat-label">Instructor Requests</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-value count-display">{{ $programsCount ?? 0 }}</div>
+                <div class="stat-label">Available Programs</div>
             </div>
         </div>
 
