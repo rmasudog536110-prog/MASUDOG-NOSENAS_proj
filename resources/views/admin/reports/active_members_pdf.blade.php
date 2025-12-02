@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Active Members Report</title>
-
     <style>
-        body {
+            body {
             font-family: Arial, sans-serif;
             font-size: 12px;
             margin: 20px;
@@ -13,6 +12,7 @@
 
         h2 {
             margin-bottom: 15px;
+            text-align: center;
         }
 
         table {
@@ -45,7 +45,7 @@
 
 <h2>Active Members Report</h2>
 
-<table>
+<table class="table-container">
     <thead>
         <tr>
             <th>Name</th>
@@ -57,10 +57,9 @@
 
     <tbody>
         @php
-            $totalRows = 20;
+            $totalRows = 8;
             $membersCount = count($members);
         @endphp
-
         {{-- REAL DATA ROWS --}}
         @foreach ($members as $member)
         <tr>
@@ -82,6 +81,7 @@
         @endfor
     </tbody>
 </table>
+
 
 </body>
 </html>

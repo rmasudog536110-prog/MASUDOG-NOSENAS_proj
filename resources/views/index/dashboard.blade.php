@@ -8,7 +8,7 @@
 @section('content')
 
 
-@if ($userSubscription->status === 'active')
+@if ($userSubscription && $userSubscription->status === 'active')
 @include('index.header')
 @endif
 
@@ -53,7 +53,7 @@
         </div>
     </div>
 
-@if ($userSubscription->status === 'active')
+@if ($userSubscription && $userSubscription->status === 'active')
     <!-- Quick Actions Section -->
     <div class="dashboard-container1">
             <h2 class="section-title">
@@ -96,7 +96,6 @@
                     <span class="action-card-text">Edit Profile</span>
                 </a>
 
-            {{-- NOT ACTIVE --}}
             @else
                 {{-- This button remains as a standard button for clarity --}}
                 <a href="{{ url('subscription') }}" class="btn btn-primary btn-sm">
@@ -262,12 +261,19 @@
                     <i class="fa-solid fa-clock-rotate-left"></i> Recent Activities
                 </h2>
                 <div class="section-actions">
-                    <a href="{{ route('customer.instructor-requests') }}" class="btn btn-primary btn-sm">
-                        <i class="fa-solid fa-plus" style="margin-right: 10px;"></i> Request Instructor
-                    </a>
+                @auth
+                    <div class="user-info">
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="btn btn-outline">Logout</button>
+                        </form>
+                    </div>
+                @endauth
+                @if ($userSubscription === 'pending' || $userSubscription === 'expired' || $userSubscription === 'rejected')
                     <a href="{{ route('workout-logs.index') }}" class="btn btn-primary btn-sm">
                         <i class="fa-solid fa-magnifying-glass" style="margin-right: 10px;"></i> View All
                     </a>
+                @endif
                 </div>
             </div>
 

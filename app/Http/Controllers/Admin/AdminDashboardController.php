@@ -10,7 +10,7 @@ use App\Models\PaymentTransaction;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
-class DashboardController extends Controller
+class AdminDashboardController extends Controller
 {
     public function index()
     {
@@ -46,7 +46,7 @@ class DashboardController extends Controller
         $stats['oldest_pending'] = PaymentTransaction::where('status', 'pending')
             ->oldest()
             ->first()
-            ?->created_at?->diffForHumans() ?? 'N/A';
+            ?->created_at?->diffForHumans() ?? 0;
 
         $recentUsers = User::where('role', 'customer')
             ->latest()

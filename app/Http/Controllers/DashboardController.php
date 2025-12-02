@@ -15,6 +15,7 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $user = $user->role['customer'] ?? $user;
 
         $userSubscription = UserSubscription::where('user_id', $user->id)
             ->with('plan')
@@ -75,6 +76,7 @@ class DashboardController extends Controller
             ->get();
 
         return view('index.dashboard', [
+            'user' => $user,
             'userSubscription' => $userSubscription,
             'subscriptionStatus' => $subscriptionStatus,
             'subscriptionExpiry' => $subscriptionExpiry,

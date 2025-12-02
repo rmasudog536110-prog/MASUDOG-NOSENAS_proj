@@ -35,8 +35,8 @@
                     <div class="hover-report-popup">
                         <h4>Summary Report</h4>
                         <p>Total registered users: <strong>{{ $stats['total_users'] }}</strong></p>
-                        <p>New today: <strong>{{ $stats['new_users_today'] ?? 0 }}</strong></p>
-                        <p>New this month: <strong>{{ $stats['new_users_month'] ?? 0 }}</strong></p>
+                        <p>New today: <strong>{{ $stats['new_customers_today'] ?? 0 }}</strong></p>
+                        <p>New this month: <strong>{{ $stats['new_customers_month'] ?? 0 }}</strong></p>
                         <a href="{{ route('reports.active_members') }}" class="popup-link">View Detailed Report →</a>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                         <h4>Summary Report</h4>
                         <p>Total Income: <strong>₱{{ number_format($stats['total_revenue'], 2) }}</strong></p>
                         <p>This Month: <strong>₱{{ number_format($stats['monthly_revenue'], 2) }}</strong></p>
-                        <a href="{{ route('reports.revenue') }}" class="popup-link">View Detailed Report →</a>
+                        <a href="{{ route('reports.payments') }}" class="popup-link">View Detailed Report →</a>
                     </div>
                 </div>
             

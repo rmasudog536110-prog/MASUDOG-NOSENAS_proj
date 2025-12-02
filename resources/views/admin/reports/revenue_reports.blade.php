@@ -5,7 +5,21 @@
 @endpush
 
 @section('content')
-<h2>Total Revenue Report</h2>
+<div>
+    <h2>Total Revenue Report</h2>
 
-<h3>₱{{ number_format($revenue, 2) }}</h3>
+    <h3>₱{{ number_format($revenue, 2) }}</h3>
+</div>
+
+<footer class="footer-reports">
+    <div class="report-footer" style="margin-top: 20px;">
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-success">
+            <i class="fa-solid fa-arrow-left"></i> Return to Dashboard
+        </a>
+        <a href="{{ route('reports.expiring_soon_pdf') }}" class="btn btn-primary">
+            <i class="fa-solid fa-download"></i> Export to PDF
+        </a>
+    </div>
+</footer>
+
 @endsection

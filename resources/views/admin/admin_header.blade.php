@@ -4,7 +4,7 @@
     <div class="container">
         <div class="header-content">
             <div class="logo">
-                <a href="{{ url('/') }}">
+                <a href="{{ url('admin/dashboard') }}">
                     <h1>FitClub</h1>
                 </a>
             </div>
@@ -15,7 +15,7 @@
                         <i class="fa-solid fa-layer-group"></i> Programs</a>
                     <a href="{{ route('admin.exercises.index') }}" class="nav-link {{ request()->is('exercises*') ? 'active' : '' }}">
                         <i class="fa-solid fa-weight-hanging"></i> Exercises</a>
-                    <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}">
                     <i class="fa-solid fa-house-user" style="font-size: 2rem"></i> 
                     </a>
                     <a href="{{ route('workout-logs.index') }}" class="nav-link {{ request()->is('workout-logs*') ? 'active' : '' }}">

@@ -35,4 +35,15 @@
 <h2>6. Active vs Cancelled Subscriptions</h2>
 <p>Active: {{ $active_count }}</p>
 <p>Cancelled: {{ $cancelled_count }}</p>
+
+<footer class="footer-reports">
+    <div class="report-footer" style="margin-top: 20px;">
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-success">
+            <i class="fa-solid fa-arrow-left"></i> Return to Dashboard
+        </a>
+        <a href="{{ route('reports.full_report_pdf') }}" class="btn btn-primary">
+            <i class="fa-solid fa-download"></i> Export to PDF
+        </a>
+    </div>
+</footer>
 @endsection

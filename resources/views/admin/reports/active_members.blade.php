@@ -7,9 +7,7 @@
 @section('content')
 
 <h2>Active Members Report</h2>
-
-<div class="table-container">
-    <table>
+    <table class="reports-table">
         <thead>
             <tr>
                 <th>Name</th>
@@ -19,32 +17,45 @@
             </tr>
         </thead>
         <tbody>
-            @php
-                $totalRows = 20; // number of rows to always display
-                $membersCount = count($members);
-            @endphp
+        @php
+            $totalRows = 8;
+            $membersCount = count($members);
+        @endphp
 
-            @foreach ($members as $member)
-            <tr>
-                <td>{{ $member->name }}</td>
-                <td>{{ $member->email }}</td>
-                <td>{{ $member->phone_number }}</td>
-                <td>{{ $member->created_at->format('M d, Y') }}</td>
-            </tr>
-            @endforeach
-
+            @forelse($members as $member)
+                <tr style="background-color: white;">
+                    <td>{{ $member->name }}</td>
+                    <td>{{ $member->email }}</td>
+                    <td>{{ $member->phone_number ?? 'N/A' }}</td>
+                    <td>{{ $member->created_at->format('M d, Y') }}</td>
+                </tr>
+                  @empty
+            @endforelse
             @for ($i = $membersCount; $i < $totalRows; $i++)
-            <tr class="empty-row">
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
+                    <tr class="empty-row">
+                        <td colspan="5" style="text-align: center; color: var(--muted-foreground);">
+                            No users yet
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
             @endfor
+            
         </tbody>
     </table>
+
+<footer class="footer-reports">
+<div class="report-footer">
+    <a href="{{ route('admin.dashboard') }}" class="btn btn-success">
+        <i class="fa-solid fa-arrow-left"></i> Return to Dashboard
+    </a>
+    <a href="{{ route('reports.active_members_pdf') }}" class="btn btn-primary">
+        <i class="fa-solid fa-download"></i> Export to PDF
+    </a>
 </div>
 
-@include('admin.reports.footer')
+</footer>
 
 @endsection

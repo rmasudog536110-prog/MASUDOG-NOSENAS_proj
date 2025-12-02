@@ -2,19 +2,11 @@
             font-family: Arial, sans-serif;
             font-size: 12px;
             margin: 20px;
-            background-color: #000;
         }
 
         h2 {
             margin-bottom: 15px;
             text-align: center;
-            color: #fff;
-        }
-
-        p{
-            margin-bottom: 15px;
-            text-align: center;
-            color: #fff;
         }
 
         table {
@@ -31,7 +23,6 @@
         th, td {
             padding: 8px;
             border: 1px solid #ccc;
-            color: #000;
         }
 
         tbody tr:nth-child(even) {

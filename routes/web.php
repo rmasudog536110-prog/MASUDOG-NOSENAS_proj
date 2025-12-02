@@ -16,7 +16,7 @@ use App\Http\Controllers\WorkoutLogController;
 use App\Http\Controllers\InstructorRequestController;
 use App\Http\Controllers\InstructorDashboardController;
 use App\Http\Controllers\SubscriptionPaymentController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ProgramController;
 use App\Http\Controllers\Admin\ExerciseController as AdminExerciseController;
 use App\Http\Controllers\PasswordResetController;
@@ -129,7 +129,10 @@ Route::post('reset-password', [PasswordResetController::class, 'resetPassword'])
 
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    
+
+    Route::resource('dashboard', AdminExerciseController::class);
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     // User Management
     Route::get('/users', [AdminDashboardController::class, 'users'])->name('users');
@@ -184,6 +187,10 @@ Route::prefix('admin/reports')->middleware(['auth', 'admin'])->group(function ()
     Route::get('/full', [ReportController::class, 'full'])->name('reports.full_report');
 
 //PDF Export Route
-    Route::get('/reports/active-members/pdf', [App\Http\Controllers\ReportController::class, 'activeMembersPDF'])->name('reports.active_members.pdf');
+    Route::get('/reports/active_members_pdf', [ReportController::class, 'activeMembersPDF'])->name('reports.active_members_pdf');
+    Route::get('/reports/expiring_soon_pdf', [ReportController::class, 'expiringSoonPDF'])->name('reports.expiring_soon_pdf');
+    Route::get('/reports/payments_pdf', [ReportController::class, 'paymentsPDF'])->name('reports.payments_pdf');
+    Route::get('/reports/pending_payments_pdf', [ReportController::class, 'pendingPaymentsPDF'])->name('reports.pending_payments_pdf');
+    Route::get('/reports/full_report_pdf', [ReportController::class, 'fullReportPDF'])->name('reports.full_report_pdf');
 });
 

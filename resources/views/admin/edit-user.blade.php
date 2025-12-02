@@ -3,7 +3,8 @@
 @section('title', 'Edit User - Admin')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/register.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
     <style>
         body {
             overflow-y: auto !important;
@@ -53,8 +54,6 @@
 @endpush
 
 @section('content')
-
-@include('admin.admin_header')
 
 
 <div class="edit-container">
