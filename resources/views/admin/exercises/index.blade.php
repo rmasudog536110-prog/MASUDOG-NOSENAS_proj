@@ -7,11 +7,10 @@
 @endpush
 
 @section('content')
-@if (Auth::user() && Auth::user()->hasAdminAccess())
+
+
 @include('admin.admin_header')
-@else
-@include('index.header')
-@endif
+
 
 <section class="admin-exercises-page">
     <div class="container">
@@ -142,14 +141,16 @@
                     </tbody>
                 </table>
             </div>
-
-            <!-- Pagination -->
-            @if($exercises->hasPages())
-                <div style="padding: 1.5rem; border-top: 1px solid rgba(255, 102, 0, 0.1);">
-                    {{ $exercises->links() }}
-                </div>
-            @endif
-        </div>
+                        @if($exercises->total() > $exercises->perPage())
+            <div class="d-flex justify-content-between align-items-center p-3" style="border-top: 1px solid var(--table-border);">
+                <div class="text-muted small">
+                    Showing <strong>{{ $exercises->firstItem() }}</strong> to <strong>{{ $exercises->lastItem() }}</strong> of <strong>{{ $exercises->total() }}</strong> results
+                </div>
+                <div>
+                    {{ $exercises->links('pagination::bootstrap-4') }}
+                </div>
+            </div>
+            @endif
     </div>
 </section>
 

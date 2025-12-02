@@ -10,7 +10,7 @@ class TrainingProgram extends Model
 
     protected $fillable = [
         'title',
-        'description', // Holds the JSON-encoded program details
+        'description',
         'level',
         'duration_weeks',
         'workout_counts',

@@ -65,7 +65,7 @@ public function register(Request $request)
 
     $subscription = $user->subscriptions()->latest()->first();
 
-    if ($subscription && $subscription->status === 'pending') {
+    if ($subscription && $subscription->status === 'null') {
         Auth::login($user);
         return redirect()->route('pending_dashboard');
     }

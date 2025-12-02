@@ -8,7 +8,7 @@
 @section('content')
 
 
-@if ($subscriptionStatus === 'expired' || 'cancelled' || 'pending')
+@if ($userSubscription->status === 'active')
 @include('index.header')
 @endif
 
@@ -53,45 +53,62 @@
         </div>
     </div>
 
-        <!-- Stats Grid -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">📅</div>
-                <div class="stat-value count-display">
-                    @if($userSubscription)
-                        {{ $daysLeft }}
-                    @else
-                        0
-                    @endif
-                </div>
-                <div class="stat-label">Days Left</div>
-            </div>
+@if ($userSubscription->status === 'active')
+    <!-- Quick Actions Section -->
+    <div class="dashboard-container1">
+            <h2 class="section-title">
+                <i class="fa-solid fa-bolt"></i> Quick Actions
+            </h2>
 
-            <div class="stat-card">
-                <div class="stat-icon">💳</div>
-                <div class="stat-value count-display">
-                    @if($userSubscription)
-                        {{ $userSubscription->plan->name }}
-                    @else
-                        No Plan
-                    @endif
-                </div>
-                <div class="stat-label">Current Plan</div>
-            </div>
+        <div class="quick-actions-grid">
 
-            <div class="stat-card">
-                <div class="stat-icon">👨‍🏫</div>
-                <div class="stat-value count-display">{{ $instructorRequests ?? 0 }}</div>
-                <div class="stat-label">Instructor Requests</div>
-            </div>
+            {{-- USER HAS ACTIVE SUBSCRIPTION --}}
+            @if ($subscriptionStatus === 'active')
 
-            <div class="stat-card">
-                <div class="stat-icon">🎯</div>
-                <div class="stat-value count-display">{{ $programsCount ?? 0 }}</div>
-                <div class="stat-label">Available Programs</div>
-            </div>
+                <a href="{{ route('workout-logs.create') }}" class="action-card">
+                    <span class="action-card-icon">➕</span>
+                    <span class="action-card-text">Log Workout</span>
+                </a>
+
+                <a href="{{ route('programs') }}" class="action-card">
+                    <span class="action-card-icon">🏋️</span>
+                    <span class="action-card-text">Training Programs</span>
+                </a>
+
+                <a href="{{ route('exercises') }}" class="action-card">
+                    <span class="action-card-icon">💪</span>
+                    <span class="action-card-text">Exercise Library</span>
+                </a>
+
+                <a href="{{ route('workout-logs.index') }}" class="action-card">
+                    <span class="action-card-icon">📊</span>
+                    <span class="action-card-text">My Workouts</span>
+                </a>
+
+                <a href="#request-instructor-modal" data-bs-toggle="modal" class="action-card">
+                    <span class="action-card-icon">👨‍🏫</span>
+                    <span class="action-card-text">Request Instructor</span>
+                </a>
+
+                {{-- MODIFIED TO USE action-card CLASS --}}
+                <a href="{{ route('profile.show') }}" class="action-card">
+                    <span class="action-card-icon"><i class="fa-solid fa-user"></i></span>
+                    <span class="action-card-text">Edit Profile</span>
+                </a>
+
+            {{-- NOT ACTIVE --}}
+            @else
+                {{-- This button remains as a standard button for clarity --}}
+                <a href="{{ url('subscription') }}" class="btn btn-primary btn-sm">
+                    <span class="action-card-icon">⭐</span>
+                    <span class="action-card-text">
+                        {{ $subscriptionStatus === 'expired' ? 'Renew Plan' : 'Choose a Plan' }}
+                    </span>
+                </a>
+            @endif
         </div>
-
+    </div>
+@endif
         <!-- Subscription Status Section -->
         <div class="dashboard-section">
             <div class="section-header">
@@ -238,7 +255,7 @@
             @endif
         </div>
 
-                <!-- Recent Activities Section -->
+        <!-- Recent Activities Section -->
         <div class="dashboard-section">
             <div class="section-header">
                 <h2 class="section-title">
@@ -293,58 +310,7 @@
                 </div>
             @endif
         </div>
-
-        <!-- Quick Actions Section -->
-        <div class="dashboard-section">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <i class="fa-solid fa-bolt"></i> Quick Actions
-                </h2>
-            </div>
-
-            <div class="quick-actions-grid">
-                @if (in_array($subscriptionStatus, ['active', 'trial']))
-                    <a href="{{ route('workout-logs.create') }}" class="action-card" style="background: linear-gradient(135deg, rgba(255, 102, 0, 0.2) 0%, rgba(26, 26, 26, 0.5) 100%); border-color: rgba(255, 102, 0, 0.4);">
-                        <span class="action-card-icon">➕</span>
-                        <span class="action-card-text">Log Workout</span>
-                    </a>
-
-                    <a href="{{ route('programs') }}" class="action-card">
-                        <span class="action-card-icon">🏋️</span>
-                        <span class="action-card-text">Training Programs</span>
-                    </a>
-
-                    <a href="{{ route('exercises') }}" class="action-card">
-                        <span class="action-card-icon">💪</span>
-                        <span class="action-card-text">Exercise Library</span>
-                    </a>
-
-                    <a href="{{ route('workout-logs.index') }}" class="action-card">
-                        <span class="action-card-icon">📊</span>
-                        <span class="action-card-text">My Workouts</span>
-                    </a>
-                    
-                    <!-- Instructor Request Button -->
-                    <a href="#request-instructor-modal" class="action-card" data-bs-toggle="modal">
-                        <span class="action-card-icon">👨‍🏫</span>
-                        <span class="action-card-text">Request Instructor</span>
-                    </a>
-                @endif
-            
-                <a href="{{ route('profile.show') }}" class="btn btn-primary btn-sm">
-                    <i class="fa-solid fa-user" style="margin-right: 0.5rem;"></i>
-                    Edit Profile
-                </a>
-
-                @if (in_array($subscriptionStatus, ['expired', 'none']) || !$userSubscription)
-                    <a href="{{ url('#subscription-plans') }}" class="btn btn-primary btn-sm">
-                        <span class="action-card-icon">⭐</span>
-                        <span class="action-card-text">{{ $subscriptionStatus === 'expired' ? 'Renew Plan' : 'Choose a Plan' }}</span>
-                    </a>
-                @endif
-            </div>
-        </div>
-    </div>
+    </div>    
 
     @include('index.footer')
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->decimal('price', 8, 2);
-            $table->string('duration');
+            $table->integer('duration');
             $table->json('features');
             $table->boolean('is_active')->default(true);
             $table->boolean('free_trial')->default(false);

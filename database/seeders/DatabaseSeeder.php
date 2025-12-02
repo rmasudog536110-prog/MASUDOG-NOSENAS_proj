@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\UserSubscription;
+use App\Models\SubscriptionPlan;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -41,6 +43,7 @@ class DatabaseSeeder extends Seeder
         $this->call(BeginnerExercisesSeeder::class);
         $this->call(IntermediateExerciseSeeder::class);
         $this->call(ExpertExercisesSeeder::class);
+        $this->call(TrainingProgramSeeder::class);
         
     }
 }

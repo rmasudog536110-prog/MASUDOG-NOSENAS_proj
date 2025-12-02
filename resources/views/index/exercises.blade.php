@@ -3,7 +3,8 @@
 @section('title', 'Exercise Library - FitClub')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/programs.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/exercises.css') }}">
+
 @endpush
 
 @section('content')

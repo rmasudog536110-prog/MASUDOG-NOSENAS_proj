@@ -7,9 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class TrainingProgramSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+
     public function run(): void
     {
         DB::table('training_programs')->insert([

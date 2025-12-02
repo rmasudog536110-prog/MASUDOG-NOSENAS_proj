@@ -16,10 +16,6 @@
                         <i class="fa-solid fa-layer-group"></i> Programs</a>
                     <a href="{{ route('exercises') }}" class="nav-link {{ request()->is('exercises*') ? 'active' : '' }}">
                         <i class="fa-solid fa-weight-hanging"></i> Exercises</a>
-                    @if(Auth::user()->role === 'admin')
-                        <a href="{{ route('workout-logs.index') }}" class="nav-link {{ request()->is('workout-logs*') ? 'active' : '' }}">
-                            <i class="fa-solid fa-fire"></i> Workouts</a>
-                    @endif
                     <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
                     <i class="fa-solid fa-house-user" style="font-size: 2rem"></i> 
                     </a>

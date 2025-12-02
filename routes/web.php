@@ -105,7 +105,7 @@ Route::get('/programs', [TrainingProgramController::class, 'index'])
     ->middleware('auth')
     ->name('programs');
     
-Route::get('/programs/{difficulty}', [ExerciseController::class, 'show'])
+Route::get('/programs/{level}', [TrainingProgramController::class, 'show'])
     ->middleware('auth')
     ->name('programs');
 
@@ -129,7 +129,7 @@ Route::post('reset-password', [PasswordResetController::class, 'resetPassword'])
 
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     // User Management
     Route::get('/users', [AdminDashboardController::class, 'users'])->name('users');
@@ -141,11 +141,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/users/{user}', [AdminDashboardController::class, 'deleteUser'])->name('delete-user');
 
     // Create Programs
-    Route::get('/programs/{program}', [TrainingProgramController::class, 'show'])
+    Route::get('/programs/{program}', [ProgramController::class, 'show'])
     ->middleware('auth')
     ->name('programs.show');
 
-    Route::post('/programs/{program}/enroll', [TrainingProgramController::class, 'enroll'])
+    Route::post('/programs/{program}/enroll', [ProgramController::class, 'enroll'])
     ->middleware('auth')
     ->name('programs.enroll');
 
@@ -159,6 +159,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Exercise Management
     Route::resource('exercises', AdminExerciseController::class);
+    Route::post('/exercises/{exercise}/toggle', [AdminExerciseController::class, 'toggleStatus'])->name('exercises.toggle');
+    Route::get('/create_exercises', [AdminExerciseController::class, 'create'])->name('admin.programs.create');
 });
 
 // Instructor Routes

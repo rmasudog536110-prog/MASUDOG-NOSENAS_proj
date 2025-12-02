@@ -13,7 +13,7 @@ class ExerciseController extends Controller
      */
     public function index()
     {
-        $exercises = Exercise::orderBy('name')->paginate(20);
+        $exercises = Exercise::orderBy('name')->paginate(10);
         return view('admin.exercises.index', compact('exercises'));
     }
 
@@ -22,7 +22,7 @@ class ExerciseController extends Controller
      */
     public function create()
     {
-        return view('admin.exercises.create');
+        return view('admin.exercises.create', compact('create_exercises'));
     }
 
     /**

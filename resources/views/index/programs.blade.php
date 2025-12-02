@@ -49,23 +49,23 @@
         <!-- Filter Buttons -->
         <div class="d-flex justify-content-center mb-5 flex-wrap gap-2">
 
-            <a href="{{ url('programs?difficulty=all') }}"
-            class="btn {{ ($difficulty === 'all') ? 'btn-primary' : 'btn-outline-primary' }}">
+            <a href="{{ url('programs?level=all') }}"
+            class="btn {{ ($level === 'all') ? 'btn-primary' : 'btn-outline-primary' }}">
                 <i class="fas fa-bullseye me-1"></i> All Levels
             </a>
 
-            <a href="{{ url('programs?difficulty=beginner') }}"
-            class="btn {{ ($difficulty === 'beginner') ? 'btn-success' : 'btn-outline-success' }}">
+            <a href="{{ url('programs?level=beginner') }}"
+            class="btn {{ ($level === 'beginner') ? 'btn-success' : 'btn-outline-success' }}">
                 <i class="fas fa-seedling me-1"></i> Beginner
             </a>
 
-            <a href="{{ url('programs?difficulty=intermediate') }}"
-            class="btn {{ ($difficulty === 'intermediate') ? 'btn-warning' : 'btn-outline-warning' }}">
+            <a href="{{ url('programs?level=intermediate') }}"
+            class="btn {{ ($level === 'intermediate') ? 'btn-warning' : 'btn-outline-warning' }}">
                 <i class="fas fa-chart-line me-1"></i> Intermediate
             </a>
 
-            <a href="{{ url('programs?difficulty=expert') }}"
-            class="btn {{ ($difficulty === 'expert') ? 'btn-danger' : 'btn-outline-danger' }}">
+            <a href="{{ url('programs?level=expert') }}"
+            class="btn {{ ($level === 'expert') ? 'btn-danger' : 'btn-outline-danger' }}">
                 <i class="fas fa-star me-1"></i> Expert
             </a>
 
@@ -83,7 +83,7 @@
                                 <!-- Icon + Title -->
                                 <div class="d-flex align-items-center mb-3">
                                     <span class="fs-2 me-3">{{ $program['icon'] }}</span>
-                                    <h5 class="fw-bold mb-0">{{ $program['name'] }}</h5>
+                                    <h5 class="fw-bold mb-0">{{ $program['title'] }}</h5>
                                 </div>
 
                                 <!-- Description -->
@@ -105,14 +105,14 @@
                                 <div class="d-flex justify-content-between align-items-center">
 
                                     <span class="badge 
-                                        @switch($program['difficulty'])
+                                        @switch($program['level'])
                                             @case('beginner') bg-success @break
                                             @case('intermediate') bg-warning text-dark @break
                                             @case('expert') bg-danger @break
                                             @default bg-primary
                                         @endswitch
                                         px-3 py-2">
-                                        {{ ucfirst($program['difficulty']) }}
+                                        {{ ucfirst($program['level']) }}
                                     </span>
 
                                     <button class="btn btn-primary btn-sm"

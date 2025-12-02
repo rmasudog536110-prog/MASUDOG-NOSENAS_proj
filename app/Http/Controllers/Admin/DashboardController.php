@@ -20,10 +20,10 @@ class DashboardController extends Controller
             'revenue_this_month' => PaymentTransaction::where('status', 'approved')
                 ->whereMonth('created_at', now()->month)
                 ->sum('amount'),
-            'pending_payments' => UserSubscription::where('status', 'pending')->count(),
+            'pending_payments' => PaymentTransaction::where('status', 'pending')->count(),
         ];
 
-        $stats['active_subscriptions'] = UserSubscription::where('status', 'approved')
+        $stats['active_subscriptions'] = UserSubscription::where('status', 'active')
             ->where('end_date', '>', now())
             ->count();
 
@@ -35,7 +35,7 @@ class DashboardController extends Controller
                 ->whereMonth('created_at', now()->month)
                 ->count();
 
-        $stats['expiring_soon'] = UserSubscription::where('status', 'approved')
+        $stats['expiring_soon'] = UserSubscription::where('status', 'active')
             ->whereBetween('end_date', [now(), now()->addDays(7)])
             ->count();
 
@@ -43,7 +43,7 @@ class DashboardController extends Controller
             ->whereMonth('updated_at', now()->month)    
             ->sum('amount');
 
-        $stats['oldest_pending'] = UserSubscription::where('status', 'pending')
+        $stats['oldest_pending'] = PaymentTransaction::where('status', 'pending')
             ->oldest()
             ->first()
             ?->created_at?->diffForHumans() ?? 'N/A';
@@ -59,7 +59,7 @@ class DashboardController extends Controller
             ->get();
 
         // Get pending payment subscriptions
-        $pendingPayments = UserSubscription::where('status', 'pending')
+        $pendingPayments = UserSubscription::where('status', 'null')
             ->with(['user', 'plan', 'payments'])
             ->latest()
             ->get();

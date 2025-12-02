@@ -40,8 +40,8 @@ class SubscriptionPaymentController extends Controller
             'user_id' => Auth::id(),
             'plan_id' => $plan->id,
             'start_date' => now(),
-            'end_date' => now()->addDays($plan->duration_days),
-            'status' => 'pending',
+            'end_date' => now()->addDays($plan->duration),
+            'status' => 'null',
         ]);
 
         // Create payment transaction
@@ -54,7 +54,7 @@ class SubscriptionPaymentController extends Controller
             'currency' => 'PHP',
             'status' => 'pending',
             'payment_details' => [
-                'proof_path' => $proofPath,
+            'proof_path' => $proofPath,
             ],
         ]);
 
@@ -71,7 +71,7 @@ class SubscriptionPaymentController extends Controller
 
         // Update subscription to active
         $subscription->update([
-            'status' => 'approved',
+            'status' => 'active',
             'approved_at' => now(),
             'approved_by' => Auth::id(),
         ]);

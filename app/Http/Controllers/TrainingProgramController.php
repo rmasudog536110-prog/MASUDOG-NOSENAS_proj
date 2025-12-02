@@ -10,28 +10,26 @@ use Illuminate\Http\Request;
 
 class TrainingProgramController extends Controller
 {
-
-    public function index (Request $request)
+    public function index(Request $request)
     {
         $query = Exercise::where('is_active', true);
-        
+
         $difficulty = $request->get('difficulty', 'all');
-        
+
         if ($difficulty !== 'all') {
             $query->where('difficulty', $difficulty);
         }
-        
+
         $programs = $query->orderBy('difficulty')->get();
-        
+
         // Format programs for the view
-        $filteredPrograms = $programs->map(function($program) {
-            // Handle description - it's cast as array in model
+        $filteredPrograms = $programs->map(function ($program) {
+            // Handle description
             $description = $program->description;
-            
+
             if (is_array($description) && isset($description['overview'])) {
                 $descriptionText = $description['overview'];
             } elseif (is_string($description)) {
-                // Try to decode if it's a JSON string
                 $decoded = json_decode($description, true);
                 if (is_array($decoded) && isset($decoded['overview'])) {
                     $descriptionText = $decoded['overview'];
@@ -41,56 +39,79 @@ class TrainingProgramController extends Controller
             } else {
                 $descriptionText = 'Professional training program designed to help you achieve your fitness goals.';
             }
-            
+
             // Set icon based on level
             $icons = [
                 'beginner' => '🌱',
                 'intermediate' => '📈',
                 'expert' => '🔥',
             ];
-            
 
             return [
                 'id' => $program->id,
                 'icon' => $icons[$program->difficulty] ?? '🏋️',
-                'name' => $program->name,
+                'title' => $program->difficulty,
                 'description' => $descriptionText,
                 'equipment' => $program->equipment,
-                'difficulty' => ucfirst($program->level),
+                'level' => ucfirst($program->level),
             ];
         });
 
         return view('index.programs', [
             'filteredPrograms' => $filteredPrograms,
-            'difficulty' => $difficulty
+            'level' => $difficulty,
         ]);
     }
-    public function show(TrainingProgram $program)
-    {
-        // Check if user is enrolled
-        $isEnrolled = auth()->check() && ProgramEnrollment::where('user_id', auth()->id())
-            ->where('program_id', $program->id)
-            ->where('status', 'active')
-            ->exists();
 
-        // Format program data
-        $programData = [
-            'id' => $program->id,
-            'name' => $program->name,
-            'description' => is_array($program->description) && isset($program->description['overview'])
-                ? $program->description['overview']
-                : (is_string($program->description) ? $program->description : 'Professional training program'),
-            'difficulty' => $program->difficulty,
-            'equipment' => $program->equipment ?? 'Basic equipment',
-            'icon' => $this->getLevelIcon($program->difficulty),
-        ];
+public function show(TrainingProgram $program)
+{
+    $isEnrolled = auth()->check() && ProgramEnrollment::where('user_id', auth()->id())
+        ->where('program_id', $program->id)
+        ->where('status', 'active')
+        ->exists();
 
-        return view('index.program_detail', [
-            'program' => $programData,
-            'isEnrolled' => $isEnrolled,
-            'programModel' => $program
-        ]);
+    // Define icons for levels
+    $icons = [
+        'beginner' => '🌱',
+        'intermediate' => '📈',
+        'expert' => '🔥',
+        'hardcore' => '💪',
+    ];
+
+    $level = strtolower($program->level);
+
+    // Description as string (no decoding in Blade)
+    $description = 'Professional training program';
+    if (!empty($program->description)) {
+        if (is_string($program->description)) {
+            $decoded = json_decode($program['description'], true);
+            if (is_array($decoded) && isset($decoded['overview'])) {
+                $description = $decoded['overview'];
+            } else {
+                $description = $program->description;
+            }
+        } elseif (is_array($program->description)) {
+            $description = $program->description['overview'] ?? 'Professional training program';
+        }
     }
+
+    $programData = [
+        'id' => $program->id,
+        'icon' => $icons[$level] ?? '🏋️',
+        'title' => $program->title,
+        'description' => $description,
+        'level' => ucfirst($level),
+        'equipment' => $program->equipment_required ?? 'Basic equipment',
+        'duration_weeks' => $program->duration_weeks ?? 0,
+        'workout_counts' => $program->workout_counts ?? 0,
+    ];
+
+    return view('index.program_detail', [
+        'program' => $programData,
+        'isEnrolled' => $isEnrolled,
+    ]);
+}
+
 
     public function enroll(TrainingProgram $program)
     {
@@ -98,7 +119,6 @@ class TrainingProgramController extends Controller
             return redirect()->route('login')->with('error', 'Please login to enroll in programs.');
         }
 
-        // Check if already enrolled
         $existing = ProgramEnrollment::where('user_id', auth()->id())
             ->where('program_id', $program->id)
             ->where('status', 'active')
@@ -108,7 +128,6 @@ class TrainingProgramController extends Controller
             return back()->with('info', 'You are already enrolled in this program!');
         }
 
-        // Create enrollment record
         ProgramEnrollment::create([
             'user_id' => auth()->id(),
             'program_id' => $program->id,
@@ -126,7 +145,7 @@ class TrainingProgramController extends Controller
             'intermediate' => '📈',
             'advanced' => '⭐',
             'expert' => '🔥',
-            'hardcore' => '💪'
+            'hardcore' => '💪',
         ];
 
         return $icons[$level] ?? '🏋️';
