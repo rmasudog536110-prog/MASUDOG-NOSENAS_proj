@@ -81,10 +81,11 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::post('/payment/cancel', [UserSubscriptionController::class, 'cancel'])
-    ->name('payment.cancel');
+    ->name('payment.cancel.post');
 
 Route::get('/payment/cancel', [UserSubscriptionController::class, 'cancel'])
     ->name('payment.cancel');
+
 
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/logout', [UserController::class, 'logout'])
