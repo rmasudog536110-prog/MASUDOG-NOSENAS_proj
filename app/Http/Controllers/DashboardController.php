@@ -8,14 +8,17 @@ use Carbon\Carbon;
 use App\Models\UserSubscription;
 use App\Models\SubscriptionPlan;
 use App\Models\PaymentTransaction;
-use App\Models\WorkoutLog;
 
 class DashboardController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
-        $user = $user->role['customer'] ?? $user;
+
+        // Ensure $user is valid
+        if (!$user) {
+            abort(403, 'Unauthorized');
+        }
 
         $userSubscription = UserSubscription::where('user_id', $user->id)
             ->with('plan')
@@ -24,12 +27,19 @@ class DashboardController extends Controller
 
         if (!$userSubscription) {
             return view('index.dashboard', [
+                'user' => $user,
                 'subscriptionStatus' => 'none',
                 'userSubscription' => null,
                 'plan' => null,
                 'payment' => null,
                 'daysLeft' => 0,
-                'subscriptionExpiry' => null
+                'subscriptionExpiry' => null,
+                'workoutStats' => [
+                    'total_workouts' => 0,
+                    'weekly_workouts' => 0,
+                    'days_active' => 0
+                ],
+                'recentActivities' => collect()
             ]);
         }
 
@@ -40,22 +50,14 @@ class DashboardController extends Controller
         $paymentStatus = $payment?->status ?? 'none';
 
         $subscriptionExpiry = Carbon::parse($userSubscription->end_date);
-        $daysLeft = now()->diffInDays($subscriptionExpiry, false);
-        if ($daysLeft < 0) $daysLeft = 0;
+        $daysLeft = max(0, now()->diffInDays($subscriptionExpiry, false));
 
-        $daysLeft = intval($daysLeft);
-
-        $subscriptionStatus = 'null';
-
-        if ($paymentStatus === 'failed') {
-            $subscriptionStatus = 'payment_failed';
-        } elseif ($paymentStatus === 'approved' || $paymentStatus === 'completed') {
-            $subscriptionStatus = $subscriptionExpiry->isPast() ? 'expired' : 'active';
-        } elseif ($paymentStatus === 'pending') {
-            $subscriptionStatus = 'pending';
-        } else {
-            $subscriptionStatus = 'null';
-        }
+        $subscriptionStatus = match ($paymentStatus) {
+            'failed' => 'payment_failed',
+            'approved', 'completed' => $subscriptionExpiry->isPast() ? 'expired' : 'active',
+            'pending' => 'pending',
+            default => 'null',
+        };
 
         $plan = $userSubscription->plan;
 
@@ -75,16 +77,16 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        return view('index.dashboard', [
-            'user' => $user,
-            'userSubscription' => $userSubscription,
-            'subscriptionStatus' => $subscriptionStatus,
-            'subscriptionExpiry' => $subscriptionExpiry,
-            'daysLeft' => $daysLeft,
-            'plan' => $plan,
-            'payment' => $payment,
-            'workoutStats' => $workoutStats,
-            'recentActivities' => $recentActivities
-        ]);
+        return view('index.dashboard', compact(
+            'user',
+            'userSubscription',
+            'subscriptionStatus',
+            'subscriptionExpiry',
+            'daysLeft',
+            'plan',
+            'payment',
+            'workoutStats',
+            'recentActivities'
+        ));
     }
 }

@@ -76,7 +76,7 @@ public function register(Request $request)
     }
 
 
-    return redirect('/dashboard')->with('success', 'Registered successfully.');
+    return redirect('/user_dashboard')->with('success', 'Registered successfully.');
 }
 
     public function showLogin() {
@@ -101,13 +101,13 @@ public function register(Request $request)
     }
         
         if ($user->hasAdminAccess()) {
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('admin.admin_dashboard');
         }
 
         
         $subscription = $user->subscriptions()->latest()->first();
         if ($subscription && $subscription->status === 'pending') {
-            return redirect()->route('pending_dashboard'); // show pending_dashboard
+            return redirect()->route('index.pending_dashboard'); // show pending_dashboard
         }
 
         return redirect()->route('dashboard');
