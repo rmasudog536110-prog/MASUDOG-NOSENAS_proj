@@ -86,7 +86,7 @@ class InstructorDashboardController extends Controller
             $completionRate = round(($stats['completed_sessions'] / $stats['total_requests']) * 100, 1);
         }
 
-        return view('instructor.dashboard', compact(
+        return view('instructor_dashboard', compact(
             'stats',
             'recentRequests',
             'todaySessions',
@@ -169,7 +169,7 @@ class InstructorDashboardController extends Controller
             'instructor_notes' => $validated['instructor_notes'],
         ]);
 
-        return redirect()->route('instructor.dashboard')
+        return redirect()->route('instructor_dashboard')
             ->with('success', 'Session marked as completed!');
     }
 

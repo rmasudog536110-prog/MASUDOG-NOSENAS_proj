@@ -35,7 +35,7 @@ class InstructorRequestController extends Controller
             ->first();
 
         if ($existingRequest) {
-            return redirect()->route('dashboard')
+            return redirect()->route('user_dashboard')
                 ->with('warning', 'You already have a pending instructor request. Please wait for a response.');
         }
 
@@ -62,7 +62,7 @@ class InstructorRequestController extends Controller
             $instructorRequest->update(['instructor_id' => $instructor->id]);
         }
 
-        return redirect()->route('dashboard')
+        return redirect()->route('user_dashboard')
             ->with('success', 'Your instructor request has been submitted successfully! An instructor will contact you soon.');
     }
 

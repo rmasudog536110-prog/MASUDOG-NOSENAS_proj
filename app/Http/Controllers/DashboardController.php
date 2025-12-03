@@ -26,7 +26,7 @@ class DashboardController extends Controller
             ->first();
 
         if (!$userSubscription) {
-            return view('index.dashboard', [
+            return view('user_dashboard', [
                 'user' => $user,
                 'subscriptionStatus' => 'none',
                 'userSubscription' => null,
@@ -77,7 +77,7 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        return view('index.dashboard', compact(
+        return view('user_dashboard', compact(
             'user',
             'userSubscription',
             'subscriptionStatus',

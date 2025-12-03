@@ -22,7 +22,7 @@
             @guest
             <a href="#subscription-plans" class="btn btn-primary cta-btn">Start Your Free Trial</a>
             @else
-            <a href="{{ route('dashboard') }}" class="btn btn-primary cta-btn">Go to Dashboard</a>
+            <a href="{{ route('user_dashboard') }}" class="btn btn-primary cta-btn">Go to Dashboard</a>
             @endguest
         </div>
     </div>
