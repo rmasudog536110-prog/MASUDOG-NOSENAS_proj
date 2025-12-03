@@ -21,10 +21,10 @@
             </tr>
         </thead>
         <tbody>
-        @php
-        $totalRows = 5;
-        $membersCount = count($pending);
-        @endphp
+            @php
+            $totalRows = 5;
+            $membersCount = count($pending);
+            @endphp
             @forelse ($pending as $pendings)
                 <tr>
                     <td>{{ $pendings->user->name }}</td>
