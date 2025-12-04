@@ -30,12 +30,8 @@ use App\Http\Controllers\ReportController;
 */
 Route::middleware('guest')->group(function () {
 
-    // Root URL redirects to the main index page to avoid 404s on "/"
-    Route::get('/', function () {
-        return redirect()->route('index');
-    });
 
-    Route::get('/index', [IndexController::class, 'index'])->name('index');
+    Route::get('/', [IndexController::class, 'index'])->name('index');
 
     Route::get('/register', [UserController::class, 'showRegister'])->name('register');
     Route::post('/register', [UserController::class, 'registerUser'])->name('register.submit');

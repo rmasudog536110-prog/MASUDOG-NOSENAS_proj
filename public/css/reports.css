@@ -10,6 +10,44 @@ body {
     line-height: 1.5;
 }
 
+.report-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0 60px;
+}
+
+.report-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.report-header h1 {
+    margin-bottom: 6px;
+}
+
+.report-meta {
+    color: #bbbbbb;
+    font-size: 12px;
+    margin: 0;
+}
+
+.report-card {
+    background-color: #111;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 32px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.report-card.has-scroll {
+    overflow-x: auto;
+}
+
+.report-section + .report-section {
+    margin-top: 30px;
+}
+
 /* =========================================
    2. Typography & Headers
    ========================================= */

@@ -1188,19 +1188,21 @@ h3 {
             margin-bottom: 2rem;
         }
 
-        .admin-stat-card {
+.admin-stat-card {
             background: var(--card);
             border: 1px solid rgba(255, 102, 0, 0.3);
             border-radius: var(--radius);
             padding: 1.5rem;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: visible;
         }
 
         .hover-report-popup {
             position: absolute;
-            top: 110%;
+            top: calc(100% + 12px);
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, 10px) scale(0.96);
             width: 260px;
             background: var(--card);
             color: var(--foreground);
@@ -1209,15 +1211,27 @@ h3 {
             border-radius: 12px;
             box-shadow: 0 12px 28px rgba(0,0,0,0.3);
             opacity: 0;
-            visibility: visible;
+            visibility: hidden;
             transition: 0.25s ease-in-out;
             z-index: 50;
+            pointer-events: none;
         }
 
         .admin-stat-card:hover .hover-report-popup {
             opacity: 1;
             visibility: visible;
-            top: 100%;
+            transform: translate(-50%, 0) scale(1);
+        }
+
+        /* Force popups on last row cards to appear above */
+        .admin-stats .admin-stat-card:nth-last-child(-n+2) .hover-report-popup {
+            top: auto;
+            bottom: calc(100% + 12px);
+            transform: translate(-50%, -10px) scale(0.96);
+        }
+
+        .admin-stats .admin-stat-card:nth-last-child(-n+2):hover .hover-report-popup {
+            transform: translate(-50%, 0) scale(1);
         }
 
         .hover-report-popup h4 {

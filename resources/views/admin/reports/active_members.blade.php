@@ -5,9 +5,16 @@
 @endpush
 
 @section('content')
+<div class="report-page">
+    <div class="report-header">
+        <h1>Active Members</h1>
+        <p class="report-meta">
+            {{ $active }} active · {{ $cancelled }} cancelled
+        </p>
+    </div>
 
-<h2>Active Members Report</h2>
-    <table class="reports-table">
+    <div class="report-card">
+        <table class="reports-table">
         <thead>
             <tr>
                 <th>Name</th>

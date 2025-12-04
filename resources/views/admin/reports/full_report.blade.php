@@ -7,18 +7,19 @@
 @endpush
 
 @section('content')
-<div class="full-report-container">
-    <h1 class="full-report-title">Full Gym Report</h1>
-    <p class="full-report-subtitle">Generated on: {{ now()->format('F d, Y h:i A') }}</p>
-    
-    <!-- Total Revenue Display -->
-    <div class="total-revenue-display">
-        <h2>Total Revenue: ₱{{ number_format($revenue, 2) }}</h2>
+<div class="report-page">
+    <div class="report-header">
+        <h1>Full Gym Report</h1>
+        <p class="report-meta">Generated on: {{ now()->format('F d, Y h:i A') }}</p>
     </div>
+    
+    <div class="report-card has-scroll">
+        <div class="total-revenue-display">
+            <h2>Total Revenue</h2>
+            <h2>₱{{ number_format($revenue, 2) }}</h2>
+        </div>
 
-    <!-- Main Report Table -->
-    <div style="overflow-x: auto;">
-        <table class="full-report-table">
+        <table class="reports-table">
             <thead>
                 <tr>
                     <th>#</th>
@@ -87,11 +88,9 @@
         @endif
     @endforeach
 </tbody>
-
         </table>
     </div>
 
-    <!-- Action Buttons -->
     <div class="report-footer">
         <a href="{{ route('admin.admin_dashboard') }}" class="btn btn-success">
             <i class="fa-solid fa-arrow-left"></i> Return to Dashboard

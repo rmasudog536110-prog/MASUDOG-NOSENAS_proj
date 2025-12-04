@@ -5,45 +5,61 @@
 @endpush
 
 @section('content')
-<h2>Pending Payment Verifications</h2>
+<div class="report-page">
+    <div class="report-header">
+        <h1>Pending Payment Verifications</h1>
+        <p class="report-meta">Awaiting admin approval</p>
+    </div>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Member</th>
-                <th>Plan</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Created At</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php
-            $totalRows = 5;
-            $membersCount = count($pending);
-            @endphp
-            @forelse ($pending as $pendings)
+    <div class="report-card">
+        <table class="reports-table">
+            <thead>
                 <tr>
-                    <td>{{ $pendings->user->name }}</td>
-                    <td>{{ $pendings->subscriptionPlan->name ?? 'N/A' }}</td>
-                    <td>{{ $pendings->start_date->format('M d, Y') }}</td>
-                    <td>{{ $pendings->end_date->format('M d, Y') }}</td>
-                    <td>{{ $pendings->created_at->format('M d, Y') }}</td>
+                    <th>Member</th>
+                    <th>Plan</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Submitted</th>
                 </tr>
-                @empty
-            @endforelse
-            @for ($i = $membersCount; $i < $totalRows; $i++)
-                    <tr class="empty-row">
-                        <td colspan="5" style="text-align: center; color: var(--muted-foreground);">
-                            No pending payments found.
-                        </td>
-                    </tr>
-            @endfor
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @php
+                    $totalRows = 5;
+                    $membersCount = $pending->count();
+                @endphp
 
-<footer class="footer-reports">
-    <div class="report-footer" style="margin-top: 20px;">
+                @forelse ($pending as $subscription)
+                    <tr>
+                        <td>{{ $subscription->user->name }}</td>
+                        <td>{{ $subscription->plan->name ?? 'N/A' }}</td>
+                        <td>{{ optional($subscription->start_date)->format('M d, Y') }}</td>
+                        <td>{{ optional($subscription->end_date)->format('M d, Y') }}</td>
+                        <td>{{ $subscription->created_at->format('M d, Y') }}</td>
+                    </tr>
+                @empty
+                    <tr class="empty-row">
+                        <td colspan="5">No pending payments found</td>
+                    </tr>
+                @endforelse
+
+                @if($membersCount && $membersCount < $totalRows)
+                    @for ($i = $membersCount; $i < $totalRows; $i++)
+                        <tr class="empty-row">
+                            <td colspan="5">—</td>
+                        </tr>
+                    @endfor
+                @endif
+            </tbody>
+        </table>
+
+        @if(method_exists($pending, 'hasPages') && $pending->hasPages())
+            <div class="report-pagination">
+                {{ $pending->links() }}
+            </div>
+        @endif
+    </div>
+
+    <div class="report-footer">
         <a href="{{ route('admin.admin_dashboard') }}" class="btn btn-success">
             <i class="fa-solid fa-arrow-left"></i> Return to Dashboard
         </a>
@@ -51,5 +67,5 @@
             <i class="fa-solid fa-download"></i> Export to PDF
         </a>
     </div>
-</footer>
+</div>
 @endsection
