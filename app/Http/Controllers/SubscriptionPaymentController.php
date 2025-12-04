@@ -41,7 +41,7 @@ class SubscriptionPaymentController extends Controller
             'plan_id' => $plan->id,
             'start_date' => now(),
             'end_date' => now()->addDays($plan->duration),
-            'status' => 'null',
+            'status' => 'pending',
         ]);
 
         // Create payment transaction
@@ -106,7 +106,7 @@ class SubscriptionPaymentController extends Controller
 
         // Optionally, cancel the subscription
         $subscription->update([
-            'status' => 'cancelled' || 'rejected',
+            'status' => 'rejected',
             'admin_notes' => $request->admin_notes,
         ]);
 
