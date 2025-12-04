@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('enrolled_at');
             $table->enum('status', ['active', 'completed', 'cancelled'])->default('active');
             $table->json('completed_days')->nullable();
-            $table->int('progress');
+            $table->integer('progress')->default(0);
             $table->date('last_activity');
             $table->timestamps();
             

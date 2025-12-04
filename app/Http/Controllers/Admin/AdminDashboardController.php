@@ -59,7 +59,7 @@ class AdminDashboardController extends Controller
             ->get();
 
         // Get pending payment subscriptions
-        $pendingPayments = UserSubscription::where('status', 'null')
+        $pendingPayments = UserSubscription::where('status', 'pending')
             ->with(['user', 'plan', 'payments'])
             ->latest()
             ->get();

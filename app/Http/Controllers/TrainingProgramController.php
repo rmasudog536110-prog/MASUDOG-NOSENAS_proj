@@ -179,6 +179,7 @@ class TrainingProgramController extends Controller
             'enrolled_at' => now(),
             'status' => 'active',
             'progress' => 0,
+            'last_activity' => now(),
         ]);
 
         return redirect()->route('my-plan.show')->with('success', 'Successfully enrolled in ' . $program->title . '!');

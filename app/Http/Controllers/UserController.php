@@ -116,9 +116,21 @@ public function registerUser(Request $request)
  
     public function logout(Request $request) {
         Auth::logout();
+        
+        // Invalidate the session completely
         $request->session()->invalidate();
+        
+        // Regenerate CSRF token to prevent 419 errors
         $request->session()->regenerateToken();
-        return redirect('/index');
+        
+        // Clear all session data
+        $request->session()->flush();
+        
+        return redirect()->route('index')->withHeaders([
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => '0'
+        ]);
     }
 
 }

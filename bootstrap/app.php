@@ -22,9 +22,16 @@ return Application::configure(basePath: dirname(__DIR__))
                 | Request::HEADER_X_FORWARDED_AWS_ELB
         );
 
+        // Add session validation to web middleware group
+        $middleware->web(append: [
+            \App\Http\Middleware\ValidateSession::class,
+        ]);
+
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'instructor' => \App\Http\Middleware\InstructorMiddleware::class,
+            'customer' => \App\Http\Middleware\CustomerMiddleware::class,
+            'session.validate' => \App\Http\Middleware\ValidateSession::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
