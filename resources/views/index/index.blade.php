@@ -128,7 +128,7 @@
 
         @auth
         <div class="text-center mt-4">
-            <a href="{{ route('programs') }}" class="btn btn-primary">View All Programs</a>
+            <a href="{{ route('programs.index') }}" class="btn btn-primary">View All Programs</a>
         </div>
         @else
         <div class="text-center mt-4">

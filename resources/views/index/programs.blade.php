@@ -3,7 +3,8 @@
 @section('title', 'Training Programs - FitClub')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/programs.css') }}">
+    <link rel="stylesheet" href="css/programs.css">
+    <link rel="stylesheet" href="css/exercises.csse">
 @endpush
 
 @section('content')
@@ -49,22 +50,22 @@
         <!-- Filter Buttons -->
         <div class="d-flex justify-content-center mb-5 flex-wrap gap-2">
 
-            <a href="{{ url('programs?level=all') }}"
+            <a href="{{ route('programs.index', ['level' => 'all']) }}"
             class="btn {{ ($level === 'all') ? 'btn-primary' : 'btn-outline-primary' }}">
                 <i class="fas fa-bullseye me-1"></i> All Levels
             </a>
 
-            <a href="{{ url('programs?level=beginner') }}"
+            <a href="{{ route('programs.index' , ['level' => 'beginner']) }}"
             class="btn {{ ($level === 'beginner') ? 'btn-success' : 'btn-outline-success' }}">
                 <i class="fas fa-seedling me-1"></i> Beginner
             </a>
 
-            <a href="{{ url('programs?level=intermediate') }}"
+            <a href="{{ route('programs.index', ['level' => 'intermediate']) }}"
             class="btn {{ ($level === 'intermediate') ? 'btn-warning' : 'btn-outline-warning' }}">
                 <i class="fas fa-chart-line me-1"></i> Intermediate
             </a>
 
-            <a href="{{ url('programs?level=expert') }}"
+            <a href="{{ route('programs.index', ['level' => 'expert']) }}"
             class="btn {{ ($level === 'expert') ? 'btn-danger' : 'btn-outline-danger' }}">
                 <i class="fas fa-star me-1"></i> Expert
             </a>
@@ -115,11 +116,9 @@
                                         {{ ucfirst($program['level']) }}
                                     </span>
 
-                                    <button class="btn btn-primary btn-sm"
-                                        onclick="viewProgram({{ $program['id'] }})">
+                                    <a href="{{ route('programs.show', $program['id']) }}" class="btn btn-primary btn-sm">
                                         <i class="fas fa-eye me-1"></i> View Program
-                                    </button>
-
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -138,9 +137,6 @@
 
 @push('scripts')
 <script>
-    function viewProgram(id) {
-        window.location.href = '{{ url("programs") }}/' + id;
-    }
 
     document.addEventListener('DOMContentLoaded', () => {
         const cards = document.querySelectorAll('.program-card');

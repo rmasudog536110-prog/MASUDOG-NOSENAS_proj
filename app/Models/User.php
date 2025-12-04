@@ -13,6 +13,7 @@ use App\Models\UserSubscription;
 use App\Models\UserProgress;
 use App\Models\PaymentTransaction;
 use App\Models\WorkoutLog;
+use App\Models\ProgramEnrollment;
 use App\Models\BodyMeasurement;
 use App\Models\InstructorRequest;
 
@@ -70,6 +71,11 @@ class User extends Authenticatable
     public function progress(): HasMany
     {
         return $this->hasMany(UserProgress::class);
+    }
+
+    public function enrollments()
+    {
+        return $this->hasMany(ProgramEnrollment::class, 'user_id', 'id');
     }
 
     public function transactions(): HasMany
@@ -154,6 +160,8 @@ class User extends Authenticatable
 
     public function hasAdminAccess(): bool
     {
-        return in_array($this->role, ['admin', 'manager']);
+        return $this->role === 'admin';
     }
+
+    
 }

@@ -70,12 +70,12 @@
                     <span class="action-card-text">Log Workout</span>
                 </a>
 
-                <a href="{{ route('programs') }}" class="action-card">
+                <a href="{{ route('programs.index') }}" class="action-card">
                     <span class="action-card-icon">🏋️</span>
                     <span class="action-card-text">Training Programs</span>
                 </a>
 
-                <a href="{{ route('exercises') }}" class="action-card">
+                <a href="{{ route('exercises.index') }}" class="action-card">
                     <span class="action-card-icon">💪</span>
                     <span class="action-card-text">Exercise Library</span>
                 </a>
@@ -260,19 +260,20 @@
                 <h2 class="section-title">
                     <i class="fa-solid fa-clock-rotate-left"></i> Recent Activities
                 </h2>
-                <div class="section-actions">
-                @auth
-                    <div class="user-info">
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="btn btn-outline">Logout</button>
-                        </form>
-                    </div>
-                @endauth
-                @if ($userSubscription === 'pending' || $userSubscription === 'expired' || $userSubscription === 'rejected')
+                <div class="section-actions"> 
+                @if ($subscriptionStatus === 'pending' || $subscriptionStatus === 'expired')
+                    @auth
+                        <div class="user-info">
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="btn btn-outline">Logout</button>
+                            </form>
+                        </div>
+                     @endauth
+                @else
                     <a href="{{ route('workout-logs.index') }}" class="btn btn-primary btn-sm">
                         <i class="fa-solid fa-magnifying-glass" style="margin-right: 10px;"></i> View All
-                    </a>
+                     </a>
                 @endif
                 </div>
             </div>
@@ -309,7 +310,7 @@
                     <div class="empty-state-icon">📊</div>
                     <p>No workout activities yet.</p>
                     @if (in_array($subscriptionStatus, ['active', 'trial']))
-                        <a href="{{ route('programs') }}" class="btn btn-primary" style="margin-top: 1rem;">
+                        <a href="{{ route('programs.index') }}" class="btn btn-primary" style="margin-top: 1rem;">
                             <i class="fa-solid fa-play"></i> Start First Workout
                         </a>
                     @endif

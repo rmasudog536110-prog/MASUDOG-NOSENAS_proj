@@ -1,44 +1,277 @@
-            body {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            margin: 20px;
-            background-color: #000;
-        }
+/* =========================================
+   1. Base Layout & Dark Theme Reset
+   ========================================= */
+body {
+    font-family: Arial, "Helvetica Neue", sans-serif;
+    font-size: 12px;
+    margin: 20px;
+    background-color: #1a1a1a; /* Dark background */
+    color: #fff; /* White text */
+    line-height: 1.5;
+}
 
-        h2 {
-            margin-bottom: 15px;
-            text-align: center;
-            color: #fff;
-        }
+/* =========================================
+   2. Typography & Headers
+   ========================================= */
+h1, h2, h3, 
+.full-report-title {
+    text-align: center;
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
 
-        p{
-            margin-bottom: 15px;
-            text-align: center;
-            color: #fff;
-        }
+h1, .full-report-title {
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
+h2 {
+    font-size: 18px;
+    border-bottom: 2px solid #555; /* Subtle divider */
+    padding-bottom: 10px;
+    display: inline-block; /* Wraps underline to text width */
+    margin-bottom: 20px;
+}
 
-        thead tr {
-            background: #555;
-            color: white;
-        }
+/* Subtitles & Meta Data */
+p, 
+.subtitle, 
+.full-report-subtitle {
+    text-align: center;
+    color: #cccccc; /* Light grey for secondary text */
+    margin-bottom: 25px;
+    font-size: 11px;
+    font-style: italic;
+}
 
-        th, td {
-            padding: 8px;
-            border: 1px solid #ccc;
-            color: #000;
-        }
+/* =========================================
+   3. Special Components
+   ========================================= */
+/* Total Revenue Box */
+.total-revenue-display {
+    text-align: center;
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #252525;
+    border: 1px solid #444;
+    border-radius: 8px;
+}
 
-        tbody tr:nth-child(even) {
-            background: #f4f4f4;
-        }
+.total-revenue-display h2 {
+    color: #4cd137; /* Bright Green for Money */
+    border-bottom: none;
+    margin: 0;
+    font-size: 22px;
+}
 
-        .empty-row td {
-            height: 18px;
-            background: #fff !important;
-        }
+/* =========================================
+   4. Unified Table Styling
+   ========================================= */
+/* Targets all table classes used across your Blade files */
+table, 
+.table-container, 
+.full-report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    margin-bottom: 30px;
+    background-color: #1a1a1a;
+}
+
+/* Table Header */
+thead tr {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+th, td {
+    padding: 10px 8px;
+    border: 1px solid #555555;
+    color: #ffffff;
+    text-align: left;
+    vertical-align: middle;
+}
+
+th {
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    font-weight: bold;
+}
+
+/* Zebra Striping (Dark Mode) */
+tbody tr:nth-child(even) {
+    background-color: #2a2a2a;
+}
+
+/* Hover Effect */
+tbody tr:hover {
+    background-color: #383838;
+}
+
+/* =========================================
+   5. Logic Rows (Section Headers, Empty, Summaries)
+   ========================================= */
+
+/* Section Headers (e.g., "ACTIVE MEMBERS") */
+.section-header td,
+tr.section-header td {
+    background-color: #444444 !important;
+    color: #ffffff;
+    font-weight: bold;
+    text-align: center;
+    padding: 12px;
+    border-bottom: 2px solid #666;
+    text-transform: uppercase;
+    font-size: 11px;
+}
+
+/* Summary Rows (Totals) */
+.summary-row td,
+tr.summary-row td {
+    background-color: #3a5f3a !important; /* Dark Green Background */
+    color: #ffffff;
+    font-weight: bold;
+    border-top: 2px solid #fff;
+    font-size: 13px;
+}
+
+/* Align values to right in summary */
+.summary-row td:last-child,
+tr.summary-row td:last-child {
+    text-align: right;
+    padding-right: 15px;
+}
+
+/* Empty Rows (Fillers) */
+.empty-row td,
+tr.empty-row td {
+    height: 30px;
+    background-color: #1a1a1a !important;
+    border: 1px solid #333;
+    color: #666;
+    text-align: center;
+    font-style: italic;
+}
+
+/* No Data Message */
+.no-data, 
+td.no-data {
+    text-align: center;
+    padding: 25px;
+    color: #999;
+    font-style: italic;
+    background-color: #222;
+}
+
+/* =========================================
+   6. Badges & Status Indicators
+   ========================================= */
+.badge {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.bg-success {
+    background-color: #198754; /* Bootstrap Green */
+}
+
+.bg-warning {
+    background-color: #ffc107;
+    color: #000; /* Black text for yellow bg */
+}
+
+.bg-danger {
+    background-color: #dc3545;
+}
+
+/* =========================================
+   7. Footer & Buttons
+   ========================================= */
+.footer, 
+.report-footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #555;
+    text-align: center;
+    color: #aaaaaa;
+    font-size: 11px;
+}
+
+/* Basic Button Styling for PDF Views */
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    padding: 8px 16px;
+    font-size: 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    margin: 0 5px;
+    transition: opacity 0.2s;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    color: #fff;
+    border: 1px solid #0d6efd;
+}
+
+.btn-success {
+    background-color: #198754;
+    color: #fff;
+    border: 1px solid #198754;
+}
+
+/* =========================================
+   8. Print & PDF Optimization
+   ========================================= */
+@media print {
+    body {
+        /* Ensure background colors are printed. 
+           Note: Some browsers/PDF engines require user settings to print backgrounds. */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        background-color: #1a1a1a;
+        color: #fff;
+    }
+
+    table {
+        page-break-inside: auto;
+    }
+
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tfoot {
+        display: table-footer-group;
+    }
+    
+    /* Hide action buttons in PDF/Print */
+    .report-footer a.btn {
+        display: none;
+    }
+}

@@ -1,58 +1,50 @@
 /* -----------------------------------------------------------
-   GLOBAL THEME VARIABLES
-   Centralized source for colors, sizing, and effects.
+GLOBAL THEME VARIABLES
 ----------------------------------------------------------- */
 :root {
-    /* 1. Theme Colors */
-    --primary: #ff6600;            /* Orange */
-    --primary-dark: #e65c00;       /* Darker Orange (for hover) */
-    --background: #000000;         /* Black */
-    --foreground: #f5f5f5;         /* Near White Text */
-    --card: #1a1a1a;               /* Dark Gray Card Background */
-    --card-hover: #222222;         /* Slightly darker card/link hover */
-    --muted-foreground: #b5b5b5;   /* Light Gray for descriptions/secondary text */
-    --icon-muted: #888;            /* Color for disabled/clear icons */
-    --placeholder-color: #777;     /* Input placeholder text */
+    --primary: #ff6600;
+    --primary-dark: #e65c00;
+    --background: #000000;
+    --foreground: #f5f5f5;
+    --card: #1a1a1a;
+    --card-hover: #222222;
+    --muted-foreground: #b5b5b5;
+    --icon-muted: #888;
+    --placeholder-color: #777;
 
-    /* 2. System Colors (used for alerts, badges, etc.) */
-    --color-success: #28a745;      /* Bootstrap Success */
-    --color-info: #17a2b8;         /* Bootstrap Info (e.g., Strength) */
-    --color-warning: #ffc107;      /* Bootstrap Warning (e.g., Intermediate, Plyometrics) */
-    --color-danger: #dc3545;       /* Bootstrap Danger (e.g., Cardio, Expert) */
-    --color-secondary: #6c757d;    /* Bootstrap Secondary (e.g., Functional) */
+    --color-success: #28a745;
+    --color-info: #17a2b8;
+    --color-warning: #ffc107;
+    --color-danger: #dc3545;
+    --color-secondary: #6c757d;
 
-    /* 3. Borders & Shadows */
-    --border-dark: #333;           /* Dark borders for inputs/links */
-    --border-medium: #555;         /* Medium borders for button outlines */
-    --border-primary-light: rgba(255, 102, 0, 0.15); /* Light border for cards */
-    --shadow-primary: 0 8px 25px rgba(255, 102, 0, 0.3); /* Card hover shadow */
-    --table-border: rgba(255, 102, 0, 0.1); /* Separator for table/pagination */
+    --border-dark: #333;
+    --border-medium: #555;
+    --border-primary-light: rgba(255, 102, 0, 0.15);
+    --shadow-primary: 0 8px 25px rgba(255, 102, 0, 0.3);
+    --table-border: rgba(255, 102, 0, 0.1);
 
-    /* 4. Spacing & Shape */
-    --radius: 0.7rem;              /* General border radius */
-    --radius-sm: 0.4rem;           /* Smaller radius for badges */
-    --spacing-lg: 4rem;            /* Large padding (e.g., .py-5) */
-    --spacing-md: 3rem;            /* Medium padding (e.g., .py-5 responsive) */
-    --transition-speed: 0.3s;      /* Standard transition speed */
+    --radius: 0.7rem;
+    --radius-sm: 0.4rem;
+    --spacing-lg: 4rem;
+    --spacing-md: 3rem;
+    --transition-speed: 0.3s;
 }
-
-/* --- Calculated/Derived Colors (Alert Backgrounds) --- */
-.alert-success {
-    --alert-bg: rgba(40, 167, 69, 0.2);
-    --alert-text: var(--color-success);
-    background-color: var(--alert-bg);
-    color: var(--alert-text);
-}
-.alert-danger {
-    --alert-bg: rgba(220, 53, 69, 0.2);
-    --alert-text: var(--color-danger);
-    background-color: var(--alert-bg);
-    color: var(--alert-text);
-}
-
 
 /* -----------------------------------------------------------
-   BASE LAYOUT
+ALERT BACKGROUNDS
+----------------------------------------------------------- */
+.alert-success {
+    background-color: rgba(40, 167, 69, 0.2);
+    color: var(--color-success);
+}
+.alert-danger {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: var(--color-danger);
+}
+
+/* -----------------------------------------------------------
+BASE LAYOUT
 ----------------------------------------------------------- */
 body {
     background-color: var(--background);
@@ -60,7 +52,7 @@ body {
     font-family: "Inter", sans-serif;
 }
 
-.bg-light { /* Override for framework class in dark mode */
+.bg-light {
     background-color: var(--background) !important;
 }
 
@@ -70,35 +62,29 @@ body {
     padding: 0 1.5rem;
 }
 
-/* Spacing utility override */
 .py-5 {
     padding: var(--spacing-lg) 0;
 }
 
 /* -----------------------------------------------------------
-   PAGE HEADER & ACTIONS (.page-header)
+PAGE HEADER
 ----------------------------------------------------------- */
 .admin-exercises-page {
     padding: 3rem 0;
 }
 
 .page-header h1 {
-    font-size: 2.8rem; /* .display-4 */
+    font-size: 2.8rem;
     font-weight: 800;
     margin-bottom: 5px;
     text-align: center;
 }
 
 .page-header p {
-    font-size: 1.25rem; /* .lead */
-    line-height: 1.6;
+    font-size: 1.25rem;
     color: var(--muted-foreground);
     margin-bottom: 2rem;
     text-align: center;
-}
-
-.page-header .fa-dumbbell {
-    color: var(--primary);
 }
 
 .header-actions {
@@ -128,7 +114,6 @@ body {
 .btn-back:hover {
     color: var(--foreground);
     background: var(--primary-dark);
-    border-color: var(--primary-dark);
 }
 
 .btn-add-new {
@@ -139,11 +124,10 @@ body {
 
 .btn-add-new:hover {
     background: var(--primary-dark);
-    border-color: var(--primary-dark);
 }
 
 /* -----------------------------------------------------------
-   ALERTS
+ALERTS
 ----------------------------------------------------------- */
 .alert {
     border-radius: 0;
@@ -159,44 +143,36 @@ body {
 }
 
 /* -----------------------------------------------------------
-   EXERCISES CARD & TABLE
+TABLES
 ----------------------------------------------------------- */
 .exercises-card {
     background: var(--card);
     border: 1px solid var(--border-primary-light);
     border-radius: var(--radius);
-    overflow: hidden; /* To contain table borders/shadows */
 }
 
 .table-container {
     overflow-x: auto;
-    width: 100%;
 }
 
 .exercises-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 800px; /* Ensure table doesn't get too narrow on smaller desktops */
+    min-width: 800px;
 }
 
 .exercises-table thead th {
     background-color: var(--card-hover);
     color: var(--muted-foreground);
-    text-align: left;
     padding: 1rem 1.5rem;
     border-bottom: 2px solid var(--table-border);
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.85rem;
 }
 
 .exercises-table tbody tr {
     border-bottom: 1px solid var(--table-border);
     transition: background-color var(--transition-speed);
-}
-
-.exercises-table tbody tr:last-child {
-    border-bottom: none;
 }
 
 .exercises-table tbody tr:hover {
@@ -205,82 +181,35 @@ body {
 
 .exercises-table td {
     padding: 1.25rem 1.5rem;
-    vertical-align: middle;
-}
-
-/* --- Table Columns Styling --- */
-
-/* Icon */
-.exercise-icon {
-    font-size: 1.5rem;
-    line-height: 1;
-    display: inline-block;
-}
-
-/* Name */
-.exercise-name {
-    font-weight: 600;
-    color: var(--foreground);
-}
-
-/* Video Link */
-.video-link {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.video-link:hover {
-    color: var(--primary-dark);
-    text-decoration: underline;
-}
-
-/* No Video Text */
-td span[style*="var(--muted-foreground)"] {
-    color: var(--muted-foreground) !important;
-    font-style: italic;
-    font-size: 0.9rem;
 }
 
 /* -----------------------------------------------------------
-   BADGES (CATEGORY, DIFFICULTY, STATUS)
+BADGES
 ----------------------------------------------------------- */
-.badge,
-.category-badge,
-.difficulty-badge,
-.status-badge {
+.badge {
     padding: 0.4rem 0.75rem;
     border-radius: var(--radius-sm);
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
-    display: inline-block;
-    line-height: 1;
-    white-space: nowrap;
 }
 
-/* Category Badges */
-.bg-info { background-color: var(--color-info) !important; color: var(--background) !important; }
-.bg-danger { background-color: var(--color-danger) !important; color: #fff !important; }
-.bg-success { background-color: var(--color-success) !important; color: var(--background) !important; }
-.bg-warning.text-dark { background-color: var(--color-warning) !important; color: var(--background) !important; }
-.bg-secondary { background-color: var(--color-secondary) !important; color: #fff !important; }
-.bg-primary { background-color: var(--primary) !important; color: #fff !important; }
+.bg-info { background-color: var(--color-info) !important; }
+.bg-danger { background-color: var(--color-danger) !important; }
+.bg-success { background-color: var(--color-success) !important; }
+.bg-warning.text-dark { background-color: var(--color-warning) !important; }
+.bg-secondary { background-color: var(--color-secondary) !important; }
+.bg-primary { background-color: var(--primary) !important; }
 
-/* Status Badges */
 .status-active {
     background-color: var(--color-success);
-    color: var(--background);
 }
-
 .status-inactive {
     background-color: var(--color-secondary);
-    color: #fff;
 }
 
-
 /* -----------------------------------------------------------
-   ACTION BUTTONS
+ACTION BUTTONS
 ----------------------------------------------------------- */
 .action-buttons {
     display: flex;
@@ -296,11 +225,10 @@ td span[style*="var(--muted-foreground)"] {
     border-radius: 50%;
     border: 1px solid transparent;
     transition: all var(--transition-speed);
-    font-size: 0.9rem;
 }
 
 .btn-edit {
-    background-color: rgba(23, 162, 184, 0.15); /* Light info background */
+    background-color: rgba(23, 162, 184, 0.15);
     color: var(--color-info);
 }
 
@@ -310,7 +238,7 @@ td span[style*="var(--muted-foreground)"] {
 }
 
 .btn-delete {
-    background-color: rgba(220, 53, 69, 0.15); /* Light danger background */
+    background-color: rgba(220, 53, 69, 0.15);
     color: var(--color-danger);
 }
 
@@ -320,33 +248,16 @@ td span[style*="var(--muted-foreground)"] {
 }
 
 /* -----------------------------------------------------------
-   EMPTY STATE
+EMPTY STATE
 ----------------------------------------------------------- */
 .empty-state {
     text-align: center;
     padding: 3rem 0;
 }
 
-.empty-state-icon i {
-    font-size: 3rem;
-    color: var(--muted-foreground);
-    opacity: 0.5;
-    margin-bottom: 1rem;
-}
-
-.empty-state-text {
-    font-size: 1.25rem;
-    color: var(--muted-foreground);
-    margin-bottom: 1.5rem;
-}
-
 /* -----------------------------------------------------------
-   PAGINATION (using framework styles, adapted)
+PAGINATION
 ----------------------------------------------------------- */
-div[style*="border-top: 1px solid rgba(255, 102, 0, 0.1)"] {
-    border-top: 1px solid var(--table-border) !important;
-}
-
 .page-item.active .page-link {
     background: var(--primary);
     border-color: var(--primary);
@@ -360,51 +271,99 @@ div[style*="border-top: 1px solid rgba(255, 102, 0, 0.1)"] {
 
 .page-link:hover {
     background: var(--card-hover);
-    color: var(--foreground);
 }
 
 /* -----------------------------------------------------------
-   RESPONSIVE LAYOUT
+RESPONSIVE DESIGN
 ----------------------------------------------------------- */
 @media (max-width: 768px) {
-    .page-header h1 {
-        font-size: 2rem;
-    }
-    .page-header p {
-        font-size: 1.1rem;
-    }
-    .header-actions {
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-    .btn-back,
-    .btn-add-new {
-        width: 100%;
-        justify-content: center;
-    }
-    .exercises-table td {
-        padding: 0.75rem 1rem;
-    }
+    .page-header h1 { font-size: 2rem; }
+    .page-header p { font-size: 1.1rem; }
+    .header-actions { flex-direction: column; }
+    .btn-back, .btn-add-new { width: 100%; }
+    .exercises-table td { padding: 0.75rem 1rem; }
 }
 
-/* If the original template uses Bootstrap's form/search elements, 
-   we include their dark mode overrides for completeness */
-.form-control {
-    background: var(--card);
-    border: 1px solid var(--border-dark);
-    color: var(--foreground);
+/* -----------------------------------------------------------
+EXERCISE LIBRARY SECTION
+----------------------------------------------------------- */
+section.py-5.bg-light {
+    padding: var(--spacing-lg) 0;
+    background: linear-gradient(135deg,
+        rgba(255, 102, 0, 0.05) 0%,
+        rgba(26, 26, 26, 0.8) 100%) !important;
+    min-height: calc(100vh - 200px);
 }
 
-.form-control::placeholder {
-    color: var(--placeholder-color);
+/* -----------------------------------------------------------
+SEARCH BAR
+----------------------------------------------------------- */
+.input-group {
+    border-radius: var(--radius);
+    overflow: hidden;
 }
 
 .input-group-text {
-    background: var(--card);
-    border: 1px solid var(--border-dark);
-    color: var(--muted-foreground);
+    background: var(--card-hover) !important;
+    border: 1px solid var(--border-dark) !important;
+    color: var(--primary) !important;
 }
-/* No Results text */
-.text-muted {
-    color: var(--muted-foreground) !important;
+
+.form-control {
+    background: var(--card) !important;
+    border: 1px solid var(--border-dark) !important;
+    color: var(--foreground) !important;
+}
+
+.form-control:focus {
+    border-color: var(--primary) !important;
+}
+
+/* -----------------------------------------------------------
+FILTER BUTTONS
+----------------------------------------------------------- */
+.filter-buttons .btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius-sm);
+}
+
+/* -----------------------------------------------------------
+EXERCISE CARDS
+----------------------------------------------------------- */
+.exercise-card {
+    background: var(--card) !important;
+    border: 1px solid var(--border-primary-light) !important;
+    border-radius: var(--radius) !important;
+    transition: all var(--transition-speed);
+}
+
+.exercise-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-primary) !important;
+}
+
+/* -----------------------------------------------------------
+CARD FOOTER
+----------------------------------------------------------- */
+.card-footer {
+    background: var(--card-hover) !important;
+    border-top: 1px solid var(--table-border) !important;
+}
+
+/* -----------------------------------------------------------
+PAGINATION OVERRIDE
+----------------------------------------------------------- */
+.pagination {
+    border-top: 1px solid var(--table-border) !important;
+    padding-top: 2rem;
+}
+
+/* -----------------------------------------------------------
+RESPONSIVE
+----------------------------------------------------------- */
+@media (max-width: 1200px) {
+    .col-lg-3 { flex: 0 0 33%; }
+}
+@media (max-width: 992px) {
+    .col-lg-3, .col-md-4 { flex: 0 0 50%; }
 }

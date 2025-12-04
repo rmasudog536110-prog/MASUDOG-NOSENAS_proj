@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\UserSubscription;
-use App\Models\SubscriptionPlan;
 use App\Models\PaymentTransaction;
 
 class DashboardController extends Controller
@@ -14,79 +13,40 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-
-        // Ensure $user is valid
-        if (!$user) {
-            abort(403, 'Unauthorized');
-        }
+        if (!$user) abort(403, 'Unauthorized');
 
         $userSubscription = UserSubscription::where('user_id', $user->id)
             ->with('plan')
             ->latest()
             ->first();
 
-        if (!$userSubscription) {
-            return view('user_dashboard', [
-                'user' => $user,
-                'subscriptionStatus' => 'none',
-                'userSubscription' => null,
-                'plan' => null,
-                'payment' => null,
-                'daysLeft' => 0,
-                'subscriptionExpiry' => null,
-                'workoutStats' => [
-                    'total_workouts' => 0,
-                    'weekly_workouts' => 0,
-                    'days_active' => 0
-                ],
-                'recentActivities' => collect()
-            ]);
-        }
-
-        $payment = PaymentTransaction::where('subscription_id', $userSubscription->id)
-            ->latest()
-            ->first();
-
+        $plan = $userSubscription?->plan;
+        $payment = $userSubscription ? PaymentTransaction::where('subscription_id', $userSubscription->id)->latest()->first() : null;
         $paymentStatus = $payment?->status ?? 'none';
 
-        $subscriptionExpiry = Carbon::parse($userSubscription->end_date);
-        $daysLeft = max(0, now()->diffInDays($subscriptionExpiry, false));
+        $subscriptionExpiry = $userSubscription?->end_date ? Carbon::parse($userSubscription->end_date) : null;
+        $daysLeft = $subscriptionExpiry ? max(0, now()->diffInDays($subscriptionExpiry, false)) : 0;
+
+        $daysLeft = intval($daysLeft);
 
         $subscriptionStatus = match ($paymentStatus) {
             'failed' => 'payment_failed',
-            'approved', 'completed' => $subscriptionExpiry->isPast() ? 'expired' : 'active',
+            'approved', 'completed' => $subscriptionExpiry && $subscriptionExpiry->isPast() ? 'expired' : 'active',
             'pending' => 'pending',
-            default => 'null',
+            default => 'none',
         };
 
-        $plan = $userSubscription->plan;
-
         $workoutStats = [
-            'total_workouts' => $user->workoutLogs()->count(),
-            'weekly_workouts' => $user->workoutLogs()
-                ->where('workout_date', '>=', now()->subWeek())
-                ->count(),
-            'days_active' => $user->workoutLogs()
-                ->distinct('workout_date')
-                ->count('workout_date'),
+            'total_workouts' => $user->workoutLogs()?->count() ?? 0,
+            'weekly_workouts' => $user->workoutLogs()?->where('workout_date', '>=', now()->subWeek())->count() ?? 0,
+            'days_active' => $user->workoutLogs()?->distinct('workout_date')->count('workout_date') ?? 0,
         ];
 
-        $recentActivities = $user->workoutLogs()
-            ->with(['exercise', 'trainingProgram'])
-            ->latest('workout_date')
-            ->take(5)
-            ->get();
+        $recentActivities = $user->workoutLogs()?->with(['exercise', 'trainingProgram'])->latest('workout_date')->take(5)->get() ?? collect();
 
-        return view('user_dashboard', compact(
-            'user',
-            'userSubscription',
-            'subscriptionStatus',
-            'subscriptionExpiry',
-            'daysLeft',
-            'plan',
-            'payment',
-            'workoutStats',
-            'recentActivities'
+        return view('index.user_dashboard', compact(
+            'user', 'userSubscription', 'subscriptionStatus', 'subscriptionExpiry',
+            'daysLeft', 'plan', 'payment', 'workoutStats', 'recentActivities'
         ));
     }
 }

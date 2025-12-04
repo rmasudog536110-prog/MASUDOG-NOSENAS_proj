@@ -53,7 +53,7 @@
             <a href="{{ route('profile.edit') }}" class="btn btn-primary">
                 <i class="fa-solid fa-edit"></i> Edit Profile
             </a>
-            <a href="{{ route('dashboard') }}" class="btn btn-outline">
+            <a href="{{ route('user_dashboard') }}" class="btn btn-outline">
                 <i class="fa-solid fa-dashboard"></i> Back to Dashboard
             </a>
         </div>

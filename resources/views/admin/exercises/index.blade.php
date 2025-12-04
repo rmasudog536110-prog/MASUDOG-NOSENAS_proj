@@ -21,7 +21,7 @@
             </h1>
             <p>Create, edit, and manage your exercise library</p>
             <div class="header-actions">
-                <a href="{{ route('admin.dashboard') }}" class="btn-back">
+                <a href="{{ route('admin.admin_dashboard') }}" class="btn-back">
                     <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
                 </a>
                 <a href="{{ route('admin.exercises.create') }}" class="btn-add-new">

@@ -12,10 +12,12 @@ class ProgramEnrollment extends Model
         'program_id',
         'enrolled_at',
         'completed_at',
+        
         'status',
     ];
 
     protected $casts = [
+        'completed_days' => 'array',
         'enrolled_at' => 'date',
         'completed_at' => 'date',
     ];

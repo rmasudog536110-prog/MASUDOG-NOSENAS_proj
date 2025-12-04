@@ -7,9 +7,6 @@
 @section('content')
 <h2>Pending Payment Verifications</h2>
 
-@if($pending->isEmpty())
-    <p>No pending payments found.</p>
-@else
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -36,19 +33,18 @@
                 @empty
             @endforelse
             @for ($i = $membersCount; $i < $totalRows; $i++)
-                <tr class="empty-row">
-                    <td colspan="5" style="text-align: center; color: var(--muted-foreground);">
-                        No users Expiring Soon
-                    </td>
-                </tr>
+                    <tr class="empty-row">
+                        <td colspan="5" style="text-align: center; color: var(--muted-foreground);">
+                            No pending payments found.
+                        </td>
+                    </tr>
             @endfor
         </tbody>
     </table>
-@endif
 
 <footer class="footer-reports">
     <div class="report-footer" style="margin-top: 20px;">
-        <a href="{{ route('admin.dashboard') }}" class="btn btn-success">
+        <a href="{{ route('admin.admin_dashboard') }}" class="btn btn-success">
             <i class="fa-solid fa-arrow-left"></i> Return to Dashboard
         </a>
         <a href="{{ route('reports.pending_payments_pdf') }}" class="btn btn-primary">

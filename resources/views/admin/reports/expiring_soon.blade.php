@@ -6,7 +6,6 @@
 
 @section('content')
 
-
 <h2>Expiring Soon (Next 7 Days)</h2>
 
 <table class="reports-table">
@@ -22,25 +21,28 @@
 
         @php
         $totalRows = 5;
+        // Check if variable exists, otherwise use empty collection
+        $subscriptions = $subscriptions ?? collect();
         $membersCount = count($subscriptions);
         @endphp
 
         @forelse ($subscriptions as $i => $sub)
         <tr class="empty-row">
             <td>{{ $i + 1 }}</td>
-            <td>{{ $sub->user->name }}</td>
-            <td>{{ $sub->plan->name ?? 'N/A'}}</td>
-            <td>{{ $sub->end_date->format('M d, Y') }}</td>
+            <td>{{ $sub->user->name ?? 'N/A' }}</td>
+            <td>{{ $sub->plan->name ?? 'N/A' }}</td>
+            <td>{{ $sub->end_date->format('M d, Y') ?? 'N/A' }}</td>
         </tr>
-         @empty
-         @endforelse
-            @for ($i = $membersCount; $i < $totalRows; $i++)
-                <tr class="empty-row">
-                    <td colspan="5" style="text-align: center; color: var(--muted-foreground);">
-                        No users Expiring Soon
-                    </td>
-                </tr>
-            @endfor
+        @empty
+        @endforelse
+        
+        @for ($i = $membersCount; $i < $totalRows; $i++)
+            <tr class="empty-row">
+                <td colspan="5" style="text-align: center; color: var(--muted-foreground);">
+                    No users Expiring Soon
+                </td>
+            </tr>
+        @endfor
         
     </tbody>
 </table>
@@ -59,36 +61,37 @@
     </thead>
 
     <tbody>
+
         @php
             $activeRows = 5;
+            $activeSubscriptions = $activeSubscriptions ?? collect();
             $activeCount = count($activeSubscriptions);
         @endphp
 
-        @forelse ($activeSubscriptions as $i => $active)
+        @foreach ($activeSubscriptions as $i => $active)
             <tr class="empty-row">
                 <td>{{ $i + 1 }}</td>
-                <td>{{ $active->user->name }}</td>
-                <td>{{ $active->user->email }}</td>
+                <td>{{ $active->user->name ?? 'N/A' }}</td>
+                <td>{{ $active->user->email ?? 'N/A' }}</td>
                 <td>{{ $active->plan->name ?? 'N/A' }}</td>
-                <td>{{ $active->end_date->format('M d, Y') }}</td>
+                <td>{{ $active->end_date->format('M d, Y') ?? 'N/A' }}</td>
             </tr>
-        @empty
-          @endforelse
-            @for ($i = $activeCount; $i < $activeRows; $i++)
-                <tr class="empty-row">
-                    <td colspan="5" class="text-center" style="color: var(--muted-foreground);">
-                        No Active Subscriptions
-                    </td>
-                </tr>
-            @endfor
+        @endforeach
+        
+        @for ($i = $activeCount; $i < $activeRows; $i++)
+            <tr class="empty-row">
+                <td colspan="5" class="text-center" style="color: var(--muted-foreground);">
+                    No Active Subscriptions
+                </td>
+            </tr>
+        @endfor
       
     </tbody>
 </table>
 
-
 <footer class="footer-reports">
     <div class="report-footer" style="margin-top: 20px;">
-        <a href="{{ route('admin.dashboard') }}" class="btn btn-success">
+        <a href="{{ route('admin.admin_dashboard') }}" class="btn btn-success">
             <i class="fa-solid fa-arrow-left"></i> Return to Dashboard
         </a>
         <a href="{{ route('reports.expiring_soon_pdf') }}" class="btn btn-primary">

@@ -32,7 +32,7 @@ class UserController extends Controller
     }
  
  
-public function register(Request $request)
+public function registerUser(Request $request)
 {
     $request->validate([
         'name' => 'required',
@@ -70,11 +70,6 @@ public function register(Request $request)
         return redirect()->route('index');
     }
 
-    if ($subscription && $subscription->status === 'null') {
-        Auth::login($user);
-        return redirect()->route('subscription.payment.form');
-    }
-
 
     return redirect('user_dashboard')->with('success', 'Registered successfully.');
 }
@@ -101,13 +96,13 @@ public function register(Request $request)
     }
         
         if ($user->hasAdminAccess()) {
-            return redirect()->route('admin_dashboard');
+            return redirect()->route('admin.admin_dashboard');
         }
 
         
         $subscription = $user->subscriptions()->latest()->first();
         if ($subscription && $subscription->status === 'pending') {
-            return redirect()->route('pending_dashboard'); // show pending_dashboard
+            return redirect()->route('index.pending_dashboard'); // show pending_dashboard
         }
 
         return redirect()->route('user_dashboard');

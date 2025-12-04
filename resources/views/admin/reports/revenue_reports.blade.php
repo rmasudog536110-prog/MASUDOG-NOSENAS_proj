@@ -13,7 +13,7 @@
 
 <footer class="footer-reports">
     <div class="report-footer" style="margin-top: 20px;">
-        <a href="{{ route('admin.dashboard') }}" class="btn btn-success">
+        <a href="{{ route('admin.admin_dashboard') }}" class="btn btn-success">
             <i class="fa-solid fa-arrow-left"></i> Return to Dashboard
         </a>
         <a href="{{ route('reports.expiring_soon_pdf') }}" class="btn btn-primary">

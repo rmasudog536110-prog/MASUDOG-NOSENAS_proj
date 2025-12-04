@@ -18,12 +18,12 @@
         </thead>
         <tbody>
         @php
-            $totalRows = 8;
+            $totalRows = 5;
             $membersCount = count($members);
         @endphp
 
             @forelse($members as $member)
-                <tr style="background-color: white;">
+                <tr>
                     <td>{{ $member->name }}</td>
                     <td>{{ $member->email }}</td>
                     <td>{{ $member->phone_number ?? 'N/A' }}</td>
@@ -36,10 +36,6 @@
                         <td colspan="5" style="text-align: center; color: var(--muted-foreground);">
                             No users yet
                         </td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
                     </tr>
             @endfor
             
@@ -48,7 +44,7 @@
 
 <footer class="footer-reports">
 <div class="report-footer">
-    <a href="{{ route('admin.dashboard') }}" class="btn btn-success">
+    <a href="{{ route('admin.admin_dashboard') }}" class="btn btn-success">
         <i class="fa-solid fa-arrow-left"></i> Return to Dashboard
     </a>
     <a href="{{ route('reports.active_members_pdf') }}" class="btn btn-primary">

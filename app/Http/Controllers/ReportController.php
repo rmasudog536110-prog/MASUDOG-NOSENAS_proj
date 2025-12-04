@@ -37,13 +37,13 @@ class ReportController extends Controller
         return $pdf->download('active_members_report.pdf');
     }
 
+public function expiringSoon()
+{
+    $now = Carbon::now();
+    $soon = Carbon::now()->addDays(7);
 
-    public function expiringSoon()
-    {
-        $now = Carbon::now();
-        $soon = Carbon::now()->addDays(7);
-
-        $subscriptions = UserSubscription::where('status', 'approved')
+    try {
+        $subscriptions = UserSubscription::where('status', 'active')
             ->whereBetween('end_date', [$now, $soon])
             ->with('user', 'plan')
             ->paginate(5);
@@ -52,58 +52,135 @@ class ReportController extends Controller
             ->with('user', 'plan')
             ->paginate(5);
 
+        // Debug: Check if data is being fetched
+        \Log::info('Expiring Soon Report Data:', [
+            'subscriptions_count' => $subscriptions->count(),
+            'active_subscriptions_count' => $activeSubscriptions->count()
+        ]);
 
         return view('admin.reports.expiring_soon', compact('subscriptions', 'activeSubscriptions'));
+
+    } catch (\Exception $e) {
+        \Log::error('Error in expiringSoon report: ' . $e->getMessage());
+        
+        // Return empty collections if there's an error
+        $subscriptions = collect();
+        $activeSubscriptions = collect();
+        
+        return view('admin.reports.expiring_soon', compact('subscriptions', 'activeSubscriptions'))
+            ->withErrors(['error' => 'Error loading report data: ' . $e->getMessage()]);
     }
+}
 
-    public function expiringSoonPDF()
-    {
-        $now = Carbon::now();
-        $soon = Carbon::now()->addDays(7);
+public function expiringSoonPDF()
+{
+    $now = Carbon::now();
+    $soon = Carbon::now()->addDays(7);
 
-        $subscriptions = UserSubscription::where('status', 'approved')
+    try {
+        $subscriptions = UserSubscription::where('status', 'active')
             ->whereBetween('end_date', [$now, $soon])
             ->with('user', 'plan')
             ->get();
 
-        
         $activeSubscriptions = UserSubscription::where('status', 'active')
             ->with('user', 'plan')
             ->get();
+
+        \Log::info('PDF Generation Data:', [
+            'subscriptions_count' => $subscriptions->count(),
+            'active_subscriptions_count' => $activeSubscriptions->count()
+        ]);
 
         $pdf = Pdf::loadView('admin.reports.expiring_soon_pdf', compact('subscriptions', 'activeSubscriptions'))
                 ->setPaper('A4', 'portrait');
 
-        return $pdf->download('expiring_soon_report.pdf');
+        return $pdf->download('expiring_soon_report_' . date('Y-m-d') . '.pdf');
+
+    } catch (\Exception $e) {
+        \Log::error('Error generating PDF: ' . $e->getMessage());
+        
+        // Return an error response
+        return response()->json([
+            'error' => 'Failed to generate PDF: ' . $e->getMessage()
+        ], 500);
     }
+}
     public function payments()
     {
-        $payments = UserSubscription::where('status', 'approved')
-            ->with('user', 'status')
-            ->orderBy('updated_at', 'desc')
-            ->paginate(10);
-        
+        // Total revenue
         $revenue = PaymentTransaction::where('status', 'approved')->sum('amount');
 
-        $members = User::whereHas('subscriptions', function ($q) {
-            $q->whereIn('status', ['active', 'approved']);
-        })->paginate(5);
+        // Revenue per user
+        $revenuePerUser = PaymentTransaction::where('status', 'approved')
+            ->select('user_id', \DB::raw('SUM(amount) as total_revenue'))
+            ->groupBy('user_id')
+            ->pluck('total_revenue', 'user_id');
 
-        return view('admin.reports.payments', compact('payments', 'revenue', 'members'));
+        // Latest payment per user (PaymentTransaction)
+        $latestPayments = PaymentTransaction::where('status', 'approved')
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->groupBy('user_id')
+            ->map(function ($payments) {
+                return $payments->first(); // latest transaction per user
+            });
+
+        // COMBINE DATA
+        $combined = $latestPayments->map(function ($payment) use ($revenuePerUser) {
+            return [
+                'user'           => $payment->user,
+                'latest_amount'  => $payment->amount,
+                'payment_method' => $payment->payment_method,
+                'status'         => $payment->status,
+                'date'           => $payment->created_at,
+                'total_revenue'  => $revenuePerUser[$payment->user_id] ?? 0
+            ];
+        });
+
+        return view('admin.reports.payments', compact(
+            'combined',
+            'revenue'
+        ));
     }
-
 
     public function paymentsPDF()
     {
-        $payments = UserSubscription::where('status', 'approved')
-            ->with('user')
-            ->orderBy('updated_at', 'desc')
-            ->get();
-
+        // Total revenue
         $revenue = PaymentTransaction::where('status', 'approved')->sum('amount');
 
-        $pdf = Pdf::loadView('admin.reports.payments_pdf', compact('payments', 'revenue'))
-                ->setPaper('A4', 'portrait');
+        // Revenue per user
+        $revenuePerUser = PaymentTransaction::where('status', 'approved')
+            ->select('user_id', \DB::raw('SUM(amount) as total_revenue'))
+            ->groupBy('user_id')
+            ->pluck('total_revenue', 'user_id');
+
+        // Latest payment per user (PaymentTransaction)
+        $latestPayments = PaymentTransaction::where('status', 'approved')
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->groupBy('user_id')
+            ->map(function ($payments) {
+                return $payments->first(); // latest transaction per user
+            });
+
+        // COMBINE DATA
+        $combined = $latestPayments->map(function ($payment) use ($revenuePerUser) {
+            return [
+                'user'           => $payment->user,
+                'latest_amount'  => $payment->amount,
+                'payment_method' => $payment->payment_method,
+                'status'         => $payment->status,
+                'date'           => $payment->created_at,
+            ];
+        });
+
+        $pdf = Pdf::loadView('admin.reports.payments_pdf', [
+            'combined' => $combined,
+            'revenue'  => $revenue,
+        ])->setPaper('A4', 'portrait');
 
         return $pdf->download('payments_report.pdf');
     }
@@ -155,34 +232,48 @@ class ReportController extends Controller
 
 
     public function full()
-    {
-        return view('admin.reports.full_report', [
-            'active_members' => User::whereHas('subscriptions', fn($q)=>$q->where('status','active'))->get(),
-            'expiring_soon' => UserSubscription::whereBetween('end_date', [now(), now()->addDays(7)])->get(),
-            'payments' => UserSubscription::where('status','approved')->get(),
-            'pending' => UserSubscription::where('status','pending')->get(),
-            'revenue' => PaymentTransaction::where('status','approved')->sum('amount'),
-            'active_count' => UserSubscription::where('status','active')->count(),
-            'cancelled_count' => UserSubscription::where('status','cancelled')->count(),
-        ]);
-    }
+{
+    return view('admin.reports.full_report', [
+        'active_members' => User::whereHas('subscriptions', fn($q) => $q->where('status', 'active'))->get(),
+        'expiring_soon' => UserSubscription::with('user')
+            ->where('status', 'active')
+            ->whereBetween('end_date', [now(), now()->addDays(7)])
+            ->get(),
+        'payments' => PaymentTransaction::with('user')
+            ->where('status', 'approved')
+            ->get(),
+        'pending' => PaymentTransaction::with('user')
+            ->where('status', 'pending')
+            ->get(),
+        'revenue' => PaymentTransaction::where('status', 'approved')->sum('amount'),
+        'active_count' => UserSubscription::where('status', 'active')->count(),
+        'cancelled_count' => UserSubscription::where('status', 'cancelled')->count(),
+    ]);
+}
 
+public function fullReportPDF()
+{
+    $data = [
+        'active_members' => User::whereHas('subscriptions', fn($q) => $q->where('status', 'active'))->get(),
+        'expiring_soon' => UserSubscription::with('user')
+            ->where('status', 'active')
+            ->whereBetween('end_date', [now(), now()->addDays(7)])
+            ->get(),
+        'payments' => PaymentTransaction::with('user')
+            ->where('status', 'approved')
+            ->get(),
+        'pending' => PaymentTransaction::with('user')
+            ->where('status', 'pending')
+            ->get(),
+        'revenue' => PaymentTransaction::where('status', 'approved')->sum('amount'),
+        'active_count' => UserSubscription::where('status', 'active')->count(),
+        'cancelled_count' => UserSubscription::where('status', 'cancelled')->count(),
+    ];
 
-    public function fullReportPDF()
-    {
-        $data = [
-            'active_members' => User::whereHas('subscriptions', fn($q)=>$q->where('status','active'))->get(),
-            'expiring_soon' => UserSubscription::whereBetween('end_date', [now(), now()->addDays(7)])->get(),
-            'payments' => UserSubscription::where('status','approved')->get(),
-            'pending' => UserSubscription::where('status','pending')->get(),
-            'revenue' => PaymentTransaction::where('status','approved')->sum('amount'),
-            'active_count' => UserSubscription::where('status','active')->count(),
-            'cancelled_count' => UserSubscription::where('status','cancelled')->count(),
-        ];
+    $pdf = Pdf::loadView('admin.reports.full_report_pdf', $data)
+            ->setPaper('A4', 'portrait')
+            ->setOption('defaultFont', 'sans-serif');
 
-        $pdf = Pdf::loadView('admin.reports.full_report_pdf', $data)
-                ->setPaper('A4', 'portrait');
-
-        return $pdf->download('full_gym_report.pdf');
-    }
+    return $pdf->download('full_gym_report_' . date('Y-m-d') . '.pdf');
+}
 }

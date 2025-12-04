@@ -5,18 +5,18 @@
     <div class="container">
         <div class="header-content">
             <div class="logo">
-                <a href="{{ url('/') }}">
+                <a href="{{ route('user_dashboard') }}">
                     <h1>FitClub</h1>
                 </a>
             </div>
 
             <nav class="nav">
                 @auth
-                    <a href="{{ route('programs') }}" class="nav-link {{ request()->is('programs*') ? 'active' : '' }}">
+                    <a href="{{ route('programs.index') }}" class="nav-link {{ request()->is('programs*') ? 'active' : '' }}">
                         <i class="fa-solid fa-layer-group"></i> Programs</a>
-                    <a href="{{ route('exercises') }}" class="nav-link {{ request()->is('exercises*') ? 'active' : '' }}">
+                    <a href="{{ route('exercises.index') }}" class="nav-link {{ request()->is('exercises*') ? 'active' : '' }}">
                         <i class="fa-solid fa-weight-hanging"></i> Exercises</a>
-                    <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
+                    <a href="{{ url('/user_dashboard') }}" class="nav-link {{ request()->is('user_dashboard') ? 'active' : '' }}">
                     <i class="fa-solid fa-house-user" style="font-size: 2rem"></i> 
                     </a>
                     <a href="{{ route('customer.instructor-requests') }}" class="nav-link {{ request()->is('instructor-requests') ? 'active' : '' }}">

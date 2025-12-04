@@ -25,7 +25,7 @@
                        class="nav-link {{ request()->is('exercises*') ? 'active' : '' }}">
                         Exercises
                     </a>
-                    <a href="{{ route('dashboard') }}" 
+                    <a href="{{ route('user_dashboard') }}" 
                        class="nav-link {{ request()->is('dashboard') || request()->is('admin*') ? 'active' : '' }}">
                         <i class="fa-solid fa-chart-line"></i> Dashboard
                     </a>

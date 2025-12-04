@@ -16,8 +16,10 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('program_id')->constrained('training_programs')->onDelete('cascade');
             $table->date('enrolled_at');
-            $table->date('completed_at')->nullable();
             $table->enum('status', ['active', 'completed', 'cancelled'])->default('active');
+            $table->json('completed_days')->nullable();
+            $table->int('progress');
+            $table->date('last_activity');
             $table->timestamps();
             
             $table->unique(['user_id', 'program_id']);

@@ -2,48 +2,103 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/reports.css') }}">
+    <style>
+    </style>
 @endpush
 
 @section('content')
-<h1>Full Gym Report</h1>
+<div class="full-report-container">
+    <h1 class="full-report-title">Full Gym Report</h1>
+    <p class="full-report-subtitle">Generated on: {{ now()->format('F d, Y h:i A') }}</p>
+    
+    <!-- Total Revenue Display -->
+    <div class="total-revenue-display">
+        <h2>Total Revenue: ₱{{ number_format($revenue, 2) }}</h2>
+    </div>
 
-<h2>1. Active Members</h2>
-@include('admin.reports.active_members', [
-    'members' => $active_members,
-    'active' => $active_count,
-    'cancelled' => $cancelled_count
-])
+    <!-- Main Report Table -->
+    <div style="overflow-x: auto;">
+        <table class="full-report-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Member Name</th>
+                    <th>Email</th>
+                    <th>Subscription Status</th>
+                    <th>Plan</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Payment Status</th>
+                    <th>Amount</th>
+                    <th>Payment Date</th>
+                </tr>
+            </thead>
+           <tbody>
+    @php
+        $counter = 1;
 
-<h2>2. Expiring Soon (Next 7 Days)</h2>
-@include('admin.reports.expiring_soon', [
-    'subscriptions' => $expiring_soon
-])
+        // Key active members by user ID
+        $users = $active_members->keyBy('id');
 
-<h2>3. Payments</h2>
-@include('admin.reports.payments', [
-    'payments' => $payments
-])
+        // Group approved payments by user ID
+        $approvedPaymentsByUser = $payments->groupBy(fn($p) => $p->user_id);
+    @endphp
 
-<h2>4. Pending Payment Verifications</h2>
-@include('admin.reports.pending_payments', [
-    'pending' => $pending
-])
+    {{-- LOOP THROUGH ACTIVE MEMBERS --}}
+    @foreach ($users as $user)
+        @php
+            $activeSub = $user->subscriptions->where('status', 'active')->first();
+            $userPayments = $approvedPaymentsByUser[$user->id] ?? collect();
+            $latestPayment = $userPayments->sortByDesc('created_at')->first();
+        @endphp
 
-<h2>5. Total Revenue</h2>
-<p><strong>₱{{ number_format($revenue, 2) }}</strong></p>
+        <tr>
+            <td>{{ $counter++ }}</td>
+            <td>{{ $user->name }}</td>
+            <td>{{ $user->email }}</td>
+            <td><span class="badge bg-success">{{$activeSub->status}}</span></td>
+            <td>{{ $activeSub->plan->name ?? 'N/A' }}</td>
+            <td>{{ $activeSub && $activeSub->start_date ? \Carbon\Carbon::parse($activeSub->start_date)->format('M d, Y') : 'N/A' }}</td>
+            <td>{{ $activeSub && $activeSub->end_date ? \Carbon\Carbon::parse($activeSub->end_date)->format('M d, Y') : 'N/A' }}</td>
 
-<h2>6. Active vs Cancelled Subscriptions</h2>
-<p>Active: {{ $active_count }}</p>
-<p>Cancelled: {{ $cancelled_count }}</p>
+            @if($latestPayment)
+                <td><span class="badge bg-success">Approved</span></td>
+                <td>₱{{ number_format($latestPayment->amount ?? 0, 2) }}</td>
+                <td>{{ $latestPayment->created_at ? \Carbon\Carbon::parse($latestPayment->created_at)->format('M d, Y') : 'N/A' }}</td>
+            @else
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            @endif
+        </tr>
+    @endforeach
 
-<footer class="footer-reports">
-    <div class="report-footer" style="margin-top: 20px;">
-        <a href="{{ route('admin.dashboard') }}" class="btn btn-success">
+    {{-- PENDING PAYMENTS FOR USERS WITHOUT ACTIVE SUBS --}}
+    @foreach ($pending as $payment)
+        @if(!isset($users[$payment->user_id]))
+            <tr>
+                <td>{{ $counter++ }}</td>
+                <td>{{ $payment->user->name ?? 'N/A' }}</td>
+                <td>{{ $payment->user->email ?? 'N/A' }}</td>
+                <td><span class="badge bg-warning">{{$payment->status}}</span></td>
+                <td>₱{{ number_format($payment->amount ?? 0, 2) }}</td>
+                <td>{{ $payment->created_at ? \Carbon\Carbon::parse($payment->created_at)->format('M d, Y') : 'N/A' }}</td>
+            </tr>
+        @endif
+    @endforeach
+</tbody>
+
+        </table>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="report-footer">
+        <a href="{{ route('admin.admin_dashboard') }}" class="btn btn-success">
             <i class="fa-solid fa-arrow-left"></i> Return to Dashboard
         </a>
         <a href="{{ route('reports.full_report_pdf') }}" class="btn btn-primary">
             <i class="fa-solid fa-download"></i> Export to PDF
         </a>
     </div>
-</footer>
+</div>
 @endsection

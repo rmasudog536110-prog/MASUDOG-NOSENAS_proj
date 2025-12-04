@@ -18,8 +18,8 @@
             <div class="footer-section">
                 <h4>Programs</h4>
                 <ul class="footer-links">
-                    <li><a href="programs.php">Training Programs</a></li>
-                    <li><a href="exercises.php">Exercise Library</a></li>
+                    <li><a href="programs">Training Programs</a></li>
+                    <li><a href="exercises">Exercise Library</a></li>
                     <li><a href="../PHP/index.php#subscription-plans">Subscription Plans</a></li>
                 </ul>
             </div>

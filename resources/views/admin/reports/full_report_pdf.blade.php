@@ -2,100 +2,222 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Full Gym Report</title>
-
+    <link rel="stylesheet" href="{{ asset('css/reports.css') }}">
     <style>
-        body { font-family: DejaVu Sans, sans-serif; font-size: 12px; }
-        h2 { margin-top: 30px; border-bottom: 1px solid #222; padding-bottom: 5px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #333; padding: 6px; }
-        th { background: #f2f2f2; }
+        body {
+            font-family: "DejaVu Sans", "Segoe UI", Arial, sans-serif;
+            font-size: 12px;
+            line-height: 1.4;
+            color: #333;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        h1.full-report-title {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+        }
+
+        p.full-report-subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 12px;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .total-revenue-display h2 {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2c3e50;
+            background-color: #f8f9fa;
+            padding: 10px 15px;
+            border: 1px solid #dee2e6;
+            border-left: 4px solid #27ae60;
+            margin-bottom: 20px;
+            text-align: right;
+            border-radius: 4px;
+        }
+table.full-report-table {
+    width: auto;          /* Shrinks table to content width */
+    max-width: 100%;      /* Avoid overflow */
+    margin: 0 auto 20px;  /* Top/bottom 0, horizontal auto for centering */
+    border-collapse: collapse;
+    font-size: 11px;
+    background-color: #fff;
+    display: table;       /* Ensure table acts as block-level for margin auto */
+}
+
+
+        table.full-report-table th {
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 10px;
+            border: 1px solid #2c3e50;
+            background-color: #34495e;
+            color: #fff;
+        }
+
+        table.full-report-table td {
+            padding: 8px;
+            border: 1px solid #dee2e6;
+            vertical-align: middle;
+            color: #444;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        td:first-child {
+            text-align: center;
+            width: 40px;
+            color: #7f8c8d;
+        }
+
+        tr.section-header td {
+            background-color: #e9ecef;
+            color: #2c3e50;
+            font-weight: bold;
+            font-size: 11px;
+            padding: 10px;
+            text-align: left;
+            border-bottom: 2px solid #bdc3c7;
+        }
+
+        td.no-data {
+            text-align: center;
+            padding: 20px;
+            color: #95a5a6;
+            font-style: italic;
+            background-color: #fff;
+        }
+
+        tr.summary-row td {
+            background-color: #fff;
+            font-weight: bold;
+            color: #2c3e50;
+            border-top: 2px solid #34495e;
+        }
+
+        tr.summary-row td:last-child {
+            text-align: right;
+            color: #27ae60;
+        }
+
+        .footer {
+            width: 100%;
+            margin-top: 40px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #95a5a6;
+            font-size: 10px;
+        }
+
+        @media print {
+            body { margin: 0; padding: 0; }
+            table { page-break-inside: auto; }
+            tr { page-break-inside: avoid; page-break-after: auto; }
+            thead { display: table-header-group; }
+            tfoot { display: table-footer-group; }
+            thead tr, tr.section-header td, .total-revenue-display h2 {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
     </style>
 </head>
-
 <body>
 
-    <h1 style="text-align: center;">Full Gym Report</h1>
+    <h1 class="full-report-title">Full Gym Report</h1>
+    <p class="full-report-subtitle">Generated on: {{ now()->format('F d, Y h:i A') }}</p>
 
-    <!-- SECTION 1 -->
-    <h2>1. Active Members ({{ $active_count }})</h2>
-    <table>
+    <div class="total-revenue-display">
+        <h2>Total Revenue: ₱{{ number_format($revenue, 2) }}</h2>
+    </div>
+
+    <table class="full-report-table">
         <thead>
-            <tr><th>#</th><th>Name</th><th>Email</th></tr>
+            <tr>
+                <th>#</th>
+                <th>Member Name</th>
+                <th>Email</th>
+                <th>Subscription Status</th>
+                <th>Plan</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Payment Status</th>
+                <th>Amount</th>
+                <th>Payment Date</th>
+            </tr>
         </thead>
         <tbody>
-            @foreach ($active_members as $i => $member)
-            <tr>
-                <td>{{ $i + 1 }}</td>
-                <td>{{ $member->name }}</td>
-                <td>{{ $member->email }}</td>
-            </tr>
+            @php
+                $counter = 1;
+                $users = $active_members->keyBy('id');
+                $approvedPaymentsByUser = $payments->groupBy(fn($p) => $p->user_id);
+            @endphp
+
+            {{-- Active Members with Latest Approved Payment --}}
+            @foreach ($users as $user)
+                @php
+                    $activeSub = $user->subscriptions->where('status', 'active')->first();
+                    $userPayments = $approvedPaymentsByUser[$user->id] ?? collect();
+                    $latestPayment = $userPayments->sortByDesc('created_at')->first();
+                @endphp
+                <tr>
+                    <td>{{ $counter++ }}</td>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td><span class="badge bg-success">{{ $activeSub->status ?? 'Active' }}</span></td>
+                    <td>{{ $activeSub->plan->name ?? 'N/A' }}</td>
+                    <td>{{ $activeSub && $activeSub->start_date ? \Carbon\Carbon::parse($activeSub->start_date)->format('M d, Y') : 'N/A' }}</td>
+                    <td>{{ $activeSub && $activeSub->end_date ? \Carbon\Carbon::parse($activeSub->end_date)->format('M d, Y') : 'N/A' }}</td>
+
+                    @if($latestPayment)
+                        <td><span class="badge bg-success">Approved</span></td>
+                        <td>₱{{ number_format($latestPayment->amount ?? 0, 2) }}</td>
+                        <td>{{ $latestPayment->created_at ? \Carbon\Carbon::parse($latestPayment->created_at)->format('M d, Y') : 'N/A' }}</td>
+                    @else
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    @endif
+                </tr>
+            @endforeach
+
+            {{-- Pending Payments for Users Without Active Subscriptions --}}
+            @foreach ($pending as $payment)
+                @if(!isset($users[$payment->user_id]))
+                    <tr>
+                        <td>{{ $counter++ }}</td>
+                        <td>{{ $payment->user->name ?? 'N/A' }}</td>
+                        <td>{{ $payment->user->email ?? 'N/A' }}</td>
+                        <td><span class="badge bg-warning">{{ $payment->status ?? 'Pending' }}</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td><span class="badge bg-warning">Pending</span></td>
+                        <td>₱{{ number_format($payment->amount ?? 0, 2) }}</td>
+                        <td>{{ $payment->created_at ? \Carbon\Carbon::parse($payment->created_at)->format('M d, Y') : 'N/A' }}</td>
+                    </tr>
+                @endif
             @endforeach
         </tbody>
     </table>
 
-
-    <!-- SECTION 2 -->
-    <h2>2. Expiring Soon (Next 7 Days)</h2>
-    <table>
-        <thead>
-            <tr><th>#</th><th>Name</th><th>Email</th><th>Ends</th></tr>
-        </thead>
-        <tbody>
-            @foreach ($expiring_soon as $i => $sub)
-            <tr>
-                <td>{{ $i + 1 }}</td>
-                <td>{{ $sub->user->name }}</td>
-                <td>{{ $sub->user->email }}</td>
-                <td>{{ \Carbon\Carbon::parse($sub->end_date)->format('F d, Y') }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-
-    <!-- SECTION 3 -->
-    <h2>3. Approved Payments</h2>
-    <table>
-        <thead>
-            <tr><th>#</th><th>Name</th><th>Email</th><th>Status</th></tr>
-        </thead>
-        <tbody>
-            @foreach ($payments as $i => $sub)
-            <tr>
-                <td>{{ $i + 1 }}</td>
-                <td>{{ $sub->user->name }}</td>
-                <td>{{ $sub->user->email }}</td>
-                <td>{{ $sub->status }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-
-    <!-- SECTION 4 -->
-    <h2>4. Pending Payments</h2>
-    <table>
-        <thead>
-            <tr><th>#</th><th>Name</th><th>Email</th><th>Status</th></tr>
-        </thead>
-        <tbody>
-            @foreach ($pending as $i => $sub)
-            <tr>
-                <td>{{ $i + 1 }}</td>
-                <td>{{ $sub->user->name }}</td>
-                <td>{{ $sub->user->email }}</td>
-                <td>{{ $sub->status }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-
-    <!-- SECTION 5 -->
-    <h2>5. Revenue Summary</h2>
-    
-    <p><strong>Total Revenue:</strong> ₱{{ number_format($revenue, 2) }}</p>
+    <div class="footer">
+        <p>Generated by Gym Management System</p>
+        <p>Page 1 of 1</p>
+    </div>
 
 </body>
 </html>

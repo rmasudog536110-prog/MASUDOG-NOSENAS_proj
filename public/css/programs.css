@@ -7,6 +7,12 @@
     --muted-foreground: #b5b5b5;
     --radius: 0.7rem;
     --transition-speed: 0.3s;
+    --shadow-primary: 0 8px 25px rgba(255, 102, 0, 0.3);
+    --color-success: #28a745;
+    --color-warning: #ffc107;
+    --color-danger: #dc3545;
+    --color-info: #17a2b8;
+    --color-secondary: #6c757d;
 }
 
 body {
@@ -57,6 +63,7 @@ body {
 .btn-primary:hover {
     background: var(--primary-dark);
     border-color: var(--primary-dark);
+    transform: translateY(-2px);
 }
 
 .btn-outline-primary {
@@ -68,17 +75,19 @@ body {
 .btn-outline-primary:hover {
     background: var(--primary);
     color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
 }
 
 .btn-success {
-    background: #28a745;
-    border-color: #28a745;
+    background: var(--color-success);
+    border-color: var(--color-success);
     color: #fff;
 }
 
 .btn-outline-success {
-    color: #28a745;
-    border-color: #28a745;
+    color: var(--color-success);
+    border-color: var(--color-success);
 }
 
 .btn-success:hover,
@@ -86,17 +95,18 @@ body {
     background: #218838;
     border-color: #218838;
     color: #fff;
+    transform: translateY(-2px);
 }
 
 .btn-warning {
-    background: #ffc107;
-    border-color: #ffc107;
+    background: var(--color-warning);
+    border-color: var(--color-warning);
     color: #000;
 }
 
 .btn-outline-warning {
-    color: #ffc107;
-    border-color: #ffc107;
+    color: var(--color-warning);
+    border-color: var(--color-warning);
 }
 
 .btn-warning:hover,
@@ -104,17 +114,18 @@ body {
     background: #e0a800;
     border-color: #e0a800;
     color: #000;
+    transform: translateY(-2px);
 }
 
 .btn-danger {
-    background: #dc3545;
-    border-color: #dc3545;
+    background: var(--color-danger);
+    border-color: var(--color-danger);
     color: #fff;
 }
 
 .btn-outline-danger {
-    color: #dc3545;
-    border-color: #dc3545;
+    color: var(--color-danger);
+    border-color: var(--color-danger);
 }
 
 .btn-danger:hover,
@@ -122,6 +133,7 @@ body {
     background: #c82333;
     border-color: #c82333;
     color: #fff;
+    transform: translateY(-2px);
 }
 
 .program-card {
@@ -130,14 +142,20 @@ body {
     border-radius: var(--radius);
     transition: all var(--transition-speed) ease;
     cursor: default;
+    overflow: hidden;
 }
 
 .program-card:hover {
-    box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);
+    box-shadow: var(--shadow-primary);
+    border-color: rgba(255, 102, 0, 0.3);
+    transform: translateY(-8px);
 }
 
 .card-body {
     padding: 1.5rem;
+    background-color: #1a1a1a;
+    border-radius: 3px;
+    border-color: #000;
 }
 
 .program-card .fs-2 {
@@ -147,7 +165,7 @@ body {
 
 .program-card h5.fw-bold {
     font-size: 1.3rem;
-    color: var(--foreground);
+    color: #fff;
 }
 
 .program-card p.text-muted {
@@ -157,7 +175,11 @@ body {
 
 .program-card .fw-medium {
     font-weight: 600;
-    color: var(--foreground);
+    color: var(--foreground) !important;
+}
+
+h4 {
+    color: #fff;
 }
 
 .program-card small.text-muted {
@@ -168,28 +190,34 @@ body {
 .program-card .btn-sm {
     padding: 0.5rem 1rem;
     font-size: 0.85rem;
+    transition: all var(--transition-speed);
+}
+
+.program-card .btn-sm:hover {
+    transform: translateY(-2px);
 }
 
 .badge {
-    padding: 0.45rem 1rem;
+    padding: 0.35rem 0.7rem !important;
     border-radius: 0.4rem;
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .bg-success {
-    background: #28a745 !important;
+    background: var(--color-success) !important;
     color: #fff !important;
 }
 
 .bg-warning {
-    background: #ffc107 !important;
+    background: var(--color-warning) !important;
     color: #000 !important;
 }
 
 .bg-danger {
-    background: #dc3545 !important;
+    background: var(--color-danger) !important;
     color: #fff !important;
 }
 
@@ -206,16 +234,17 @@ body {
 
 .alert-success {
     background-color: rgba(40, 167, 69, 0.2);
-    color: #28a745;
+    color: var(--color-success);
 }
 
 .alert-danger {
     background-color: rgba(220, 53, 69, 0.2);
-    color: #dc3545;
+    color: var(--color-danger);
 }
 
 .alert .btn-close {
     filter: invert(100%);
+    opacity: 0.8;
 }
 
 .fa-3x {
@@ -251,7 +280,7 @@ body {
 /* --- New Styles for Program Detail Page --- */
 
 .program-detail-section {
-    min-height: 50vh; /* Ensure the section fills the viewport */
+    min-height: 50vh;
     padding-top: .5rem !important;
     padding-bottom: 1rem !important;
 }
@@ -259,16 +288,20 @@ body {
 .program-detail-card {
     background: var(--card);
     border: 1px solid rgba(255, 102, 0, 0.3);
-    border-radius: calc(var(--radius) * 1.5); /* Larger rounded corners */
+    border-radius: calc(var(--radius) * 1.5);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: all var(--transition-speed);
+}
 
+.program-detail-card:hover {
+    box-shadow: var(--shadow-primary);
 }
 
 .detail-icon {
-    font-size: 5rem !important; /* Large icon */
+    font-size: 5rem !important;
     color: var(--primary);
     display: inline-block;
-    animation: bounceIn 0.5s ease-out; /* Simple animation */
+    animation: bounceIn 0.5s ease-out;
 }
 
 .program-detail-card h1.display-5 {
@@ -298,6 +331,12 @@ body {
     padding: 1.5rem;
     border-radius: var(--radius);
     background: rgba(255, 102, 0, 0.05);
+    transition: all var(--transition-speed);
+}
+
+.program-facts:hover {
+    background: rgba(255, 102, 0, 0.08);
+    border-color: rgba(255, 102, 0, 0.3);
 }
 
 .detail-fact-icon {
@@ -318,24 +357,226 @@ body {
 .detail-action-btn {
     min-width: 300px;
     font-size: 1.25rem;
+    transition: all var(--transition-speed);
+}
+
+.detail-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
 }
 
 /* Back button override for dark theme */
 .btn-outline-secondary {
     color: var(--muted-foreground);
     border-color: #343a40;
+    transition: all var(--transition-speed);
 }
+
 .btn-outline-secondary:hover {
     background-color: #343a40;
     color: #fff;
+    transform: translateY(-2px);
 }
 
-.btn-back-container{
+.btn-back-container {
     margin-left: 10rem;
     margin-bottom: 1rem;
 }
 
-/* Optional: Add a simple bounce animation */
+/* My Plan Styles */
+
+.plan-header {
+    background: var(--card);
+    padding: 3rem 0;
+    border-bottom: 1px solid rgba(255, 102, 0, 0.2);
+}
+
+.plan-header .breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.plan-header .breadcrumb a {
+    color: var(--muted-foreground);
+    text-decoration: none;
+    transition: all var(--transition-speed);
+}
+
+.plan-header .breadcrumb a:hover {
+    color: var(--primary);
+}
+
+.plan-header h1.display-6 {
+    color: var(--foreground);
+}
+
+.plan-header .badge {
+    background-color: #0000;
+    color: var(--primary);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.progress-container {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius);
+    overflow: hidden;
+    height: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.progress-bar {
+    background: var(--primary);
+    height: 100%;
+    text-align: center;
+    color: #fff;
+    font-weight: 600;
+    line-height: 1.5rem;
+    transition: width var(--transition-speed);
+}
+
+.day-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 102, 0, 0.2);
+    margin-bottom: 1rem;
+    transition: all var(--transition-speed);
+    overflow: hidden;
+    color: #fff;
+}
+
+.day-card:hover {
+    border-color: rgba(255, 102, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(255, 102, 0, 0.2);
+}
+
+.day-card.current {
+    border-color: var(--primary);
+    box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
+}
+
+.day-card.completed {
+    opacity: 0.7;
+}
+
+.day-card .day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.day-card .day-body {
+    padding: 1rem;
+}
+
+.exercise-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all var(--transition-speed);
+}
+
+.exercise-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.exercise-number {
+    font-weight: 700;
+    width: 2rem;
+    text-align: center;
+    color: var(--primary);
+}
+
+.stats-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 1rem;
+    transition: all var(--transition-speed);
+}
+
+.stats-card:hover {
+    border-color: rgba(255, 102, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(255, 102, 0, 0.1);
+}
+
+.stats-icon {
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+}
+
+.plan-actions .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    transition: all var(--transition-speed);
+}
+
+.plan-actions .card:hover {
+    border-color: rgba(255, 102, 0, 0.3);
+}
+
+.plan-actions .btn {
+    font-weight: 600;
+    border-radius: var(--radius);
+    transition: all var(--transition-speed);
+}
+
+.plan-actions .btn:hover {
+    transform: translateY(-2px);
+}
+
+.day-badge {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Page entrance animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.program-card,
+.program-detail-card,
+.day-card,
+.stats-card {
+    animation: fadeInUp 0.5s ease-out;
+    animation-fill-mode: both;
+}
+
+.program-card:nth-child(1) { animation-delay: 0.1s; }
+.program-card:nth-child(2) { animation-delay: 0.2s; }
+.program-card:nth-child(3) { animation-delay: 0.3s; }
+.program-card:nth-child(4) { animation-delay: 0.4s; }
+.program-card:nth-child(5) { animation-delay: 0.5s; }
+.program-card:nth-child(6) { animation-delay: 0.6s; }
+
+@media (max-width: 768px) {
+    .plan-header .display-4 {
+        font-size: 2rem;
+    }
+    .plan-header h1.display-6 {
+        font-size: 1.5rem;
+    }
+    .exercise-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 @keyframes bounceIn {
     0% {
         opacity: 0;
@@ -345,4 +586,20 @@ body {
         opacity: 1;
         transform: scale(1);
     }
+}
+
+/* Smooth scrolling for the page */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Focus styles for accessibility */
+*:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* Remove focus outline for mouse users */
+*:focus:not(:focus-visible) {
+    outline: none;
 }

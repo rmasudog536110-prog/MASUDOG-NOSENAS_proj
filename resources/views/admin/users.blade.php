@@ -67,7 +67,7 @@
                 <h1>Manage Users</h1>
                 <p style="color: var(--muted-foreground);">View and manage all gym members</p>
             </div>
-            <a href="{{ route('admin.dashboard') }}" class="btn btn-outline">
+            <a href="{{ route('admin.admin_dashboard') }}" class="btn btn-outline">
                 <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
             </a>
         </div>

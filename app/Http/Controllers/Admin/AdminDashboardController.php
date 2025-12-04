@@ -10,7 +10,7 @@ use App\Models\PaymentTransaction;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
-class AdminDashboardController extends Controllerwe
+class AdminDashboardController extends Controller
 {
     public function index()
     {
@@ -64,7 +64,7 @@ class AdminDashboardController extends Controllerwe
             ->latest()
             ->get();
 
-        return view('admin_dashboard', compact('stats', 'recentUsers', 'pendingPayments', 'instructor'));
+        return view('admin.admin_dashboard', compact('stats', 'recentUsers', 'pendingPayments', 'instructor'));
     }
 
     public function users()

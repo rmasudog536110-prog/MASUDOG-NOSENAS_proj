@@ -146,7 +146,7 @@
                 <a href="{{ route('admin.programs.create') }}" class="btn btn-primary">
                     <i class="fa-solid fa-plus"></i> Add New Program
                 </a>
-                <a href="{{ route('admin.dashboard') }}" class="btn btn-outline">
+                <a href="{{ route('admin.admin_dashboard') }}" class="btn btn-outline">
                     <i class="fa-solid fa-arrow-left"></i> Back
                 </a>
             </div>

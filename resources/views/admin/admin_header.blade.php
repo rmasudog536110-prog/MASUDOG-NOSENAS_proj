@@ -4,24 +4,38 @@
     <div class="container">
         <div class="header-content">
             <div class="logo">
-                <a href="{{ url('admin/dashboard') }}">
+                <a href="{{ route('admin.admin_dashboard') }}">
                     <h1>FitClub</h1>
                 </a>
             </div>
 
             <nav class="nav">
                 @auth
-                    <a href="{{ route('admin.programs.index') }}" class="nav-link {{ request()->is('programs*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-layer-group"></i> Programs</a>
-                    <a href="{{ route('admin.exercises.index') }}" class="nav-link {{ request()->is('exercises*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-weight-hanging"></i> Exercises</a>
-                    <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}">
-                    <i class="fa-solid fa-house-user" style="font-size: 2rem"></i> 
-                    </a>
-                    <a href="{{ route('workout-logs.index') }}" class="nav-link {{ request()->is('workout-logs*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-fire"></i> Workouts
-                    </a>
-                    <a href="{{ route('profile.show') }}" class="nav-link {{ request()->is('profile*') ? 'active' : '' }}">
+                    @if(auth()->user()->role === 'admin')
+                        <!-- Admin Links -->
+                        <a href="{{ route('admin.programs.index') }}" class="nav-link {{ request()->routeIs('admin.programs*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-layer-group"></i> Programs
+                        </a>
+                        <a href="{{ route('admin.exercises.index') }}" class="nav-link {{ request()->routeIs('exercises*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-weight-hanging"></i> Exercises
+                        </a>
+                        <a href="{{ route('admin.admin_dashboard') }}" class="nav-link {{ request()->routeIs('admin_dashboard') ? 'active' : '' }}">
+                            <i class="fa-solid fa-house-user" style="font-size: 2rem"></i> 
+                        </a>
+                        <a href="{{ route('admin.users') }}" class="nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-users"></i> Users
+                        </a>
+                    @else
+                        <!-- Regular User Links -->
+                        <a href="{{ route('user_dashboard') }}" class="nav-link {{ request()->routeIs('user_dashboard') ? 'active' : '' }}">
+                            <i class="fa-solid fa-house-user" style="font-size: 2rem"></i> 
+                        </a>
+                        <a href="{{ route('workout-logs.index') }}" class="nav-link {{ request()->routeIs('workout-logs*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-fire"></i> Workouts
+                        </a>
+                    @endif
+                    
+                    <a href="{{ route('profile.show') }}" class="nav-link {{ request()->routeIs('profile*') ? 'active' : '' }}">
                         <i class="fa-solid fa-user"></i> Profile
                     </a>
                 @endauth
