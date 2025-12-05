@@ -1,50 +1,50 @@
-<link rel="stylesheet" href="{{ asset('css/header.css') }}">
+<link rel="stylesheet" href="<?php echo e(asset('css/header.css')); ?>">
 
 
 <header class="header">
     <div class="container">
         <div class="header-content">
             <div class="logo">
-                <a href="{{ route('user_dashboard') }}">
+                <a href="<?php echo e(route('user_dashboard')); ?>">
                     <h1>FitClub</h1>
                 </a>
             </div>
 
             <nav class="nav">
-                @auth
-                    <a href="{{ route('programs.index') }}" class="nav-link {{ request()->is('programs*') ? 'active' : '' }}">
+                <?php if(auth()->guard()->check()): ?>
+                    <a href="<?php echo e(route('programs.index')); ?>" class="nav-link <?php echo e(request()->is('programs*') ? 'active' : ''); ?>">
                         <i class="fa-solid fa-layer-group"></i> Programs</a>
-                    <a href="{{ route('exercises.index') }}" class="nav-link {{ request()->is('exercises*') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('exercises.index')); ?>" class="nav-link <?php echo e(request()->is('exercises*') ? 'active' : ''); ?>">
                         <i class="fa-solid fa-weight-hanging"></i> Exercises</a>
-                    <a href="{{ url('/user_dashboard') }}" class="nav-link {{ request()->is('user_dashboard') ? 'active' : '' }}">
+                    <a href="<?php echo e(url('/user_dashboard')); ?>" class="nav-link <?php echo e(request()->is('user_dashboard') ? 'active' : ''); ?>">
                     <i class="fa-solid fa-house-user" style="font-size: 2rem"></i> 
                     </a>
-                    <a href="{{ route('customer.instructor-requests') }}" class="nav-link {{ request()->is('instructor-requests') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('customer.instructor-requests')); ?>" class="nav-link <?php echo e(request()->is('instructor-requests') ? 'active' : ''); ?>">
                         <i class="fa-solid fa-dumbbell"></i> Instructor
                     </a>
-                    <a href="{{ route('profile.show') }}" class="nav-link {{ request()->is('profile*') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('profile.show')); ?>" class="nav-link <?php echo e(request()->is('profile*') ? 'active' : ''); ?>">
                         Profile
                     </a>
-                @endauth
+                <?php endif; ?>
             </nav>
 
             <div class="header-actions">
-                @auth
+                <?php if(auth()->guard()->check()): ?>
                     <div class="user-info">
                         
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
+                        <form method="POST" action="<?php echo e(route('logout')); ?>">
+                            <?php echo csrf_field(); ?>
                             <button type="submit" class="btn btn-outline">Logout</button>
                         </form>
                     </div>
-                @endauth
+                <?php endif; ?>
 
-                @guest
+                <?php if(auth()->guard()->guest()): ?>
                     <div class="auth-buttons">
-                        <a href="{{ route('login') }}" class="btn btn-outline">Login</a>
-                        <a href="{{ route('register') }}" class="btn btn-outline">Sign Up</a>
+                        <a href="<?php echo e(route('login')); ?>" class="btn btn-outline">Login</a>
+                        <a href="<?php echo e(route('register')); ?>" class="btn btn-outline">Sign Up</a>
                     </div>
-                @endguest
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -96,3 +96,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<?php /**PATH C:\Repo\MASUDOG-NOSENAS_proj\resources\views/index/header.blade.php ENDPATH**/ ?>

@@ -27,8 +27,8 @@
         <!-- Profile Header -->
         <div class="profile-header">
             <div class="profile-picture-container">
-                @if(Auth::user()->profile_picture)
-                    <img src="{{ Storage::url(Auth::user()->profile_picture) }}" 
+                @if(Auth::user()->profile && Auth::user()->profile->profile_picture)
+                    <img src="{{ Storage::url(Auth::user()->profile->profile_picture) }}" 
                          alt="Profile Picture" 
                          class="profile-picture">
                 @else

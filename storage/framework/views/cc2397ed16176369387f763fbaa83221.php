@@ -1,50 +1,48 @@
-@extends('skeleton.layout')
+<?php $__env->startSection('title', 'Dashboard - FitClub'); ?>
+<?php $__env->startPush('styles'); ?>
+    <link rel="stylesheet" href="<?php echo e(asset('css/dashboard.css')); ?>">
+<?php $__env->stopPush(); ?>
 
-@section('title', 'Dashboard - FitClub')
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-@endpush
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 
-@if ($userSubscription && $userSubscription->status === 'active')
-@include('index.header')
-@endif
+<?php if($userSubscription && $userSubscription->status === 'active'): ?>
+<?php echo $__env->make('index.header', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+<?php endif; ?>
 
 
-    {{-- Flash Messages --}}
-    @if (session('success'))
+    
+    <?php if(session('success')): ?>
         <div class="flash-message success">
-            <div class="container">{{ session('success') }}</div>
+            <div class="container"><?php echo e(session('success')); ?></div>
         </div>
-    @endif
+    <?php endif; ?>
 
-    @if (session('error'))
+    <?php if(session('error')): ?>
         <div class="flash-message error">
-            <div class="container">{{ session('error') }}</div>
+            <div class="container"><?php echo e(session('error')); ?></div>
         </div>
-    @endif
+    <?php endif; ?>
 
-    @if (session('warning'))
+    <?php if(session('warning')): ?>
         <div class="flash-message warning">
-            <div class="container">{{ session('warning') }}</div>
+            <div class="container"><?php echo e(session('warning')); ?></div>
         </div>
-    @endif
+    <?php endif; ?>
 
     <div class="dashboard-container">
         <!-- Welcome Section -->
         <div class="dashboard-welcome">
 
-            @if (session('success'))
+            <?php if(session('success')): ?>
                 <h1 class="welcome-title session-welcome">
-                    👋 Welcome back, {{ Auth::user()->name }}!
+                    👋 Welcome back, <?php echo e(Auth::user()->name); ?>!
                 </h1>
-            @endif
+            <?php endif; ?>
 
-            @if(!empty($subtitle))
-                <p class="welcome-subtitle">{{ $subtitle }}</p>
-            @endif
+            <?php if(!empty($subtitle)): ?>
+                <p class="welcome-subtitle"><?php echo e($subtitle); ?></p>
+            <?php endif; ?>
 
             <h1 class="welcome-title main-title">
                 FITCLUB <br> 
@@ -53,7 +51,7 @@
         </div>
     </div>
 
-@if ($userSubscription && $userSubscription->status === 'active')
+<?php if($userSubscription && $userSubscription->status === 'active'): ?>
     <!-- Quick Actions Section -->
     <div class="dashboard-container1">
             <h2 class="section-title">
@@ -62,25 +60,25 @@
 
         <div class="quick-actions-grid">
 
-            {{-- USER HAS ACTIVE SUBSCRIPTION --}}
-            @if ($subscriptionStatus === 'active')
+            
+            <?php if($subscriptionStatus === 'active'): ?>
 
-                <a href="{{ route('workout-logs.create') }}" class="action-card">
+                <a href="<?php echo e(route('workout-logs.create')); ?>" class="action-card">
                     <span class="action-card-icon">➕</span>
                     <span class="action-card-text">Log Workout</span>
                 </a>
 
-                <a href="{{ route('programs.index') }}" class="action-card">
+                <a href="<?php echo e(route('programs.index')); ?>" class="action-card">
                     <span class="action-card-icon">🏋️</span>
                     <span class="action-card-text">Training Programs</span>
                 </a>
 
-                <a href="{{ route('exercises.index') }}" class="action-card">
+                <a href="<?php echo e(route('exercises.index')); ?>" class="action-card">
                     <span class="action-card-icon">💪</span>
                     <span class="action-card-text">Exercise Library</span>
                 </a>
 
-                <a href="{{ route('workout-logs.index') }}" class="action-card">
+                <a href="<?php echo e(route('workout-logs.index')); ?>" class="action-card">
                     <span class="action-card-icon">📊</span>
                     <span class="action-card-text">My Workouts</span>
                 </a>
@@ -90,24 +88,25 @@
                     <span class="action-card-text">Request Instructor</span>
                 </a>
 
-                {{-- MODIFIED TO USE action-card CLASS --}}
-                <a href="{{ route('profile.show') }}" class="action-card">
+                
+                <a href="<?php echo e(route('profile.show')); ?>" class="action-card">
                     <span class="action-card-icon"><i class="fa-solid fa-user"></i></span>
                     <span class="action-card-text">Edit Profile</span>
                 </a>
 
-            @else
-                {{-- This button remains as a standard button for clarity --}}
-                <a href="{{ url('subscription') }}" class="btn btn-primary btn-sm">
+            <?php else: ?>
+                
+                <a href="<?php echo e(url('subscription')); ?>" class="btn btn-primary btn-sm">
                     <span class="action-card-icon">⭐</span>
                     <span class="action-card-text">
-                        {{ $subscriptionStatus === 'expired' ? 'Renew Plan' : 'Choose a Plan' }}
+                        <?php echo e($subscriptionStatus === 'expired' ? 'Renew Plan' : 'Choose a Plan'); ?>
+
                     </span>
                 </a>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
-@endif
+<?php endif; ?>
         <!-- Subscription Status Section -->
         <div class="dashboard-section">
             <div class="section-header">
@@ -116,26 +115,26 @@
                 </h2>
             </div>
 
-            @if ($userSubscription)
+            <?php if($userSubscription): ?>
                 <div class="subscription-card">
                     <div class="subscription-header">
                         <div class="subscription-plan">
                             <div class="plan-icon">
-                                @if ($userSubscription->plan->name === 'Pro Plan')
+                                <?php if($userSubscription->plan->name === 'Pro Plan'): ?>
                                     <i class="fa-solid fa-crown"></i>
-                                @elseif ($userSubscription->plan->name === 'Basic Plan')
+                                <?php elseif($userSubscription->plan->name === 'Basic Plan'): ?>
                                     <i class="fa-solid fa-star"></i>
-                                @else
+                                <?php else: ?>
                                     <i class="fa-solid fa-rocket"></i>
-                                @endif
+                                <?php endif; ?>
                             </div>
                             <div class="plan-info">
-                                <h3 class="plan-name">{{ $userSubscription->plan->name }}</h3>
-                                <div class="plan-price">₱{{ number_format($userSubscription->plan->price ?? 0, 2) }}</div>
+                                <h3 class="plan-name"><?php echo e($userSubscription->plan->name); ?></h3>
+                                <div class="plan-price">₱<?php echo e(number_format($userSubscription->plan->price ?? 0, 2)); ?></div>
                             </div>
                         </div>
                         <div class="subscription-status-badge">
-                            @php
+                            <?php
                                 $statusClass = match($subscriptionStatus) {
                                     'active' => 'status-active',
                                     'expired' => 'status-expired',
@@ -144,47 +143,48 @@
                                     'cancelled' => 'status-cancelled',
                                     default => 'status-unknown'
                                 };
-                            @endphp
-                            <span class="status-badge {{ $statusClass }}">
-                                @if ($subscriptionStatus === 'active')
+                            ?>
+                            <span class="status-badge <?php echo e($statusClass); ?>">
+                                <?php if($subscriptionStatus === 'active'): ?>
                                     <i class="fa-solid fa-check-circle"></i> Active
-                                @elseif ($subscriptionStatus === 'expired')
+                                <?php elseif($subscriptionStatus === 'expired'): ?>
                                     <i class="fa-solid fa-times-circle"></i> Expired
-                                @elseif ($subscriptionStatus === 'pending')
+                                <?php elseif($subscriptionStatus === 'pending'): ?>
                                     <i class="fa-solid fa-clock"></i> Pending
-                                @elseif ($subscriptionStatus === 'rejected')
+                                <?php elseif($subscriptionStatus === 'rejected'): ?>
                                     <i class="fa-solid fa-exclamation-circle"></i> Rejected
-                                @else
-                                    <i class="fa-solid fa-question-circle"></i> {{ ucfirst($subscriptionStatus) }}
-                                @endif
+                                <?php else: ?>
+                                    <i class="fa-solid fa-question-circle"></i> <?php echo e(ucfirst($subscriptionStatus)); ?>
+
+                                <?php endif; ?>
                             </span>
                         </div>
                     </div>
 
                     <div class="subscription-details-grid">
-                        @if ($subscriptionExpiry)
+                        <?php if($subscriptionExpiry): ?>
                             <div class="detail-card">
                                 <div class="detail-card-icon">
                                     <i class="fa-solid fa-calendar-alt"></i>
                                 </div>
                                 <div class="detail-card-content">
-                                    <div class="detail-card-label">{{ $subscriptionStatus === 'expired' ? 'Expired On' : 'Expires On' }}</div>
-                                    <div class="detail-card-value">{{ $subscriptionExpiry->format('M j, Y') }}</div>
+                                    <div class="detail-card-label"><?php echo e($subscriptionStatus === 'expired' ? 'Expired On' : 'Expires On'); ?></div>
+                                    <div class="detail-card-value"><?php echo e($subscriptionExpiry->format('M j, Y')); ?></div>
                                 </div>
                             </div>
 
-                            @if ($subscriptionStatus !== 'expired')
+                            <?php if($subscriptionStatus !== 'expired'): ?>
                                 <div class="detail-card">
                                     <div class="detail-card-icon">
                                         <i class="fa-solid fa-hourglass-half"></i>
                                     </div>
                                     <div class="detail-card-content">
                                         <div class="detail-card-label">Days Remaining</div>
-                                        <div class="detail-card-value">{{ $daysLeft }} days</div>
+                                        <div class="detail-card-value"><?php echo e($daysLeft); ?> days</div>
                                     </div>
                                 </div>
-                            @endif
-                        @endif
+                            <?php endif; ?>
+                        <?php endif; ?>
 
                         <div class="detail-card">
                             <div class="detail-card-icon">
@@ -192,7 +192,7 @@
                             </div>
                             <div class="detail-card-content">
                                 <div class="detail-card-label">Amount Paid</div>
-                                <div class="detail-card-value price-display">₱{{ number_format($userSubscription->plan->price ?? 0, 2) }}</div>
+                                <div class="detail-card-value price-display">₱<?php echo e(number_format($userSubscription->plan->price ?? 0, 2)); ?></div>
                             </div>
                         </div>
 
@@ -202,56 +202,57 @@
                             </div>
                             <div class="detail-card-content">
                                 <div class="detail-card-label">Started On</div>
-                                <div class="detail-card-value">{{ \Carbon\Carbon::parse($userSubscription->start_date)->format('M j, Y') }}</div>
+                                <div class="detail-card-value"><?php echo e(\Carbon\Carbon::parse($userSubscription->start_date)->format('M j, Y')); ?></div>
                             </div>
                         </div>
                     </div>
 
-                    @if ($subscriptionStatus === 'pending')
+                    <?php if($subscriptionStatus === 'pending'): ?>
                         <div class="subscription-alert alert-pending">
                             <i class="fa-solid fa-hourglass-half"></i>
                             <div class="alert-content">
                                 <strong>Payment Verification:</strong> Your payment proof is being reviewed by our admin team. You'll be notified once approved.
                             </div>
                         </div>
-                    @elseif ($subscriptionStatus === 'rejected' && $userSubscription->admin_notes)
+                    <?php elseif($subscriptionStatus === 'rejected' && $userSubscription->admin_notes): ?>
                         <div class="subscription-alert alert-rejected">
                             <i class="fa-solid fa-exclamation-triangle"></i>
                             <div class="alert-content">
-                                <strong>Payment Rejected:</strong> {{ $userSubscription->admin_notes }}
+                                <strong>Payment Rejected:</strong> <?php echo e($userSubscription->admin_notes); ?>
+
                                 <div class="alert-actions">
-                                    <a href="{{ url('#subscription-plans') }}" class="btn btn-primary btn-sm">
+                                    <a href="<?php echo e(url('#subscription-plans')); ?>" class="btn btn-primary btn-sm">
                                         <i class="fa-solid fa-redo"></i> Try Again
                                     </a>
                                 </div>
                             </div>
                         </div>
-                    @elseif ($subscriptionStatus === 'expired')
+                    <?php elseif($subscriptionStatus === 'expired'): ?>
                         <div class="subscription-alert alert-expired">
                             <i class="fa-solid fa-clock"></i>
                             <div class="alert-content">
                                 <strong>Subscription Expired:</strong> Your subscription has expired. Renew to continue enjoying our services.
                                 <div class="alert-actions">
-                                    <a href="{{ url('#subscription-plans') }}" class="btn btn-primary btn-sm">
+                                    <a href="<?php echo e(url('#subscription-plans')); ?>" class="btn btn-primary btn-sm">
                                         <i class="fa-solid fa-star"></i> Renew Plan
                                     </a>
                                 </div>
                             </div>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
-            @else
+            <?php else: ?>
                 <div class="empty-state-card">
                     <div class="empty-state-icon">
                         <i class="fa-solid fa-credit-card"></i>
                     </div>
                     <h3>No Active Subscription</h3>
                     <p>You don't have an active subscription. Choose a plan to unlock all features.</p>
-                    <a href="{{ url('#subscription-plans') }}" class="btn btn-primary">
+                    <a href="<?php echo e(url('#subscription-plans')); ?>" class="btn btn-primary">
                         <i class="fa-solid fa-star"></i> Choose a Plan
                     </a>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
 
         <!-- Recent Activities Section -->
@@ -261,65 +262,67 @@
                     <i class="fa-solid fa-clock-rotate-left"></i> Recent Activities
                 </h2>
                 <div class="section-actions"> 
-                @if ($subscriptionStatus === 'pending' || $subscriptionStatus === 'expired')
-                    @auth
+                <?php if($subscriptionStatus === 'pending' || $subscriptionStatus === 'expired'): ?>
+                    <?php if(auth()->guard()->check()): ?>
                         <div class="user-info">
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
+                            <form method="POST" action="<?php echo e(route('logout')); ?>">
+                                <?php echo csrf_field(); ?>
                                 <button type="submit" class="btn btn-outline">Logout</button>
                             </form>
                         </div>
-                     @endauth
-                @else
-                    <a href="{{ route('workout-logs.index') }}" class="btn btn-primary btn-sm">
+                     <?php endif; ?>
+                <?php else: ?>
+                    <a href="<?php echo e(route('workout-logs.index')); ?>" class="btn btn-primary btn-sm">
                         <i class="fa-solid fa-magnifying-glass" style="margin-right: 10px;"></i> View All
                      </a>
-                @endif
+                <?php endif; ?>
                 </div>
             </div>
 
-            @if (!empty($recentActivities))
-                @foreach ($recentActivities as $activity)
+            <?php if(!empty($recentActivities)): ?>
+                <?php $__currentLoopData = $recentActivities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $activity): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="activity-item">
                         <span class="activity-icon">🏋️</span>
                         <div class="activity-info">
                             <span class="activity-name">
-                                {{ $activity['exercise_name'] ?? $activity['program_title'] ?? 'Workout' }}
+                                <?php echo e($activity['exercise_name'] ?? $activity['program_title'] ?? 'Workout'); ?>
+
                             </span>
-                            @if (!empty($activity['sets_completed']) || !empty($activity['reps_completed']))
+                            <?php if(!empty($activity['sets_completed']) || !empty($activity['reps_completed'])): ?>
                                 <span class="activity-meta">
-                                    @if (!empty($activity['sets_completed']))
-                                        {{ $activity['sets_completed'] }} sets
-                                    @endif
-                                    @if (!empty($activity['reps_completed']))
-                                        × {{ $activity['reps_completed'] }} reps
-                                    @endif
-                                    @if (!empty($activity['weight_used']))
-                                        @ {{ $activity['weight_used'] }}kg
-                                    @endif
+                                    <?php if(!empty($activity['sets_completed'])): ?>
+                                        <?php echo e($activity['sets_completed']); ?> sets
+                                    <?php endif; ?>
+                                    <?php if(!empty($activity['reps_completed'])): ?>
+                                        × <?php echo e($activity['reps_completed']); ?> reps
+                                    <?php endif; ?>
+                                    <?php if(!empty($activity['weight_used'])): ?>
+                                        @ <?php echo e($activity['weight_used']); ?>kg
+                                    <?php endif; ?>
                                 </span>
-                            @endif
+                            <?php endif; ?>
                         </div>
                         <span class="activity-date">
-                            {{ \Carbon\Carbon::parse($activity['workout_date'])->format('M j') }}
+                            <?php echo e(\Carbon\Carbon::parse($activity['workout_date'])->format('M j')); ?>
+
                         </span>
                     </div>
-                @endforeach
-            @else
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php else: ?>
                 <div class="empty-state">
                     <div class="empty-state-icon">📊</div>
                     <p>No workout activities yet.</p>
-                    @if (in_array($subscriptionStatus, ['active', 'trial']))
-                        <a href="{{ route('programs.index') }}" class="btn btn-primary" style="margin-top: 1rem;">
+                    <?php if(in_array($subscriptionStatus, ['active', 'trial'])): ?>
+                        <a href="<?php echo e(route('programs.index')); ?>" class="btn btn-primary" style="margin-top: 1rem;">
                             <i class="fa-solid fa-play"></i> Start First Workout
                         </a>
-                    @endif
+                    <?php endif; ?>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>    
 
-    @include('index.footer')
+    <?php echo $__env->make('index.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <!-- Instructor Request Modal -->
     <div class="modal fade" id="request-instructor-modal" tabindex="-1" aria-labelledby="request-instructor-modal-label" aria-hidden="true">
@@ -331,8 +334,8 @@
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('instructor.requests.store') }}" method="POST" id="instructor-request-form">
-                    @csrf
+                <form action="<?php echo e(route('instructor.requests.store')); ?>" method="POST" id="instructor-request-form">
+                    <?php echo csrf_field(); ?>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -341,7 +344,7 @@
                                        class="form-control" 
                                        id="preferred_date" 
                                        name="preferred_date" 
-                                       min="{{ date('Y-m-d') }}"
+                                       min="<?php echo e(date('Y-m-d')); ?>"
                                        required
                                        style="background: rgba(255, 102, 0, 0.05); border: 1px solid rgba(255, 102, 0, 0.2); color: var(--foreground);">
                             </div>
@@ -403,4 +406,6 @@
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('skeleton.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Repo\MASUDOG-NOSENAS_proj\resources\views/index/user_dashboard.blade.php ENDPATH**/ ?>

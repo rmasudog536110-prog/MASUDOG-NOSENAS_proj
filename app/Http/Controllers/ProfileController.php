@@ -15,10 +15,18 @@ class ProfileController extends Controller
      */
     public function show()
     {
-
-        $user = Auth::user()->load('profile');
+        $user = Auth::user();
+        
+        // Ensure user has a profile record
+        if (!$user->profile) {
+            $user->profile()->create([
+                'email_notifications' => true,
+                'sms_notifications' => false,
+            ]);
+            $user->load('profile');
+        }
+        
         return view('profile.show', compact('user'));
-    
     }
 
     /**
@@ -27,7 +35,123 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = Auth::user();
+        
+        // Ensure user has a profile record
+        if (!$user->profile) {
+            $user->profile()->create([
+                'email_notifications' => true,
+                'sms_notifications' => false,
+            ]);
+            $user->load('profile');
+        }
+        
         return view('profile.edit', compact('user'));
+    }
+
+    /**
+     * Update the user's profile picture
+     */
+    public function updateProfilePicture(Request $request)
+    {
+        $request->validate([
+            'profile_picture' => [
+                'required',
+                'image',
+                'mimes:jpeg,png,jpg,gif',
+                'max:2048', // 2MB max
+            ]
+        ]);
+
+        $user = Auth::user();
+
+        try {
+            // Ensure user has a profile record
+            if (!$user->profile) {
+                $user->profile()->create([
+                    'email_notifications' => true,
+                    'sms_notifications' => false,
+                ]);
+                $user->load('profile');
+            }
+
+            // Delete old picture if exists
+            if ($user->profile && $user->profile->profile_picture) {
+                $oldPath = $user->profile->profile_picture;
+                if (Storage::disk('public')->exists($oldPath)) {
+                    Storage::disk('public')->delete($oldPath);
+                }
+            }
+
+            // Generate unique filename with user ID and timestamp
+            $file = $request->file('profile_picture');
+            $extension = $file->getClientOriginalExtension();
+            $filename = 'profile_' . $user->id . '_' . time() . '.' . $extension;
+            
+            // Store the file with proper permissions
+            $path = $file->storeAs('profile_pictures', $filename, 'public');
+            
+            // Debug: Log the path
+            \Log::info('Profile picture stored at: ' . $path);
+            
+            // Verify the file was stored successfully
+            if (!Storage::disk('public')->exists($path)) {
+                throw new \Exception('Failed to store profile picture');
+            }
+
+            // Debug: Update profile with new picture path
+            $result = $user->profile()->update(['profile_picture' => $path]);
+            \Log::info('Profile update result: ' . ($result ? 'success' : 'failed'));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile picture updated successfully!',
+                'url' => Storage::url($path)
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to upload profile picture: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Delete the user's profile picture
+     */
+    public function deleteProfilePicture(Request $request)
+    {
+        $user = Auth::user();
+
+        try {
+            if ($user->profile && $user->profile->profile_picture) {
+                $profilePicturePath = $user->profile->profile_picture;
+                
+                // Delete file from storage
+                if (Storage::disk('public')->exists($profilePicturePath)) {
+                    Storage::disk('public')->delete($profilePicturePath);
+                }
+                
+                // Remove from database
+                $user->profile()->update(['profile_picture' => null]);
+                
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Profile picture deleted successfully!'
+                ]);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'No profile picture found to delete'
+            ], 404);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete profile picture: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -36,6 +160,15 @@ class ProfileController extends Controller
 public function update(Request $request)
 {
     $user = Auth::user();
+
+    // Ensure user has a profile record
+    if (!$user->profile) {
+        $user->profile()->create([
+            'email_notifications' => true,
+            'sms_notifications' => false,
+        ]);
+        $user->load('profile');
+    }
 
     // Validate user fields
     $userData = $request->validate([
@@ -59,24 +192,47 @@ public function update(Request $request)
         'weight' => 'nullable|numeric|min:20|max:500',
         'fitness_goal' => 'nullable|string',
         'experience_level' => 'nullable|string',
-        'profile_picture' => 'nullable|image|max:2048', // 2MB max
     ]);
 
-    // Handle profile picture upload
+    // Handle profile picture upload separately with enhanced validation
     if ($request->hasFile('profile_picture')) {
-        // Delete old picture if exists
-        if ($user->profile && $user->profile->profile_picture) {
-            Storage::disk('public')->delete($user->profile->profile_picture);
+        $profilePictureData = $request->validate([
+            'profile_picture' => [
+                'required',
+                'image',
+                'mimes:jpeg,png,jpg,gif',
+                'max:2048', // 2MB max
+            ]
+        ]);
+
+        try {
+            // Delete old picture if exists
+            if ($user->profile && $user->profile->profile_picture) {
+                $oldPath = $user->profile->profile_picture;
+                if (Storage::disk('public')->exists($oldPath)) {
+                    Storage::disk('public')->delete($oldPath);
+                }
+            }
+
+            // Generate unique filename with user ID and timestamp
+            $file = $request->file('profile_picture');
+            $extension = $file->getClientOriginalExtension();
+            $filename = 'profile_' . $user->id . '_' . time() . '.' . $extension;
+            
+            // Store the file with proper permissions
+            $path = $file->storeAs('profile_pictures', $filename, 'public');
+            
+            // Verify the file was stored successfully
+            if (!Storage::disk('public')->exists($path)) {
+                throw new \Exception('Failed to store profile picture');
+            }
+
+            // Add to profile data
+            $profileData['profile_picture'] = $path;
+            
+        } catch (\Exception $e) {
+            return back()->withErrors(['profile_picture' => 'Failed to upload profile picture: ' . $e->getMessage()]);
         }
-
-        // Save new picture
-        $path = $request->file('profile_picture')->store('profile_pictures', 'public');
-
-        // Get public URL for frontend usage
-        $url = Storage::url($path);
-
-        $profileData['profile_picture'] = $path; // store path in DB
-        $profileData['profile_picture_url'] = $url; // optional: store URL if you want
     }
 
     // Update users table
@@ -151,8 +307,11 @@ public function update(Request $request)
         }
 
         // Delete profile picture if exists
-        if ($user->profile_picture) {
-            Storage::disk('public')->delete($user->profile_picture);
+        if ($user->profile && $user->profile->profile_picture) {
+            $profilePicturePath = $user->profile->profile_picture;
+            if (Storage::disk('public')->exists($profilePicturePath)) {
+                Storage::disk('public')->delete($profilePicturePath);
+            }
         }
 
         // Delete user account

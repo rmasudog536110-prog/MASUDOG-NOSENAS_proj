@@ -13,7 +13,75 @@
             margin: 0 auto 1.5rem;
         }
 
+        .profile-picture-edit {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .profile-picture-actions {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            display: flex;
+            gap: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .profile-picture-edit:hover .profile-picture-actions {
+            opacity: 1;
+        }
+
+        .picture-upload-btn,
+        .picture-delete-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 14px;
+        }
+
+        .picture-upload-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .picture-upload-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .picture-delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .picture-delete-btn:hover {
+            background: #c82333;
+            transform: scale(1.1);
+        }
+
+        .picture-upload-btn input[type="file"] {
+            display: none;
+        }
+
         .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary);
+            box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
+        }
+
+        .image-preview {
             width: 150px;
             height: 150px;
             border-radius: 50%;
@@ -33,6 +101,16 @@
             font-size: 4rem;
             color: white;
             border: 4px solid var(--primary);
+        }
+
+        .header-profile-picture {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            margin-right: 8px;
+            vertical-align: middle;
         }
 
         .profile-name {
@@ -287,11 +365,13 @@
             margin: 0 auto 2rem;
         }
         
-        .profile-picture-edit img {
+        .profile-picture-edit img.profile-picture {
             width: 100%;
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
+            border: 4px solid var(--primary);
+            box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
         }
         
         .profile-picture-edit .profile-picture-placeholder {

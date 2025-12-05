@@ -1,4 +1,3 @@
-<php
 APP_NAME=Laravel
 APP_ENV=local
 APP_KEY=base64:TACK5ad9aXPB+bkr3odBuhiBG08c1Bb0NGiwaoos9JQ=
