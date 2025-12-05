@@ -33,54 +33,62 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information
      */
-    public function update(Request $request)
-    {
-        $user = Auth::user();
+public function update(Request $request)
+{
+    $user = Auth::user();
 
-        // Validate user fields
-        $userData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'phone_number' => 'nullable|string|max:20',
-            'email_notifications' => 'nullable|boolean',
-            'sms_notifications' => 'nullable|boolean',
-        ]);
+    // Validate user fields
+    $userData = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,' . $user->id,
+        'phone_number' => 'nullable|string|max:20',
+        'email_notifications' => 'nullable|boolean',
+        'sms_notifications' => 'nullable|boolean',
+    ]);
 
-        // Convert checkbox values to boolean
-        $userData['email_notifications'] = $request->has('email_notifications');
-        $userData['sms_notifications'] = $request->has('sms_notifications');
+    // Convert checkbox values to boolean
+    $userData['email_notifications'] = $request->has('email_notifications');
+    $userData['sms_notifications'] = $request->has('sms_notifications');
 
-        // Validate profile fields
-        $profileData = $request->validate([
-            'date_of_birth' => 'nullable|date|before:today',
-            'gender' => 'nullable|in:male,female,other,prefer_not_to_say',
-            'bio' => 'nullable|string|max:500',
-            'height' => 'nullable|numeric|min:50|max:300',
-            'weight' => 'nullable|numeric|min:20|max:500',
-            'fitness_goal' => 'nullable|string',
-            'experience_level' => 'nullable|string',
-            'profile_picture' => 'nullable|image|max:2048', // 2MB max
-        ]);
+    // Validate profile fields
+    $profileData = $request->validate([
+        'date_of_birth' => 'nullable|date|before:today',
+        'gender' => 'nullable|in:male,female,other,prefer_not_to_say',
+        'bio' => 'nullable|string|max:500',
+        'height' => 'nullable|numeric|min:50|max:300',
+        'weight' => 'nullable|numeric|min:20|max:500',
+        'fitness_goal' => 'nullable|string',
+        'experience_level' => 'nullable|string',
+        'profile_picture' => 'nullable|image|max:2048', // 2MB max
+    ]);
 
-        // Handle profile picture upload
-        if ($request->hasFile('profile_picture')) {
-            if ($user->profile && $user->profile->profile_picture) {
-                Storage::disk('public')->delete($user->profile->profile_picture);
-            }
-
-            $profileData['profile_picture'] = $request->file('profile_picture')
-                ->store('profile_pictures', 'public');
+    // Handle profile picture upload
+    if ($request->hasFile('profile_picture')) {
+        // Delete old picture if exists
+        if ($user->profile && $user->profile->profile_picture) {
+            Storage::disk('public')->delete($user->profile->profile_picture);
         }
 
-        // Update users table
-        $user->update($userData);
+        // Save new picture
+        $path = $request->file('profile_picture')->store('profile_pictures', 'public');
 
-        // Update or create user_profile row
-        $user->profile()->updateOrCreate([], $profileData);
+        // Get public URL for frontend usage
+        $url = Storage::url($path);
 
-        return redirect()->route('profile.show')
-            ->with('success', 'Profile updated successfully!');
+        $profileData['profile_picture'] = $path; // store path in DB
+        $profileData['profile_picture_url'] = $url; // optional: store URL if you want
     }
+
+    // Update users table
+    $user->update($userData);
+
+    // Update or create user_profile row
+    $user->profile()->updateOrCreate([], $profileData);
+
+    return redirect()->route('profile.show')
+        ->with('success', 'Profile updated successfully!');
+}
+
 
 
     /**

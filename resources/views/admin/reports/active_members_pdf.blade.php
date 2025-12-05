@@ -216,6 +216,7 @@ tr.summary-row td:last-child {
 <table class="table-container">
     <thead>
         <tr>
+            <th>ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
@@ -231,6 +232,7 @@ tr.summary-row td:last-child {
         {{-- REAL DATA ROWS --}}
         @foreach ($members as $member)
         <tr>
+            <td>{{ $member->id }}</td>
             <td>{{ $member->name }}</td>
             <td>{{ $member->email }}</td>
             <td>{{ $member->phone_number }}</td>

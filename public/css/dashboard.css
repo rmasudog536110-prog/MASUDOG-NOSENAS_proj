@@ -926,7 +926,7 @@ h3 {
 
 .subscription-info strong { 
     color: var(--foreground);
-    font-weight: 600;
+    font-weight: 300;
 }
 
 .subscription-status.trial { color: #ffaa33; font-weight: 600; }
@@ -1198,51 +1198,54 @@ h3 {
             overflow: visible;
         }
 
-        .hover-report-popup {
-            position: absolute;
-            top: calc(100% + 12px);
-            left: 50%;
-            transform: translate(-50%, 10px) scale(0.96);
-            width: 260px;
-            background: var(--card);
-            color: var(--foreground);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 1rem;
-            border-radius: 12px;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.3);
-            opacity: 0;
-            visibility: hidden;
-            transition: 0.25s ease-in-out;
-            z-index: 50;
-            pointer-events: none;
-        }
+.hover-report-popup {
+    position: absolute;
+    bottom: calc(100% + 12px); /* Place popup ABOVE the card */
+    left: 50%;
+    transform: translate(-50%, 10px) scale(0.96);
 
-        .admin-stat-card:hover .hover-report-popup {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, 0) scale(1);
-        }
+    width: 260px;
+    background: var(--card);
+    color: var(--foreground);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.3);
 
-        /* Force popups on last row cards to appear above */
-        .admin-stats .admin-stat-card:nth-last-child(-n+2) .hover-report-popup {
-            top: auto;
-            bottom: calc(100% + 12px);
-            transform: translate(-50%, -10px) scale(0.96);
-        }
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* Disabled until visible */
 
-        .admin-stats .admin-stat-card:nth-last-child(-n+2):hover .hover-report-popup {
-            transform: translate(-50%, 0) scale(1);
-        }
+    transition:
+    opacity 0.25s ease-in-out,
+    transform 0.25s ease-in-out,
+    visibility 0s linear 2s; /* Hide 2 sec after leaving */
+    z-index: 50;
+}
 
-        .hover-report-popup h4 {
-            margin: 0 0 0.5rem;
-            font-weight: bold;
-        }
+.hover-report-popup h4 {
+    margin: 0 0 0.5rem;
+    font-weight: bold;
+    color: var(--primary);
+}
 
-        .hover-report-popup p {
-            margin: 0.4rem 0;
-            font-size: 0.9rem;
-        }
+.hover-report-popup p {
+    margin: 0.3rem 0;
+    font-size: 0.85rem;
+    color: var(--muted-foreground);
+}
+
+
+    /* SHOW POPUP (from card OR from popup itself) */
+    .admin-stat-card:hover .hover-report-popup,
+    .hover-report-popup:hover {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, 0) scale(1.1);
+        pointer-events: auto; /* NOW links are clickable */
+        transition-delay: 0s; /* No delay when showing */
+    }
+
 
         .popup-link {
             display: inline-block;

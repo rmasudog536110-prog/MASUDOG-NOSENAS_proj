@@ -94,18 +94,19 @@ public function registerUser(Request $request)
         return redirect()->route('index')
             ->with('error', 'Your registration/payment was cancelled.');
     }
-        
-        if ($user->hasAdminAccess()) {
-            return redirect()->route('admin.admin_dashboard');
-        }
-
-        
+ 
         $subscription = $user->subscriptions()->latest()->first();
         if ($subscription && $subscription->status === 'pending') {
             return redirect()->route('index.pending_dashboard'); // show pending_dashboard
         }
 
-        return redirect()->route('user_dashboard');
+        if ($user->hasAdminAccess()) {
+            return redirect()->route('admin.admin_dashboard');
+        } elseif ($user->role === 'instructor') { 
+            return redirect()->route('instructor.instructor_dashboard');
+        } else {
+            return redirect()->route('user_dashboard'); 
+        }
     }
 
     // Login failed

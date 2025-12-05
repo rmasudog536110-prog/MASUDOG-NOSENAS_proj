@@ -22,7 +22,7 @@ class ExerciseController extends Controller
      */
     public function create()
     {
-        return view('admin.exercises.create', compact('create_exercises'));
+        return view('admin.exercises.create');
     }
 
     /**
@@ -53,7 +53,7 @@ class ExerciseController extends Controller
      */
     public function show(Exercise $exercise)
     {
-        return view('admin.exercises.show', compact('exercise'));
+        return view('admin.exercises.show');
     }
 
     /**
@@ -61,7 +61,7 @@ class ExerciseController extends Controller
      */
     public function edit(Exercise $exercise)
     {
-        return view('admin.exercises.edit', compact('exercise'));
+        return view('admin.exercises.edit');
     }
 
     /**

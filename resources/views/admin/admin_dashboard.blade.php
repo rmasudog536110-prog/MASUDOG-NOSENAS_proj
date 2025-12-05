@@ -295,6 +295,28 @@
             closeRejectModal();
         }
     });
+
+    document.querySelectorAll('.admin-stat-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        const popup = card.querySelector('.hover-report-popup');
+        if (!popup) return;
+
+        // Get the card's position relative to the viewport
+        const cardRect = card.getBoundingClientRect();
+        
+        // height of popup (approx) + padding
+        const popupHeight = 300; 
+
+        // Check distance to top of viewport
+        // If there is less than 300px space above, flip to bottom
+        if (cardRect.top < popupHeight) {
+            popup.classList.add('pos-bottom');
+        } else {
+            popup.classList.remove('pos-bottom');
+        }
+    });
+});
+    
 </script>
 
 @endsection

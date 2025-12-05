@@ -70,6 +70,10 @@
                     <span class="action-card-text">Log Workout</span>
                 </a>
 
+                @if ()
+                
+                @endif
+
                 <a href="{{ route('programs.index') }}" class="action-card">
                     <span class="action-card-icon">🏋️</span>
                     <span class="action-card-text">Training Programs</span>

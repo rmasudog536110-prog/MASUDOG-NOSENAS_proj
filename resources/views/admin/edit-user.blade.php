@@ -143,6 +143,8 @@
                 ->where('end_date', '>', now())
                 ->latest()
                 ->first();
+            $daysLeft = now()->diffInDays(\Carbon\Carbon::parse($activeSub->end_date), false);
+            $daysLeft = intval($daysLeft);
         @endphp
 
         @if($activeSub)
@@ -156,7 +158,7 @@
                             <strong>Plan:</strong> {{ $activeSub->plan->name ?? 'N/A' }}<br>
                             <strong>Start Date:</strong> {{ $activeSub->start_date->format('M d, Y') }}<br>
                             <strong>End Date:</strong> {{ $activeSub->end_date->format('M d, Y') }}<br>
-                            <strong>Days Remaining:</strong> {{ now()->diffInDays($activeSub->end_date) }} days
+                            <strong>Days Remaining:</strong> {{ $daysLeft }} days
                         </p>
                     </div>
                     <div style="display: flex; gap: 0.5rem;">
@@ -323,38 +325,39 @@
     </script>
     @endpush
 
-    <!-- User Stats -->
     <div class="edit-card">
         <h2><i class="fa-solid fa-chart-bar"></i> User Statistics</h2>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            
             <div style="background: var(--muted); padding: 1rem; border-radius: 0.5rem;">
                 <div style="color: var(--muted-foreground); font-size: 0.875rem;">Total Workouts</div>
-                <div style="font-size: 2rem; font-weight: 700; color: var(--primary);">
+                <div style="font-size: 2rem; font-weight: 700; color: var(--primary); text-align: right;">
                     {{ $user->workoutLogs()->count() }}
                 </div>
             </div>
 
             <div style="background: var(--muted); padding: 1rem; border-radius: 0.5rem;">
                 <div style="color: var(--muted-foreground); font-size: 0.875rem;">Total Spent</div>
-                <div style="font-size: 2rem; font-weight: 700; color: var(--primary);">
+                <div style="font-size: 2rem; font-weight: 700; color: var(--primary); text-align: right;">
                     ₱{{ number_format($user->transactions()->where('status', 'active')->sum('amount'), 2) }}
                 </div>
             </div>
 
             <div style="background: var(--muted); padding: 1rem; border-radius: 0.5rem;">
                 <div style="color: var(--muted-foreground); font-size: 0.875rem;">Member Since</div>
-                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary); text-align: right;">
                     {{ $user->created_at->format('M Y') }}
                 </div>
             </div>
 
             <div style="background: var(--muted); padding: 1rem; border-radius: 0.5rem;">
                 <div style="color: var(--muted-foreground); font-size: 0.875rem;">Subscriptions</div>
-                <div style="font-size: 2rem; font-weight: 700; color: var(--primary);">
+                <div style="font-size: 2rem; font-weight: 700; color: var(--primary); text-align: right;">
                     {{ $user->subscriptions()->count() }}
                 </div>
             </div>
+
         </div>
     </div>
 </div>

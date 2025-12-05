@@ -80,7 +80,7 @@
                 $filter = request('category', 'all');
                 $search = request('search');
             @endphp
-            <div class="d-flex justify-content-center align-items-center mb-5 flex-wrap filter-buttons">
+            <div class="filter-buttons">
                 <a href="{{ url('exercises' . ($search ? '?search=' . urlencode($search) : '')) }}" 
                    class="btn {{ $filter === 'all' ? 'btn-primary' : 'btn-outline-primary' }}">
                     <i class="fas fa-th-large me-2"></i> All Exercises

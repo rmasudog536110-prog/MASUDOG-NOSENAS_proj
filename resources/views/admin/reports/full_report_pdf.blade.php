@@ -2,7 +2,6 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ asset('css/reports.css') }}">
     <style>
         body {
             font-family: "DejaVu Sans", "Segoe UI", Arial, sans-serif;
@@ -10,7 +9,7 @@
             line-height: 1.4;
             color: #333;
             margin: 0 auto;
-            padding: 20px;
+            padding: 5px;
             background-color: #fff;
         }
 
@@ -19,7 +18,7 @@
             color: #2c3e50;
             font-size: 24px;
             font-weight: bold;
-            margin: 0 0 10px 0;
+            margin: 0 0 5px 0;
             text-transform: uppercase;
         }
 
@@ -27,7 +26,7 @@
             text-align: center;
             color: #7f8c8d;
             font-size: 12px;
-            margin-bottom: 30px;
+            margin-bottom: 5px;
             font-style: italic;
         }
 
@@ -43,19 +42,18 @@
             text-align: right;
             border-radius: 4px;
         }
-table.full-report-table {
-    width: auto;          /* Shrinks table to content width */
-    max-width: 100%;      /* Avoid overflow */
-    margin: 0 auto 20px;  /* Top/bottom 0, horizontal auto for centering */
-    border-collapse: collapse;
-    font-size: 11px;
-    background-color: #fff;
-    display: table;       /* Ensure table acts as block-level for margin auto */
-}
+        table.full-report-table {
+            width: auto;          /* Shrinks table to content width */
+            max-width: 100%;      /* Avoid overflow */
+            margin: 0 auto 20px;  /* Top/bottom 0, horizontal auto for centering */
+            border-collapse: collapse;
+            font-size: 11px;
+            background-color: #fff;
+            display: table;       /* Ensure table acts as block-level for margin auto */
+        }
 
 
         table.full-report-table th {
-            padding: 10px 8px;
             text-align: left;
             font-weight: 600;
             text-transform: uppercase;
@@ -66,9 +64,9 @@ table.full-report-table {
         }
 
         table.full-report-table td {
-            padding: 8px;
             border: 1px solid #dee2e6;
             vertical-align: middle;
+            text-align: center;
             color: #444;
         }
 

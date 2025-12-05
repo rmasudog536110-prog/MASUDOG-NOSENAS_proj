@@ -10,6 +10,8 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
+
+
     {
         Schema::create('user_progress', function (Blueprint $table) {
             $table->id();
@@ -20,10 +22,8 @@ return new class extends Migration
             $table->integer('sets_completed');
             $table->integer('reps_completed');
             $table->decimal('weigh_used');
-            $table->string('password');
             $table->integer('duration_minutes');
             $table->text('notes');
-            $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('program_id')->references('id')->on('training_programs');

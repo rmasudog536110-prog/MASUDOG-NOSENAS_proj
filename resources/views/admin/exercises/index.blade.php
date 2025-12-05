@@ -66,12 +66,12 @@
                                 <td>
                                     <span class="category-badge 
                                         @switch($exercise->category)
-                                            @case('strength') bg-info @break
-                                            @case('cardio') bg-danger @break
-                                            @case('core') bg-success @break
-                                            @case('plyometrics') bg-warning text-dark @break
-                                            @case('functional') bg-secondary @break
-                                            @default bg-primary
+                                            @case('strength') @break
+                                            @case('cardio') @break
+                                            @case('core')  @break
+                                            @case('plyometrics') @break
+                                            @case('functional')  @break
+                                            @default
                                         @endswitch">
                                         {{ ucfirst($exercise->category) }}
                                     </span>
@@ -79,9 +79,9 @@
                                 <td>
                                     <span class="difficulty-badge 
                                         @switch($exercise->difficulty)
-                                            @case('beginner') bg-success @break
-                                            @case('intermediate') bg-warning text-dark @break
-                                            @case('expert') bg-danger @break
+                                            @case('beginner')  @break
+                                            @case('intermediate') @break
+                                            @case('expert') @break
                                         @endswitch">
                                         {{ ucfirst($exercise->difficulty) }}
                                     </span>
@@ -90,7 +90,7 @@
                                 <td>
                                     @if($exercise->video_url)
                                         <a href="{{ $exercise->video_url }}" target="_blank" class="video-link">
-                                            <i class="fab fa-youtube me-1"></i> View
+                                            <i class="fab fa-youtube me-1" style="padding: 10px"></i>
                                         </a>
                                     @else
                                         <span style="color: var(--muted-foreground);">No video</span>
@@ -98,9 +98,9 @@
                                 </td>
                                 <td>
                                     @if($exercise->is_active)
-                                        <span class="status-badge status-active">Active</span>
+                                        <span class="status-badge" style="color: #00FF00;">Active</span>
                                     @else
-                                        <span class="status-badge status-inactive">Inactive</span>
+                                        <span class="status-badge" style="color: #FF0000">Inactive</span>
                                     @endif
                                 </td>
                                 <td>
@@ -143,10 +143,10 @@
             </div>
                         @if($exercises->total() > $exercises->perPage())
             <div class="d-flex justify-content-between align-items-center p-3" style="border-top: 1px solid var(--table-border);">
-                <div class="text-muted small">
+                <div class="pagination">
                     Showing <strong>{{ $exercises->firstItem() }}</strong> to <strong>{{ $exercises->lastItem() }}</strong> of <strong>{{ $exercises->total() }}</strong> results
                 </div>
-                <div>
+                <div class="pagination">
                     {{ $exercises->links('pagination::bootstrap-4') }}
                 </div>
             </div>

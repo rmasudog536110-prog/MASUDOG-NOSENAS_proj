@@ -10,7 +10,7 @@ GLOBAL THEME VARIABLES
     --card-hover: #222222;
     --muted-foreground: #b5b5b5;
     --icon-muted: #888;
-    --placeholder-color: #777;
+    --placeholder-color: #eccece;
 
     --color-success: #28a745;
     --color-info: #17a2b8;
@@ -284,86 +284,237 @@ RESPONSIVE DESIGN
     .exercises-table td { padding: 0.75rem 1rem; }
 }
 
+/* ==========================================================================
+   EXERCISE DETAILS PAGE DARK THEME
+   ========================================================================== */
+
 /* -----------------------------------------------------------
-EXERCISE LIBRARY SECTION
------------------------------------------------------------ */
+   GENERAL BACKGROUND & TEXT
+   ----------------------------------------------------------- */
 section.py-5.bg-light {
-    padding: var(--spacing-lg) 0;
-    background: linear-gradient(135deg,
-        rgba(255, 102, 0, 0.05) 0%,
-        rgba(26, 26, 26, 0.8) 100%) !important;
+    background: linear-gradient(135deg, rgba(255,102,0,0.05) 0%, rgba(26,26,26,0.9) 100%);
     min-height: calc(100vh - 200px);
+    color: var(--foreground);
+}
+
+.card {
+    background: var(--card) !important;
+    color: var(--foreground);
+    border: 1px solid var(--border-primary-light);
+    border-radius: var(--radius);
+    transition: all var(--transition-speed);
+}
+
+.card:hover {
+    background: var(--card-hover);
 }
 
 /* -----------------------------------------------------------
-SEARCH BAR
------------------------------------------------------------ */
-.input-group {
-    border-radius: var(--radius);
-    overflow: hidden;
+   BACK BUTTON
+   ----------------------------------------------------------- */
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+    background: var(--card);
 }
 
-.input-group-text {
-    background: var(--card-hover) !important;
-    border: 1px solid var(--border-dark) !important;
+.btn-outline-primary:hover {
+    color: var(--foreground);
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+/* -----------------------------------------------------------
+   BADGES
+   ----------------------------------------------------------- */
+.badge {
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge.bg-primary { background-color: var(--primary); }
+.badge.bg-info { background-color: var(--color-info); }
+.badge.bg-success { background-color: var(--color-success); }
+.badge.bg-warning { background-color: var(--color-warning); color: #000; }
+.badge.bg-danger { background-color: var(--color-danger); }
+
+/* Target Muscles Badges */
+.badge.bg-primary.bg-opacity-10 {
+    background-color: rgba(255,102,0,0.15);
+    color: var(--primary);
+}
+
+/* -----------------------------------------------------------
+   HEADERS
+   ----------------------------------------------------------- */
+h1.display-5,
+h5.card-title {
+    color: var(--foreground);
+}
+
+.text-muted {
+    color: var(--muted-foreground) !important;
+}
+
+.text-primary {
     color: var(--primary) !important;
 }
 
+.text-success {
+    color: var(--color-success) !important;
+}
+
+.text-warning {
+    color: var(--color-warning) !important;
+}
+
+.text-danger {
+    color: var(--color-danger) !important;
+}
+
+.text-info {
+    color: var(--color-info) !important;
+}
+
+/* -----------------------------------------------------------
+   TIMER & INPUTS
+   ----------------------------------------------------------- */
+#timerDisplay {
+    color: var(--primary);
+    font-weight: 700;
+    text-shadow: 0 0 15px rgba(255,102,0,0.3);
+}
+
 .form-control {
-    background: var(--card) !important;
-    border: 1px solid var(--border-dark) !important;
+    background-color: var(--card) !important;
     color: var(--foreground) !important;
+    border: 1px solid var(--border-dark) !important;
+    border-radius: var(--radius-sm);
 }
 
 .form-control:focus {
     border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(255,102,0,0.2);
 }
 
 /* -----------------------------------------------------------
-FILTER BUTTONS
------------------------------------------------------------ */
-.filter-buttons .btn {
-    padding: 0.6rem 1.2rem;
-    border-radius: var(--radius-sm);
+   BUTTONS
+   ----------------------------------------------------------- */
+.btn-success {
+    background-color: var(--color-success);
+    border-color: var(--color-success);
+    color: #fff;
+}
+
+.btn-success:hover {
+    background-color: darken(var(--color-success),10%);
+}
+
+.btn-warning {
+    background-color: var(--color-warning);
+    border-color: var(--color-warning);
+    color: #000;
+}
+
+.btn-outline-secondary {
+    color: var(--foreground);
+    border-color: var(--border-dark);
+    background: var(--card);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--card-hover);
+    color: var(--foreground);
 }
 
 /* -----------------------------------------------------------
-EXERCISE CARDS
------------------------------------------------------------ */
-.exercise-card {
-    background: var(--card) !important;
-    border: 1px solid var(--border-primary-light) !important;
-    border-radius: var(--radius) !important;
+   INSTRUCTION STEPS
+   ----------------------------------------------------------- */
+.instruction-step {
+    background-color: var(--card);
+    border: 1px solid transparent;
     transition: all var(--transition-speed);
 }
 
-.exercise-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-primary) !important;
+.instruction-step:hover,
+.instruction-step.active {
+    background-color: var(--card-hover);
+    border-color: var(--border-medium);
+}
+
+.step-number {
+    background-color: var(--card-hover);
+    border: 1px solid var(--border-medium);
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.instruction-step:hover .step-number,
+.instruction-step.active .step-number {
+    background-color: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
 }
 
 /* -----------------------------------------------------------
-CARD FOOTER
------------------------------------------------------------ */
-.card-footer {
-    background: var(--card-hover) !important;
-    border-top: 1px solid var(--table-border) !important;
+   LISTS (Tips, Variations, Mistakes)
+   ----------------------------------------------------------- */
+ul.list-unstyled li {
+    background-color: rgba(255,255,255,0.03);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.4rem;
 }
 
 /* -----------------------------------------------------------
-PAGINATION OVERRIDE
------------------------------------------------------------ */
-.pagination {
-    border-top: 1px solid var(--table-border) !important;
-    padding-top: 2rem;
+   VIDEO DEMO CARD
+   ----------------------------------------------------------- */
+.bg-dark {
+    background-color: var(--card) !important;
+}
+
+.bg-dark .text-white {
+    color: var(--foreground) !important;
+}
+
+.bg-danger {
+    background-color: var(--color-danger) !important;
+}
+
+.position-absolute.bottom-0.start-0.end-0 {
+    background: rgba(26,26,26,0.8) !important;
+}
+
+.position-absolute.bottom-0.start-0.end-0 small {
+    color: var(--muted-foreground) !important;
 }
 
 /* -----------------------------------------------------------
-RESPONSIVE
------------------------------------------------------------ */
-@media (max-width: 1200px) {
-    .col-lg-3 { flex: 0 0 33%; }
+   VIDEO MODAL
+   ----------------------------------------------------------- */
+#videoModal {
+    background-color: rgba(0,0,0,0.95);
 }
-@media (max-width: 992px) {
-    .col-lg-3, .col-md-4 { flex: 0 0 50%; }
+
+#videoModal iframe {
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-primary);
+}
+
+#videoModal button {
+    color: var(--foreground);
+}
+
+#videoModal button:hover {
+    color: var(--primary);
+}
+
+/* -----------------------------------------------------------
+   RESPONSIVE
+   ----------------------------------------------------------- */
+@media (max-width: 768px) {
+    .d-flex.gap-2 {
+        flex-direction: column;
+    }
 }
