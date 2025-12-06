@@ -79,7 +79,29 @@
         </div>
 
         <!-- Pending Payments -->
-        <?php if($pendingPayments->count() > 0): ?>
+        
+
+        <!-- Quick Actions -->
+        <h2 style="margin-bottom: 1rem;">Quick Actions</h2>
+        <div class="admin-actions">
+            <a href="<?php echo e(route('admin.users')); ?>" class="admin-action-btn">
+                <i class="fa-solid fa-users"></i>
+                Manage Users
+            </a>
+            <a href="<?php echo e(route('admin.programs.index')); ?>" class="admin-action-btn">
+                <i class="fa-solid fa-dumbbell"></i>
+                Manage Programs
+            </a>
+            <a href="<?php echo e(route('admin.exercises.index')); ?>" class="admin-action-btn">
+                <i class="fa-solid fa-list"></i>
+                Manage Exercises
+            </a>
+            <a href="<?php echo e(route('reports.full_report')); ?>" class="admin-action-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                View Full Detailed Report
+            </a>
+        </div>
+    <?php if($pendingPayments->count() > 0): ?>
         <div class="dashboard-card" style="margin-bottom: 2rem; border-color: rgba(255, 193, 7, 0.5);">
             <h3 style="color: var(--foreground); margin-bottom: 1.5rem;">
                 <i class="fa-solid fa-clock"></i> Pending Payment Approvals
@@ -138,28 +160,6 @@
             </div>
         </div>
         <?php endif; ?>
-
-        <!-- Quick Actions -->
-        <h2 style="margin-bottom: 1rem;">Quick Actions</h2>
-        <div class="admin-actions">
-            <a href="<?php echo e(route('admin.users')); ?>" class="admin-action-btn">
-                <i class="fa-solid fa-users"></i>
-                Manage Users
-            </a>
-            <a href="<?php echo e(route('admin.programs.index')); ?>" class="admin-action-btn">
-                <i class="fa-solid fa-dumbbell"></i>
-                Manage Programs
-            </a>
-            <a href="<?php echo e(route('admin.exercises.index')); ?>" class="admin-action-btn">
-                <i class="fa-solid fa-list"></i>
-                Manage Exercises
-            </a>
-            <a href="<?php echo e(route('reports.full_report')); ?>" class="admin-action-btn">
-                <i class="fa-solid fa-arrow-left"></i>
-                View Full Detailed Report
-            </a>
-        </div>
-
         <!-- Recent Users -->
         <div class="dashboard-card">
             <h3>Recent Users</h3>

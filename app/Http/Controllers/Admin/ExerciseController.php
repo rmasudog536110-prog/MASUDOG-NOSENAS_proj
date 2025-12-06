@@ -61,7 +61,7 @@ class ExerciseController extends Controller
      */
     public function edit(Exercise $exercise)
     {
-        return view('admin.exercises.edit');
+        return view('admin.exercises.edit', compact('exercise'));
     }
 
     /**
