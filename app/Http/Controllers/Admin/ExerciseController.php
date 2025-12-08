@@ -11,7 +11,7 @@ class ExerciseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $icons = [
             'beginner' => '🌱',
@@ -21,8 +21,22 @@ class ExerciseController extends Controller
             'hardcore' => '💪'
         ];
 
-        $exercises = Exercise::orderBy('name')->paginate(10);
-        return view('admin.exercises.index', compact('exercises', 'icons'));
+        $search = $request->get('search');
+
+        $query = Exercise::query();
+
+        // Apply search filter
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('description', 'like', '%' . $search . '%')
+                  ->orWhere('muscle_group', 'like', '%' . $search . '%');
+            });
+        }
+
+        $exercises = $query->orderBy('name')->paginate(10)->withQueryString();
+        
+        return view('admin.exercises.index', compact('exercises', 'icons', 'search'));
     }
 
     /**

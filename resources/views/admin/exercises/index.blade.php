@@ -4,6 +4,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/exercises.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin-exercise-form.css') }}">
 @endpush
 
 @section('content')
@@ -37,6 +38,36 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
+
+        <!-- Search Bar -->
+        <div class="search-filter-bar">
+            <form method="GET" action="{{ route('admin.exercises.index') }}" class="search-form">
+                <div class="search-grid-simple">
+                    <!-- Search Input -->
+                    <div class="search-input-group">
+                        <label for="search" class="search-label">
+                            <i class="fas fa-search"></i> Search Exercises
+                        </label>
+                        <input type="text" 
+                               name="search" 
+                               id="search"
+                               class="search-input" 
+                               value="{{ old('search', $search) }}"
+                               placeholder="Search by name, description, or muscle group...">
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="search-actions">
+                        <button type="submit" class="btn-search">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                        <a href="{{ route('admin.exercises.index') }}" class="btn-clear">
+                            <i class="fas fa-times"></i> Clear
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
 
         <!-- Exercises Table -->
         <div class="exercises-card">
