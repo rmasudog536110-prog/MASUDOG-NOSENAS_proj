@@ -6,13 +6,6 @@
     <link rel="stylesheet" href="{{ asset('css/exercises.css') }}">
 @endpush
 
-@section('content')
-@if (Auth::user() && Auth::user()->hasAdminAccess())
-@include('admin.admin_header')
-@else
-@include('index.header')
-@endif
-
 <section class="edit-exercise-page">
     <div class="container">
         <div class="row justify-content-center">

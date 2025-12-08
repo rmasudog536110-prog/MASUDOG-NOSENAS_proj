@@ -1,9 +1,7 @@
-@extends('skeleton.layout')
+<?php $__env->startSection('title', 'Edit Program - Admin'); ?>
 
-@section('title', 'Edit Program - Admin')
-
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/register.css') }}">
+<?php $__env->startPush('styles'); ?>
+    <link rel="stylesheet" href="<?php echo e(asset('css/register.css')); ?>">
     <style>
         body {
             overflow-y: auto !important;
@@ -47,26 +45,26 @@
             gap: 1rem;
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 
     <div style="margin-bottom: 2rem;">
-        <a href="{{ route('admin.programs.index') }}" class="btn btn-outline">
+        <a href="<?php echo e(route('admin.programs.index')); ?>" class="btn btn-outline">
             <i class="fa-solid fa-arrow-left"></i> Back to Programs
         </a>
     </div>
 
-    @if ($errors->any())
+    <?php if($errors->any()): ?>
         <div class="flash-message error">
             <ul style="margin: 0; padding-left: 1.5rem;">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
+                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <li><?php echo e($error); ?></li>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </ul>
         </div>
-    @endif
+    <?php endif; ?>
 
     <div class="form-card">
         <h1><i class="fa-solid fa-edit"></i> Edit Program</h1>
@@ -74,9 +72,9 @@
             Update program details
         </p>
 
-        <form action="{{ route('admin.programs.update', $program) }}" method="POST">
-            @csrf
-            @method('PUT')
+        <form action="<?php echo e(route('admin.programs.update', $program)); ?>" method="POST">
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('PUT'); ?>
 
             <div class="mb-3">
                 <label for="title" class="form-label">Program Title *</label>
@@ -84,7 +82,7 @@
                        class="form-control" 
                        id="title" 
                        name="title" 
-                       value="{{ old('title', $program->title) }}" 
+                       value="<?php echo e(old('title', $program->title)); ?>" 
                        required>
             </div>
 
@@ -94,16 +92,16 @@
                           id="description" 
                           name="description" 
                           rows="5" 
-                          required>{{ old('description', is_array($program->description) ? ($program->description['overview'] ?? '') : $program->description) }}</textarea>
+                          required><?php echo e(old('description', is_array($program->description) ? ($program->description['overview'] ?? '') : $program->description)); ?></textarea>
             </div>
 
             <div class="form-row">
                 <div class="mb-3">
                     <label for="level" class="form-label">Difficulty Level *</label>
                     <select class="form-control" id="level" name="level" required>
-                        <option value="beginner" {{ old('level', $program->level) == 'beginner' ? 'selected' : '' }}>Beginner</option>
-                        <option value="intermediate" {{ old('level', $program->level) == 'intermediate' ? 'selected' : '' }}>Intermediate</option>
-                        <option value="advanced" {{ old('level', $program->level) == 'advanced' ? 'selected' : '' }}>Advanced</option>
+                        <option value="beginner" <?php echo e(old('level', $program->level) == 'beginner' ? 'selected' : ''); ?>>Beginner</option>
+                        <option value="intermediate" <?php echo e(old('level', $program->level) == 'intermediate' ? 'selected' : ''); ?>>Intermediate</option>
+                        <option value="advanced" <?php echo e(old('level', $program->level) == 'advanced' ? 'selected' : ''); ?>>Advanced</option>
                     </select>
                 </div>
 
@@ -113,7 +111,7 @@
                            class="form-control" 
                            id="duration_weeks" 
                            name="duration_weeks" 
-                           value="{{ old('duration_weeks', $program->duration_weeks) }}" 
+                           value="<?php echo e(old('duration_weeks', $program->duration_weeks)); ?>" 
                            min="1"
                            required>
                 </div>
@@ -126,7 +124,7 @@
                            class="form-control" 
                            id="workout_counts" 
                            name="workout_counts" 
-                           value="{{ old('workout_counts', $program->workout_counts) }}" 
+                           value="<?php echo e(old('workout_counts', $program->workout_counts)); ?>" 
                            min="1"
                            required>
                 </div>
@@ -137,15 +135,15 @@
                            class="form-control" 
                            id="equipment_required" 
                            name="equipment_required" 
-                           value="{{ old('equipment_required', $program->equipment_required) }}">
+                           value="<?php echo e(old('equipment_required', $program->equipment_required)); ?>">
                 </div>
             </div>
 
             <div class="mb-3">
                 <label for="is_active" class="form-label">Status *</label>
                 <select class="form-control" id="is_active" name="is_active" required>
-                    <option value="1" {{ old('is_active', $program->is_active) == 1 ? 'selected' : '' }}>Active</option>
-                    <option value="0" {{ old('is_active', $program->is_active) == 0 ? 'selected' : '' }}>Inactive</option>
+                    <option value="1" <?php echo e(old('is_active', $program->is_active) == 1 ? 'selected' : ''); ?>>Active</option>
+                    <option value="0" <?php echo e(old('is_active', $program->is_active) == 0 ? 'selected' : ''); ?>>Inactive</option>
                 </select>
             </div>
 
@@ -153,7 +151,7 @@
                 <button type="submit" class="btn btn-primary">
                     <i class="fa-solid fa-save"></i> Update Program
                 </button>
-                <a href="{{ route('admin.programs.index') }}" class="btn btn-outline">
+                <a href="<?php echo e(route('admin.programs.index')); ?>" class="btn btn-outline">
                     <i class="fa-solid fa-times"></i> Cancel
                 </a>
             </div>
@@ -161,4 +159,6 @@
     </div>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('skeleton.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\backup\MASUDOG-NOSENAS_proj\resources\views/admin/programs/edit.blade.php ENDPATH**/ ?>

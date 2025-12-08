@@ -6,12 +6,6 @@
     <link rel="stylesheet" href="{{ asset('css/exercises.css') }}">
 @endpush
 
-@section('content')
-@if (Auth::user() && Auth::user()->hasAdminAccess())
-@include('admin.admin_header')
-@else
-@include('index.header')
-@endif
 
 <section class="py-5" style="min-height: 100vh; background: var(--background);">
     <div class="container">
