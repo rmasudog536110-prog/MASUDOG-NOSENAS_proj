@@ -14,16 +14,11 @@ class InstructorDashboardController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware(function ($request, $next) {
-            if (!Auth::user()->isInstructor() && !Auth::user()->hasAdminAccess()) {
-                abort(403, 'Access denied. Instructor role required.');
-            }
-            return $next($request);
-        });
     }
 
     public function index()
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         // Get instructor request statistics
@@ -105,7 +100,41 @@ class InstructorDashboardController extends Controller
 
         $instructorRequest->load('customer');
 
-        return view('instructor.request-details', compact('instructorRequest'));
+        return redirect()->route('instructor.requests')
+            ->with('info', 'Individual request details view not yet implemented.');
+    }
+
+    /**
+     * Authorize view access to instructor request
+     */
+    private function authorizeViewRequest(InstructorRequest $instructorRequest)
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        
+        // Allow if user is admin or the instructor assigned to this request
+        if (!$user->hasAdminAccess() && $instructorRequest->instructor_id !== $user->id) {
+            abort(403, 'You do not have permission to view this request.');
+        }
+    }
+
+    /**
+     * Authorize manage access to instructor request
+     */
+    private function authorizeManageRequest(InstructorRequest $instructorRequest)
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        
+        // Allow if user is admin or the instructor assigned to this request
+        if (!$user->hasAdminAccess() && $instructorRequest->instructor_id !== $user->id) {
+            abort(403, 'You do not have permission to manage this request.');
+        }
+
+        // Additional checks for specific actions
+        if (in_array($instructorRequest->status, ['completed', 'cancelled'])) {
+            abort(403, 'This request cannot be modified as it is already completed or cancelled.');
+        }
     }
 
     /**
@@ -123,7 +152,7 @@ class InstructorDashboardController extends Controller
         $instructorRequest->update([
             'status' => 'accepted',
             'instructor_id' => Auth::id(),
-            'instructor_notes' => $validated['instructor_notes'],
+            'instructor_notes' => $validated['instructor_notes'] ?? null,
             'scheduled_at' => $validated['scheduled_at'] ?? $instructorRequest->scheduled_at,
         ]);
 
@@ -166,7 +195,7 @@ class InstructorDashboardController extends Controller
         $instructorRequest->update([
             'status' => 'completed',
             'completed_at' => now(),
-            'instructor_notes' => $validated['instructor_notes'],
+            'instructor_notes' => $validated['instructor_notes'] ?? null,
         ]);
 
         return redirect()->route('instructor.instructor_dashboard')
@@ -178,6 +207,7 @@ class InstructorDashboardController extends Controller
      */
    public function getRequests(Request $request)
 {
+    /** @var \App\Models\User $user */
     $user = Auth::user();
     
     $query = $user->instructorRequests()->with('customer');
