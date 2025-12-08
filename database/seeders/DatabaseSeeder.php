@@ -39,11 +39,22 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
         ]);
 
+        // Create Customer User
+        User::create([
+            'name' => 'Customer User',
+            'email' => 'customer@fitclub.com',
+            'phone_number' => '1234567892',
+            'password' => Hash::make('customer123'),
+            'role' => 'customer',
+            'is_active' => true,
+        ]);
+
         $this->call(SubscriptionPlanSeeder::class);
         $this->call(BeginnerExercisesSeeder::class);
         $this->call(IntermediateExerciseSeeder::class);
         $this->call(ExpertExercisesSeeder::class);
         $this->call(TrainingProgramSeeder::class);
+        $this->call(SubscriptionSeeder::class);
         
     }
 }

@@ -97,7 +97,7 @@ public function registerUser(Request $request)
  
         $subscription = $user->subscriptions()->latest()->first();
         if ($subscription && $subscription->status === 'pending') {
-            return redirect()->route('index.pending_dashboard'); // show pending_dashboard
+            return redirect()->route('pending_dashboard'); 
         }
 
         if ($user->hasAdminAccess()) {

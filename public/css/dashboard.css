@@ -1368,3 +1368,330 @@ h3 {
             line-height: 1.2;
             flex-grow: 1;
         }
+
+                .instructor-header {
+            background: linear-gradient(135deg, #ff6600 0%, #e65c00 100%);
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .instructor-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #fff, rgba(255,255,255,0.3), #fff);
+        }
+
+        .instructor-header h1 {
+            margin: 0 0 0.5rem 0;
+            color: white;
+            font-size: 2.5rem;
+        }
+
+        .instructor-header .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+        }
+
+        .instructor-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .instructor-stat-card {
+            background: var(--card);
+            border: 1px solid rgba(255, 102, 0, 0.3);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .instructor-stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .instructor-stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .instructor-stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);
+        }
+
+        .stat-card-pending {
+            border-color: rgba(255, 193, 7, 0.5);
+        }
+
+        .stat-card-completed {
+            border-color: rgba(40, 167, 69, 0.5);
+        }
+
+        .stat-label {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-card-pending .stat-value {
+            color: #ffc107;
+        }
+
+        .stat-card-completed .stat-value {
+            color: #28a745;
+        }
+
+        .chart-container {
+            background: var(--card);
+            border: 1px solid rgba(255, 102, 0, 0.2);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .session-list {
+            background: var(--card);
+            border: 1px solid rgba(255, 102, 0, 0.2);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .session-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 102, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .session-item:last-child {
+            border-bottom: none;
+        }
+
+        .session-item:hover {
+            background: rgba(255, 102, 0, 0.05);
+        }
+
+        .session-info {
+            flex: 1;
+        }
+
+        .session-customer {
+            font-weight: 600;
+            color: var(--foreground);
+            margin-bottom: 0.25rem;
+        }
+
+        .session-details {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+
+        .session-time {
+            text-align: right;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .request-status {
+            margin-left: 1rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .badge-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+
+        .badge-active {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+
+        .badge-expired {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+
+        .dashboard-welcome {
+            position: relative;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--foreground);
+        }
+
+        .dashboard-welcome.hide {
+            opacity: 0;
+            transform: translateY(-20px);
+            height: 0;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+
+        .dashboard-welcome::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), #ffc107, var(--primary));
+        }
+
+        .welcome-title {
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 0 0 1rem 0;
+        }
+
+        .welcome-subtitle {
+            color: var(--muted-foreground);
+            font-size: 1.125rem;
+            text-align: center;
+        }
+
+        .section-title {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1.5rem;
+            background: var(--card);
+            border: 1px solid rgba(255, 102, 0, 0.2);
+            border-radius: var(--radius);
+            color: var(--foreground);
+            text-decoration: none;
+            transition: all var(--transition-speed) ease;
+            font-weight: 500;
+        }
+
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
+        }
+
+        .progress-ring {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+
+        .progress-ring-circle {
+            stroke: rgba(255, 102, 0, 0.2);
+            stroke-width: 8;
+            fill: transparent;
+            r: 48;
+            cx: 60;
+            cy: 60;
+        }
+
+        .progress-ring-circle-progress {
+            stroke: var(--primary);
+            stroke-width: 8;
+            fill: transparent;
+            r: 48;
+            cx: 60;
+            cy: 60;
+            stroke-dasharray: 301.59;
+            stroke-dashoffset: 301.59;
+            transition: stroke-dashoffset 0.3s ease;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .instructor-header h1 {
+                font-size: 2rem;
+            }
+            
+            .session-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .session-time {
+                text-align: left;
+            }
+        }
+        

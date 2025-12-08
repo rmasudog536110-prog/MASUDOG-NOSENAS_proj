@@ -19,7 +19,7 @@ class TrainingProgramController extends Controller
         // Get all active training programs
         $query = TrainingProgram::where('is_active', true);
 
-        $difficulty = $request->get('difficulty', 'all');
+        $difficulty = $request->get('level', 'all');
 
         if ($difficulty !== 'all') {
             $query->where('level', $difficulty);

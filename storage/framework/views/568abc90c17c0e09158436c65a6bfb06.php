@@ -26,8 +26,8 @@
         <!-- Profile Header -->
         <div class="profile-header">
             <div class="profile-picture-container">
-                <?php if(Auth::user()->profile_picture): ?>
-                    <img src="<?php echo e(Storage::url(Auth::user()->profile_picture)); ?>" 
+                <?php if(Auth::user()->profile && Auth::user()->profile->profile_picture): ?>
+                    <img src="<?php echo e(Storage::url(Auth::user()->profile->profile_picture)); ?>" 
                          alt="Profile Picture" 
                          class="profile-picture">
                 <?php else: ?>

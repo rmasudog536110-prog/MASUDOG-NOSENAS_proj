@@ -50,11 +50,13 @@
         <!-- Filter Buttons -->
         <div class="d-flex justify-content-center mb-5 flex-wrap gap-2">
 
+          
             <a href="<?php echo e(route('programs.index', ['level' => 'all'])); ?>"
             class="btn <?php echo e(($level === 'all') ? 'btn-primary' : 'btn-outline-primary'); ?>">
                 <i class="fas fa-bullseye me-1"></i> All Levels
             </a>
 
+         
             <a href="<?php echo e(route('programs.index' , ['level' => 'beginner'])); ?>"
             class="btn <?php echo e(($level === 'beginner') ? 'btn-success' : 'btn-outline-success'); ?>">
                 <i class="fas fa-seedling me-1"></i> Beginner
@@ -70,6 +72,10 @@
                 <i class="fas fa-star me-1"></i> Expert
             </a>
 
+            <a href="<?php echo e(route('programs.index', ['level' => 'hardcore'])); ?>"
+            class="btn <?php echo e(($level === 'hardcore') ? 'btn-dark' : 'btn-outline-dark'); ?>">
+                <i class="fa-solid fa-skull me-1"></i> HARDCORE
+            </a>
 
         </div>
 

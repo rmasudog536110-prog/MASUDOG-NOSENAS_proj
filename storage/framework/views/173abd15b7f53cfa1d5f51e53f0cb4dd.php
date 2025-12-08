@@ -12,7 +12,8 @@
 
             <nav class="nav">
                 <?php if(auth()->guard()->check()): ?>
-                    <a href="<?php echo e(route('programs.index')); ?>" class="nav-link <?php echo e(request()->is('programs*') ? 'active' : ''); ?>">
+                <?php if(Auth::user()->role === 'customer'): ?>
+                                    <a href="<?php echo e(route('programs.index')); ?>" class="nav-link <?php echo e(request()->is('programs*') ? 'active' : ''); ?>">
                         <i class="fa-solid fa-layer-group"></i> Programs</a>
                     <a href="<?php echo e(route('exercises.index')); ?>" class="nav-link <?php echo e(request()->is('exercises*') ? 'active' : ''); ?>">
                         <i class="fa-solid fa-weight-hanging"></i> Exercises</a>
@@ -22,9 +23,21 @@
                     <a href="<?php echo e(route('customer.instructor-requests')); ?>" class="nav-link <?php echo e(request()->is('instructor-requests') ? 'active' : ''); ?>">
                         <i class="fa-solid fa-dumbbell"></i> Instructor
                     </a>
-                    <a href="<?php echo e(route('profile.show')); ?>" class="nav-link <?php echo e(request()->is('profile*') ? 'active' : ''); ?>">
-                        <i class="fa-solid fa-user"></i> Profile
+                <?php endif; ?>
+
+                <?php if(Auth::user()->role === 'instructor'): ?>
+                    <a href="<?php echo e(route('instructor.requests')); ?>" class="nav-link <?php echo e(request()->routeIs('admin.users*') ? 'active' : ''); ?>">
+                        <i class="fa-solid fa-users"></i> Requests
                     </a>
+                    <a href="<?php echo e(route('instructor.instructor_dashboard')); ?>" class="nav-link <?php echo e(request()->routeIs('admin_dashboard') ? 'active' : ''); ?>">
+                            <i class="fa-solid fa-house-user" style="font-size: 2rem"></i> 
+                    </a>
+                <?php endif; ?>
+
+                <a href="<?php echo e(route('profile.show')); ?>" class="nav-link <?php echo e(request()->is('profile*') ? 'active' : ''); ?>">
+                        Profile
+                </a>
+
                 <?php endif; ?>
             </nav>
 

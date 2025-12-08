@@ -40,11 +40,15 @@
     </main>
 
     <!-- Scripts -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <?php echo $__env->yieldPushContent('scripts'); ?>
     
     <!-- Session Security -->
     <?php echo $__env->make('partials.session-security', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    
 </body>
 </html>
 <?php /**PATH C:\xampp\htdocs\backup\MASUDOG-NOSENAS_proj\resources\views/skeleton/layout.blade.php ENDPATH**/ ?>

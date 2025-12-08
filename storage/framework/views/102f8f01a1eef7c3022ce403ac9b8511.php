@@ -25,7 +25,7 @@
 
                 <!-- Form Card -->
                 <div class="form-card">
-                        <form action="<?php echo e(route('admin.exercises.edit', $exercise)); ?>" method="POST">
+                        <form action="<?php echo e(route('admin.exercises.update', $exercise)); ?>" method="POST">
                             <?php echo csrf_field(); ?>
                             <?php echo method_field('PUT'); ?>
 

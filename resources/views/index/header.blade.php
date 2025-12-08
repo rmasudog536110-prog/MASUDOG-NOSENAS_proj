@@ -12,7 +12,8 @@
 
             <nav class="nav">
                 @auth
-                    <a href="{{ route('programs.index') }}" class="nav-link {{ request()->is('programs*') ? 'active' : '' }}">
+                @if (Auth::user()->role === 'customer')
+                                    <a href="{{ route('programs.index') }}" class="nav-link {{ request()->is('programs*') ? 'active' : '' }}">
                         <i class="fa-solid fa-layer-group"></i> Programs</a>
                     <a href="{{ route('exercises.index') }}" class="nav-link {{ request()->is('exercises*') ? 'active' : '' }}">
                         <i class="fa-solid fa-weight-hanging"></i> Exercises</a>
@@ -22,9 +23,21 @@
                     <a href="{{ route('customer.instructor-requests') }}" class="nav-link {{ request()->is('instructor-requests') ? 'active' : '' }}">
                         <i class="fa-solid fa-dumbbell"></i> Instructor
                     </a>
-                    <a href="{{ route('profile.show') }}" class="nav-link {{ request()->is('profile*') ? 'active' : '' }}">
-                        Profile
+                @endif
+
+                @if (Auth::user()->role === 'instructor')
+                    <a href="{{ route('instructor.requests') }}" class="nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-users"></i> Requests
                     </a>
+                    <a href="{{ route('instructor.instructor_dashboard') }}" class="nav-link {{ request()->routeIs('admin_dashboard') ? 'active' : '' }}">
+                            <i class="fa-solid fa-house-user" style="font-size: 2rem"></i> 
+                    </a>
+                @endif
+
+                <a href="{{ route('profile.show') }}" class="nav-link {{ request()->is('profile*') ? 'active' : '' }}">
+                        Profile
+                </a>
+
                 @endauth
             </nav>
 

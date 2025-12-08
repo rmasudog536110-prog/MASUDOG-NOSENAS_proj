@@ -86,7 +86,7 @@ class InstructorDashboardController extends Controller
             $completionRate = round(($stats['completed_sessions'] / $stats['total_requests']) * 100, 1);
         }
 
-        return view('instructor_dashboard', compact(
+        return view('instructor.instructor_dashboard', compact(
             'stats',
             'recentRequests',
             'todaySessions',
@@ -169,71 +169,41 @@ class InstructorDashboardController extends Controller
             'instructor_notes' => $validated['instructor_notes'],
         ]);
 
-        return redirect()->route('instructor_dashboard')
+        return redirect()->route('instructor.instructor_dashboard')
             ->with('success', 'Session marked as completed!');
     }
 
     /**
      * Get all requests with filtering options
      */
-    public function getRequests(Request $request)
-    {
-        $user = Auth::user();
-        
-        $query = $user->instructorRequests()->with('customer');
+   public function getRequests(Request $request)
+{
+    $user = Auth::user();
+    
+    $query = $user->instructorRequests()->with('customer');
 
-        // Filter by status
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        // Filter by date range
-        if ($request->filled('date_from')) {
-            $query->whereDate('created_at', '>=', $request->date_from);
-        }
-
-        if ($request->filled('date_to')) {
-            $query->whereDate('created_at', '<=', $request->date_to);
-        }
-
-        // Search by customer name or email
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->whereHas('customer', function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
-            });
-        }
-
-        $requests = $query->latest()->paginate(15);
-
-        return response()->json([
-            'requests' => $requests,
-            'filters' => $request->only(['status', 'date_from', 'date_to', 'search'])
-        ]);
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
     }
 
-    /**
-     * Check if user can view a specific request
-     */
-    private function authorizeViewRequest(InstructorRequest $request): bool
-    {
-        if (Auth::user()->hasAdminAccess()) {
-            return true;
-        }
-
-        return $request->instructor_id === Auth::id() || $request->customer_id === Auth::id();
+    if ($request->filled('date_from')) {
+        $query->whereDate('created_at', '>=', $request->date_from);
     }
 
-    /**
-     * Check if user can manage a specific request
-     */
-    private function authorizeManageRequest(InstructorRequest $request): bool
-    {
-        if (Auth::user()->hasAdminAccess()) {
-            return true;
-        }
-
-        return $request->instructor_id === Auth::id();
+    if ($request->filled('date_to')) {
+        $query->whereDate('created_at', '<=', $request->date_to);
     }
+
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->whereHas('customer', function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+              ->orWhere('email', 'like', "%{$search}%");
+        });
+    }
+
+    $requests = $query->latest()->paginate(15);
+
+    return view('instructor.requests', compact('requests'))->with('filters', $request->only(['status', 'date_from', 'date_to', 'search']));
+}
 }

@@ -1,43 +1,41 @@
-@extends('skeleton.layout')
+<?php $__env->startSection('title', 'Instructor Dashboard - FitClub'); ?>
 
-@section('title', 'Instructor Dashboard - FitClub')
+<?php $__env->startPush('styles'); ?>
+    <link rel="stylesheet" href="<?php echo e(asset('css/dashboard.css')); ?>">
+<?php $__env->stopPush(); ?>
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-@endpush
+<?php $__env->startSection('content'); ?>
 
-@section('content')
-
-@include('index.header')
+<?php echo $__env->make('index.header', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
 <section class="content-section">
     <div class="container">
         <!-- Welcome Section -->
         <div class="dashboard-welcome" id="dashboard-welcome">
             <button class="close-btn" onclick="closeWelcome()">×</button>
-            <h1 class="welcome-title">👋 Welcome back, {{ Auth::user()->name }}!</h1>
+            <h1 class="welcome-title">👋 Welcome back, <?php echo e(Auth::user()->name); ?>!</h1>
             <p class="welcome-subtitle">Ready to help your clients achieve their fitness goals?</p>
         </div>
 
 
         <!-- Flash Messages -->
-        @if (session('success'))
+        <?php if(session('success')): ?>
             <div class="flash-message success">
-                <div class="container">{{ session('success') }}</div>
+                <div class="container"><?php echo e(session('success')); ?></div>
             </div>
-        @endif
+        <?php endif; ?>
 
-        @if (session('error'))
+        <?php if(session('error')): ?>
             <div class="flash-message error">
-                <div class="container">{{ session('error') }}</div>
+                <div class="container"><?php echo e(session('error')); ?></div>
             </div>
-        @endif
+        <?php endif; ?>
 
-        @if (session('warning'))
+        <?php if(session('warning')): ?>
             <div class="flash-message warning">
-                <div class="container">{{ session('warning') }}</div>
+                <div class="container"><?php echo e(session('warning')); ?></div>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Instructor Header -->
         <div class="instructor-header">
@@ -49,22 +47,22 @@
         <div class="instructor-stats">
             <div class="instructor-stat-card">
                 <div class="stat-label">Total Requests</div>
-                <div class="stat-value count-display">{{ $stats['total_requests'] }}</div>
+                <div class="stat-value count-display"><?php echo e($stats['total_requests']); ?></div>
             </div>
 
             <div class="instructor-stat-card stat-card-pending">
                 <div class="stat-label">⏳ Pending</div>
-                <div class="stat-value count-display">{{ $stats['pending_requests'] }}</div>
+                <div class="stat-value count-display"><?php echo e($stats['pending_requests']); ?></div>
             </div>
 
             <div class="instructor-stat-card stat-card-completed">
                 <div class="stat-label">✅ Accepted</div>
-                <div class="stat-value count-display">{{ $stats['accepted_requests'] }}</div>
+                <div class="stat-value count-display"><?php echo e($stats['accepted_requests']); ?></div>
             </div>
 
             <div class="instructor-stat-card stat-card-completed">
                 <div class="stat-label">🎯 Completed</div>
-                <div class="stat-value count-display">{{ $stats['completed_sessions'] }}</div>
+                <div class="stat-value count-display"><?php echo e($stats['completed_sessions']); ?></div>
             </div>
 
             <div class="instructor-stat-card">
@@ -76,9 +74,9 @@
                                 cx="60" 
                                 cy="60" 
                                 r="48"
-                                data-progress="{{ $completionRate }}"></circle>
+                                data-progress="<?php echo e($completionRate); ?>"></circle>
                     </svg>
-                    <div class="progress-text">{{ $completionRate }}%</div>
+                    <div class="progress-text"><?php echo e($completionRate); ?>%</div>
                 </div>
             </div>
         </div>
@@ -89,19 +87,19 @@
                 <i class="fa-solid fa-bolt"></i> Quick Actions
             </h2>
             <div class="quick-actions">
-                <a href="{{ route('instructor.requests') }}" class="action-btn">
+                <a href="<?php echo e(route('instructor.requests')); ?>" class="action-btn">
                     <i class="fa-solid fa-list"></i>
                     View All Requests
                 </a>
-                <a href="{{ route('instructor.requests', ['status' => 'pending']) }}" class="action-btn">
+                <a href="<?php echo e(route('instructor.requests', ['status' => 'pending'])); ?>" class="action-btn">
                     <i class="fa-solid fa-clock"></i>
-                    Pending Requests ({{ $stats['pending_requests'] }})
+                    Pending Requests (<?php echo e($stats['pending_requests']); ?>)
                 </a>
                 <a href="#schedule-modal" class="action-btn" data-bs-toggle="modal">
                     <i class="fa-solid fa-calendar-plus"></i>
                     Schedule Session
                 </a>
-                <a href="{{ route('profile.show') }}" class="action-btn">
+                <a href="<?php echo e(route('profile.show')); ?>" class="action-btn">
                     <i class="fa-solid fa-user"></i>
                     Edit Profile
                 </a>
@@ -115,36 +113,38 @@
                     <i class="fa-solid fa-calendar-day"></i> Today's Sessions
                 </h2>
 
-                @if($todaySessions->count() > 0)
+                <?php if($todaySessions->count() > 0): ?>
                     <div class="session-list">
-                        @foreach($todaySessions as $session)
+                        <?php $__currentLoopData = $todaySessions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $session): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="session-item">
                                 <div class="session-info">
-                                    <div class="session-customer">{{ $session->customer->name }}</div>
+                                    <div class="session-customer"><?php echo e($session->customer->name); ?></div>
                                     <div class="session-details">
-                                        @if($session->exercise_type)
-                                            <i class="fa-solid fa-dumbbell"></i> {{ ucfirst($session->exercise_type) }}
-                                        @endif
-                                        @if($session->goals)
-                                            <br><small>{{ Str::limit($session->goals, 50) }}</small>
-                                        @endif
+                                        <?php if($session->exercise_type): ?>
+                                            <i class="fa-solid fa-dumbbell"></i> <?php echo e(ucfirst($session->exercise_type)); ?>
+
+                                        <?php endif; ?>
+                                        <?php if($session->goals): ?>
+                                            <br><small><?php echo e(Str::limit($session->goals, 50)); ?></small>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="session-time">
-                                    <div>{{ $session->scheduled_at->format('g:i A') }}</div>
+                                    <div><?php echo e($session->scheduled_at->format('g:i A')); ?></div>
                                     <div class="request-status">
-                                        {!! $session->status_badge !!}
+                                        <?php echo $session->status_badge; ?>
+
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
-                @else
+                <?php else: ?>
                     <div class="empty-state">
                         <div class="empty-state-icon">📅</div>
                         <p>No sessions scheduled for today</p>
                     </div>
-                @endif
+                <?php endif; ?>
             </div>
 
             <!-- Upcoming Sessions -->
@@ -153,31 +153,34 @@
                     <i class="fa-solid fa-calendar-week"></i> Upcoming Sessions
                 </h2>
 
-                @if($upcomingSessions->count() > 0)
+                <?php if($upcomingSessions->count() > 0): ?>
                     <div class="session-list">
-                        @foreach($upcomingSessions as $session)
+                        <?php $__currentLoopData = $upcomingSessions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $session): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="session-item">
                                 <div class="session-info">
-                                    <div class="session-customer">{{ $session->customer->name }}</div>
+                                    <div class="session-customer"><?php echo e($session->customer->name); ?></div>
                                     <div class="session-details">
-                                        {{ $session->scheduled_at->format('M j, g:i A') }}
-                                        @if($session->exercise_type)
-                                            <br><i class="fa-solid fa-dumbbell"></i> {{ ucfirst($session->exercise_type) }}
-                                        @endif
+                                        <?php echo e($session->scheduled_at->format('M j, g:i A')); ?>
+
+                                        <?php if($session->exercise_type): ?>
+                                            <br><i class="fa-solid fa-dumbbell"></i> <?php echo e(ucfirst($session->exercise_type)); ?>
+
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="request-status">
-                                    {!! $session->status_badge !!}
+                                    <?php echo $session->status_badge; ?>
+
                                 </div>
                             </div>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
-                @else
+                <?php else: ?>
                     <div class="empty-state">
                         <div class="empty-state-icon">🔮</div>
                         <p>No upcoming sessions scheduled</p>
                     </div>
-                @endif
+                <?php endif; ?>
             </div>
         </div>
 
@@ -187,13 +190,13 @@
                 <h2 class="section-title">
                     <i class="fa-solid fa-clock-rotate-left"></i> Recent Requests
                 </h2>
-                <a href="{{ route('instructor.requests') }}" class="btn btn-primary btn-sm">
+                <a href="<?php echo e(route('instructor.requests')); ?>" class="btn btn-primary btn-sm">
                     <i class="fa-solid fa-magnifying-glass" style="margin-right: 0.5rem;"></i>
                     View All
                 </a>
             </div>
 
-            @if($recentRequests->count() > 0)
+            <?php if($recentRequests->count() > 0): ?>
                 <div class="table-responsive">
                     <table style="width: 100%; background: var(--card); border-radius: var(--radius); overflow: hidden;">
                         <thead>
@@ -206,53 +209,57 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($recentRequests as $request)
+                            <?php $__currentLoopData = $recentRequests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $request): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr style="border-bottom: 1px solid rgba(255, 102, 0, 0.1);">
                                     <td style="padding: 1rem;">
-                                        <div style="font-weight: 600;">{{ $request->customer->name }}</div>
+                                        <div style="font-weight: 600;"><?php echo e($request->customer->name); ?></div>
                                         <div style="font-size: 0.875rem; color: var(--muted-foreground);">
-                                            {{ $request->customer->email }}
+                                            <?php echo e($request->customer->email); ?>
+
                                         </div>
                                     </td>
                                     <td style="padding: 1rem; color: var(--foreground);">
-                                        {{ $request->preferred_date_time }}
+                                        <?php echo e($request->preferred_date_time); ?>
+
                                     </td>
                                     <td style="padding: 1rem; color: var(--foreground);">
-                                        @if($request->exercise_type)
-                                            {{ ucfirst($request->exercise_type) }}
-                                        @else
+                                        <?php if($request->exercise_type): ?>
+                                            <?php echo e(ucfirst($request->exercise_type)); ?>
+
+                                        <?php else: ?>
                                             <span style="color: var(--muted-foreground);">Not specified</span>
-                                        @endif
+                                        <?php endif; ?>
                                     </td>
                                     <td style="padding: 1rem;">
-                                        {!! $request->status_badge !!}
+                                        <?php echo $request->status_badge; ?>
+
                                     </td>
                                     <td style="padding: 1rem;">
-                                        <a href="{{ route('instructor.requests.show', $request) }}" 
+                                        <a href="<?php echo e(route('instructor.requests.show', $request)); ?>" 
                                            class="btn btn-outline btn-sm">
                                             <i class="fa-solid fa-eye"></i> View
                                         </a>
                                     </td>
                                 </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
                 </div>
-            @else
+            <?php else: ?>
                 <div class="empty-state">
                     <div class="empty-state-icon">📋</div>
                     <p>No instructor requests yet</p>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
 </section>
 
-@include('index.footer')
+<?php echo $__env->make('index.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
     // Auto-update dashboard every 30 seconds for real-time updates
     setInterval(function() {
@@ -301,4 +308,5 @@ function closeWelcome() {
 setTimeout(closeWelcome, 5000);
 
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('skeleton.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\backup\MASUDOG-NOSENAS_proj\resources\views/instructor/instructor_dashboard.blade.php ENDPATH**/ ?>

@@ -8,40 +8,42 @@ use Illuminate\Http\Request;
 class ExerciseController extends Controller
 {
 
-    public function index(Request $request)
-    {   
+public function index(Request $request)
+{   
+    $query = Exercise::where('is_active', true);
 
-        $query = Exercise::where('is_active', true);
-
-        // Search functionality
-        if ($request->filled('search')) {
-            $searchTerm = $request->search;
-            $query->where(function($q) use ($searchTerm) {
-                $q->where('name', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('description', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('equipment', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('muscle_group', 'LIKE', "%{$searchTerm}%");
-            });
-        }
-
-        if ($request->filled('difficulty')) {
-            $query->where('difficulty', $request->difficulty);
-        }
-
-        if ($request->filled('category')) {
-            $query->where('category', $request->category);
-        }
-
-        // Preserve pagination with search parameters
-        $exercises = $query->paginate(10)->withQueryString();
-        $filter = $request->get('category', 'all');
-
-        return view('index.exercises', [
-            'exercises' => $exercises,
-            'currentFilters' => $request->only(['difficulty', 'category', 'search']),
-            'filter' => $filter,
-        ]);
+    // Search functionality
+    if ($request->filled('search')) {
+        $searchTerm = $request->search;
+        $query->where(function($q) use ($searchTerm) {
+            $q->where('name', 'LIKE', "%{$searchTerm}%")
+              ->orWhere('description', 'LIKE', "%{$searchTerm}%")
+              ->orWhere('equipment', 'LIKE', "%{$searchTerm}%")
+              ->orWhere('muscle_group', 'LIKE', "%{$searchTerm}%");
+        });
     }
+
+    // Category filter
+    if ($request->filled('category') && $request->category !== 'all') {
+        $query->where('category', $request->category);
+    }
+
+    // Difficulty filter (previously level)
+    if ($request->filled('difficulty') && $request->difficulty !== 'all') {
+        $query->where('difficulty', $request->difficulty);
+    }
+
+    // Paginate with query string
+    $exercises = $query->paginate(12)->withQueryString();
+    
+    return view('index.exercises', [
+        'exercises' => $exercises,
+        'search' => $request->get('search', ''),
+        'filter' => $request->get('category', 'all'),
+        'difficulty' => $request->get('difficulty', 'all'), // changed variable
+        'currentFilters' => $request->only(['difficulty', 'category', 'search']),
+    ]);
+}
 
     public function show(Exercise $exercise)
     {

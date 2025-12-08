@@ -13,8 +13,16 @@ class ExerciseController extends Controller
      */
     public function index()
     {
+        $icons = [
+            'beginner' => '🌱',
+            'intermediate' => '📈',
+            'advanced' => '⭐',
+            'expert' => '🔥',
+            'hardcore' => '💪'
+        ];
+
         $exercises = Exercise::orderBy('name')->paginate(10);
-        return view('admin.exercises.index', compact('exercises'));
+        return view('admin.exercises.index', compact('exercises', 'icons'));
     }
 
     /**

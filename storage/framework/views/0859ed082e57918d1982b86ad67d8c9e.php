@@ -36,14 +36,23 @@
         <!-- Profile Header -->
         <div class="profile-header">
             <div class="profile-picture-edit">
-                <?php if(Auth::user()->profile_picture): ?>
-                    <img src="<?php echo e(Storage::url(Auth::user()->profile_picture)); ?>" 
+                <?php if(Auth::user()->profile && Auth::user()->profile->profile_picture): ?>
+                    <img src="<?php echo e(Storage::url(Auth::user()->profile->profile_picture)); ?>" 
                          alt="Profile Picture" 
-                         class="image-preview"
+                         class="profile-picture"
                          id="imagePreview">
                     <div class="profile-picture-placeholder" id="imagePlaceholder" style="display: none;">
                         <?php echo e(strtoupper(substr(Auth::user()->name, 0, 1))); ?>
 
+                    </div>
+                    <div class="profile-picture-actions">
+                        <label class="picture-upload-btn">
+                            <i class="fa-solid fa-camera"></i>
+                            <input type="file" name="profile_picture" accept="image/*" onchange="previewImage(event)">
+                        </label>
+                        <button type="button" class="picture-delete-btn" onclick="deleteProfilePicture()" title="Delete Profile Picture">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </div>
                 <?php else: ?>
                     <div class="profile-picture-placeholder" id="imagePlaceholder">
@@ -51,11 +60,13 @@
 
                     </div>
                     <img src="#" alt="Preview" class="image-preview" id="imagePreview" style="display: none;">
+                    <div class="profile-picture-actions">
+                        <label class="picture-upload-btn">
+                            <i class="fa-solid fa-camera"></i>
+                            <input type="file" name="profile_picture" accept="image/*" onchange="previewImage(event)">
+                        </label>
+                    </div>
                 <?php endif; ?>
-                <label class="picture-upload-btn">
-                    <i class="fa-solid fa-camera"></i>
-                    <input type="file" name="profile_picture" accept="image/*" onchange="previewImage(event)">
-                </label>
             </div>
 
             <h1 class="profile-name">Edit Profile</h1>
@@ -245,6 +256,20 @@
     function previewImage(event) {
         const file = event.target.files[0];
         if (file) {
+            // Validate file size (2MB max)
+            if (file.size > 2 * 1024 * 1024) {
+                showFlashMessage('File size must be less than 2MB', 'error');
+                event.target.value = '';
+                return;
+            }
+            
+            // Validate file type
+            if (!file.type.match(/image\/(jpeg|jpg|png|gif)/)) {
+                showFlashMessage('File must be an image (JPEG, PNG, or GIF)', 'error');
+                event.target.value = '';
+                return;
+            }
+            
             const reader = new FileReader();
             reader.onload = function(e) {
                 const preview = document.getElementById('imagePreview');
@@ -252,6 +277,7 @@
                 
                 preview.src = e.target.result;
                 preview.style.display = 'block';
+                preview.className = 'profile-picture'; // Ensure it uses the correct class
                 
                 if (placeholder) {
                     placeholder.style.display = 'none';
@@ -259,6 +285,127 @@
             };
             reader.readAsDataURL(file);
         }
+    }
+
+    // Handle file input change - upload immediately
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.querySelector('input[name="profile_picture"]');
+        if (fileInput) {
+            fileInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    uploadProfilePicture(file);
+                }
+            });
+        }
+    });
+
+    // AJAX Profile Picture Upload
+    function uploadProfilePicture(file) {
+        const formData = new FormData();
+        formData.append('profile_picture', file);
+        
+        // Show loading state
+        const uploadBtn = document.querySelector('.picture-upload-btn');
+        const originalContent = uploadBtn.innerHTML;
+        uploadBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+        uploadBtn.style.pointerEvents = 'none';
+        
+        fetch('<?php echo e(route("profile.picture.update")); ?>', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update the image preview with the new URL
+                const preview = document.getElementById('imagePreview');
+                preview.src = data.url;
+                preview.style.display = 'block';
+                preview.className = 'profile-picture'; // Ensure it uses the correct class
+                
+                const placeholder = document.getElementById('imagePlaceholder');
+                if (placeholder) {
+                    placeholder.style.display = 'none';
+                }
+                
+                // Show success message
+                showFlashMessage('Profile picture updated successfully!', 'success');
+            } else {
+                showFlashMessage(data.message || 'Failed to upload profile picture', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Upload error:', error);
+            showFlashMessage('Failed to upload profile picture. Please try again.', 'error');
+        })
+        .finally(() => {
+            // Restore button state
+            uploadBtn.innerHTML = originalContent;
+            uploadBtn.style.pointerEvents = 'auto';
+        });
+    }
+
+    // Delete Profile Picture
+    function deleteProfilePicture() {
+        if (!confirm('Are you sure you want to delete your profile picture?')) {
+            return;
+        }
+        
+        fetch('<?php echo e(route("profile.picture.delete")); ?>', {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Hide image and show placeholder
+                const preview = document.getElementById('imagePreview');
+                const placeholder = document.getElementById('imagePlaceholder');
+                
+                preview.style.display = 'none';
+                placeholder.style.display = 'flex';
+                
+                // Clear file input
+                document.querySelector('input[name="profile_picture"]').value = '';
+                
+                showFlashMessage('Profile picture deleted successfully!', 'success');
+            } else {
+                showFlashMessage(data.message || 'Failed to delete profile picture', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Delete error:', error);
+            showFlashMessage('Failed to delete profile picture. Please try again.', 'error');
+        });
+    }
+
+    // Show flash message function
+    function showFlashMessage(message, type) {
+        // Remove existing flash messages
+        const existingMessages = document.querySelectorAll('.flash-message');
+        existingMessages.forEach(msg => msg.remove());
+        
+        // Create new flash message
+        const flashDiv = document.createElement('div');
+        flashDiv.className = `flash-message ${type}`;
+        flashDiv.textContent = message;
+        
+        // Insert at the top of the container
+        const container = document.querySelector('.container');
+        container.insertBefore(flashDiv, container.firstChild);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            flashDiv.remove();
+        }, 5000);
     }
 
     // Auto calculate BMI when height or weight changes
