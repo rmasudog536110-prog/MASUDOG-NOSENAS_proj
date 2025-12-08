@@ -38,38 +38,36 @@
             </div>
         <?php endif; ?>
 
-        <!-- Search Bar -->
-        <div class="search-filter-bar">
-            <form method="GET" action="<?php echo e(route('admin.exercises.index')); ?>" class="search-form">
-                <div class="search-grid-simple">
-                    <!-- Search Input -->
-                    <div class="search-input-group">
-                        <label for="search" class="search-label">
-                            <i class="fas fa-search"></i> Search Exercises
-                        </label>
-                        <input type="text" 
-                               name="search" 
-                               id="search"
-                               class="search-input" 
-                               value="<?php echo e(old('search', $search)); ?>"
-                               placeholder="Search by name, description, or muscle group...">
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="search-actions">
-                        <button type="submit" class="btn-search">
-                            <i class="fas fa-search"></i> Search
-                        </button>
-                        <a href="<?php echo e(route('admin.exercises.index')); ?>" class="btn-clear">
-                            <i class="fas fa-times"></i> Clear
-                        </a>
-                    </div>
-                </div>
-            </form>
-        </div>
-
         <!-- Exercises Table -->
         <div class="exercises-card">
+            <!-- Search Bar inside table card -->
+            <div class="table-search-bar">
+                <form method="GET" action="<?php echo e(route('admin.exercises.index')); ?>" class="search-form-inline">
+                    <div class="search-controls">
+                        <!-- Search Input -->
+                        <div class="search-input-wrapper">
+                            <input type="text" 
+                                   name="search" 
+                                   id="search"
+                                   class="search-input-inline" 
+                                   value="<?php echo e(old('search', $search)); ?>"
+                                   placeholder="Search exercises...">
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="search-actions-inline">
+                            <button type="submit" class="btn-search-inline">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <a href="<?php echo e(route('admin.exercises.index')); ?>" class="btn-clear-inline">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="table-container">
             <div class="table-container">
                 <table class="exercises-table">
                     <thead>

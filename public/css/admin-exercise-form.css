@@ -86,7 +86,7 @@
     width: 100%;
     padding: 0.75rem;
     background: var(--input);
-    border: 1px solid var(--border);
+    border: 2px solid rgba(249, 115, 22, 0.3);
     border-radius: 6px;
     color: var(--foreground);
     font-size: 0.95rem;
@@ -125,7 +125,7 @@ textarea.form-control {
 select.form-control {
     background-color: var(--input) !important;
     color: var(--foreground) !important;
-    border: 1px solid var(--border);
+    border: 2px solid rgba(249, 115, 22, 0.3);
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
     background-position: right 0.5rem center;
     background-repeat: no-repeat;
@@ -141,7 +141,7 @@ select.form-control:focus,
 select.form-control:active {
     background-color: var(--input) !important;
     color: var(--foreground) !important;
-    border-color: #f97316;
+    border-color: #f97316 !important;
     box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
 }
 
@@ -303,85 +303,62 @@ select.form-control option {
     }
 }
 
-/* Search and Filter Bar Styles */
-.search-filter-bar {
-    margin: 2rem 0;
-    padding: 0 2rem;
+/* Search and Filter Bar Styles - Kept for backward compatibility but not used */
+
+/* Inline Search Bar inside Table Card */
+.table-search-bar {
+    padding: 1.5rem 1.5rem 0;
+    border-bottom: 1px solid var(--border);
 }
 
-.search-form {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.search-form-inline {
+    width: 100%;
 }
 
-.search-grid,
-.search-grid-simple {
-    display: grid;
-    grid-template-columns: 2fr auto;
-    gap: 1rem;
-    align-items: end;
-}
-
-.search-input-group,
-.filter-group {
+.search-controls {
     display: flex;
-    flex-direction: column;
-}
-
-.search-label {
-    color: var(--foreground);
-    font-weight: 500;
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-    display: flex;
+    gap: 0.75rem;
     align-items: center;
-    gap: 0.5rem;
 }
 
-.search-label i {
-    color: #f97316;
-    font-size: 0.85rem;
+.search-input-wrapper {
+    flex: 1;
 }
 
-.search-input,
-.search-select {
-    padding: 0.75rem;
+.search-input-inline {
+    width: 100%;
+    padding: 0.75rem 1rem;
     background: var(--input);
-    border: 1px solid var(--border);
+    border: 2px solid rgba(249, 115, 22, 0.3);
     border-radius: 6px;
     color: var(--foreground);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     transition: all 0.2s ease;
 }
 
-.search-input:focus,
-.search-select:focus {
+.search-input-inline:focus {
     outline: none;
     border-color: #f97316;
     box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+    background: var(--input);
 }
 
-.search-input::placeholder {
+.search-input-inline::placeholder {
     color: var(--muted-foreground);
 }
 
-/* Search action buttons */
-.search-actions {
+.search-actions-inline {
     display: flex;
     gap: 0.5rem;
-    align-items: end;
-    padding-bottom: 0.25rem;
 }
 
-.btn-search,
-.btn-clear {
+.btn-search-inline,
+.btn-clear-inline {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
     border-radius: 6px;
     font-weight: 500;
     text-decoration: none;
@@ -389,29 +366,28 @@ select.form-control option {
     cursor: pointer;
     font-size: 0.9rem;
     transition: all 0.2s ease;
-    white-space: nowrap;
 }
 
-.btn-search {
+.btn-search-inline {
     background: #f97316;
     color: white;
     border: 1px solid #f97316;
 }
 
-.btn-search:hover {
+.btn-search-inline:hover {
     background: #ea580c;
     border-color: #ea580c;
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(249, 115, 22, 0.3);
 }
 
-.btn-clear {
+.btn-clear-inline {
     background: transparent;
     color: var(--foreground);
     border: 1px solid var(--border);
 }
 
-.btn-clear:hover {
+.btn-clear-inline:hover {
     background: var(--border);
     border-color: #f97316;
     color: #f97316;
@@ -449,6 +425,23 @@ select.form-control option {
     .btn-clear {
         justify-content: center;
         width: 100%;
+    }
+    
+    /* Mobile responsive for inline search */
+    .search-controls {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .search-actions-inline {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .btn-search-inline,
+    .btn-clear-inline {
+        flex: 1;
+        max-width: 80px;
     }
 }
 
