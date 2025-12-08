@@ -15,7 +15,7 @@ class Exercise extends Model
         'difficulty',
         'equipment',
         'muscle_group',
-        'instruction',
+        'instructions',
         'video_url',
         'img_url',
         'is_active',
