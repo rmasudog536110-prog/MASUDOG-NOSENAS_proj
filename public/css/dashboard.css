@@ -1290,6 +1290,15 @@ h3 {
             background: var(--card);
             border: 1px solid rgba(255, 102, 0, 0.2);
             border-radius: var(--radius);
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .admin-action-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
         }
 
 /* ===== Form Select Dropdown Styling ===== */
