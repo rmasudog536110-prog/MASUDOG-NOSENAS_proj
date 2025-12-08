@@ -162,6 +162,18 @@
                     </div>
 
                     <div class="subscription-details-grid">
+                        
+                        <div class="detail-card">
+                            <div class="detail-card-icon">
+                                <i class="fa-solid fa-calendar-check"></i>
+                            </div>
+                            <div class="detail-card-content">
+                                <div class="detail-card-label">Started On</div>
+                                <div class="detail-card-value"><?php echo e(\Carbon\Carbon::parse($userSubscription->start_date)->format('M j, Y')); ?></div>
+                            </div>
+                        </div>
+
+
                         <?php if($subscriptionExpiry): ?>
                             <div class="detail-card">
                                 <div class="detail-card-icon">
@@ -193,16 +205,6 @@
                             <div class="detail-card-content">
                                 <div class="detail-card-label">Amount Paid</div>
                                 <div class="detail-card-value price-display">₱<?php echo e(number_format($userSubscription->plan->price ?? 0, 2)); ?></div>
-                            </div>
-                        </div>
-
-                        <div class="detail-card">
-                            <div class="detail-card-icon">
-                                <i class="fa-solid fa-calendar-check"></i>
-                            </div>
-                            <div class="detail-card-content">
-                                <div class="detail-card-label">Started On</div>
-                                <div class="detail-card-value"><?php echo e(\Carbon\Carbon::parse($userSubscription->start_date)->format('M j, Y')); ?></div>
                             </div>
                         </div>
                     </div>
