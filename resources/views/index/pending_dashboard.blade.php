@@ -18,7 +18,7 @@
             <i class="fa-solid fa-hourglass-half empty-state-icon"></i>
             <p>Please be patient while we review your account.</p>
         </div>
-        <div class="quick-actions" style="justify-content: center; margin-top: 1.5rem;">
+        <div class="quick-actions-pending" style="justify-content: center; margin-top: 1.5rem;">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf   
                 <button type="submit" class="btn btn-outline">Logout</button>

@@ -28,19 +28,19 @@ use App\Http\Controllers\ReportController;
 | Guest Routes
 |--------------------------------------------------------------------------
 */
-Route::middleware('guest')->group(function () {
+    Route::middleware('guest')->group(function () {
 
 
-    Route::get('/', [IndexController::class, 'index'])->name('index');
+        Route::get('/', [IndexController::class, 'index'])->name('index');
 
-    Route::get('/register', [UserController::class, 'showRegister'])->name('register');
-    Route::post('/register', [UserController::class, 'registerUser'])->name('register.submit');
+        Route::get('/register', [UserController::class, 'showRegister'])->name('register');
+        Route::post('/register', [UserController::class, 'registerUser'])->name('register.submit');
 
 
-    Route::get('/login', [UserController::class, 'showLogin'])->name('login');
-    Route::post('/login', [UserController::class, 'login'])->name('login.submit');
+        Route::get('/login', [UserController::class, 'showLogin'])->name('login');
+        Route::post('/login', [UserController::class, 'login'])->name('login.submit');
 
-});
+    });
 
 
 /*

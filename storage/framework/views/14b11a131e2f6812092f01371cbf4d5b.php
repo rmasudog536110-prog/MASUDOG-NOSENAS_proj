@@ -2,6 +2,7 @@
 
 <?php $__env->startPush('styles'); ?>
     <link rel="stylesheet" href="<?php echo e(asset('css/exercises.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('css/admin-exercise-form.css')); ?>">
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -39,6 +40,34 @@
 
         <!-- Exercises Table -->
         <div class="exercises-card">
+            <!-- Search Bar inside table card -->
+            <div class="table-search-bar">
+                <form method="GET" action="<?php echo e(route('admin.exercises.index')); ?>" class="search-form-inline">
+                    <div class="search-controls">
+                        <!-- Search Input -->
+                        <div class="search-input-wrapper">
+                            <input type="text" 
+                                   name="search" 
+                                   id="search"
+                                   class="search-input-inline" 
+                                   value="<?php echo e(old('search', $search)); ?>"
+                                   placeholder="Search exercises...">
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="search-actions-inline">
+                            <button type="submit" class="btn-search-inline">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <a href="<?php echo e(route('admin.exercises.index')); ?>" class="btn-clear-inline">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="table-container">
             <div class="table-container">
                 <table class="exercises-table">
                     <thead>

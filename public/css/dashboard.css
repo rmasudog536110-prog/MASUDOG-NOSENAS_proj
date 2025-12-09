@@ -657,6 +657,7 @@
     .progress-stats { grid-template-columns: 1fr; }
     .stat-value { font-size: 2rem; }
     .quick-actions { flex-direction: column; }
+    .quick-actions-pending { justify-content: center; }
     .action-btn { width: 100%; }
     
     /* Workouts mobile */
@@ -782,6 +783,8 @@ h3 {
     background-color: transparent;
     color: var(--primary);
     border: 1px solid var(--primary);
+    
+    
 }
 
 .btn-outline:hover {
@@ -1671,6 +1674,7 @@ input[type="time"]::-moz-calendar-picker-indicator {
             gap: 1rem;
             margin-bottom: 2rem;
         }
+
 
         .action-btn {
             display: flex;

@@ -39,8 +39,8 @@
                 <h4>Contact Info</h4>
                 <div class="contact-info">
                     <p><strong>Email:</strong> support@fitclub.com</p>
-                    <p><strong>Phone:</strong> +63 912 345 6789</p>
-                    <p><strong>Address:</strong> 123 Fitness Street, Makati City, Philippines</p>
+                    <p><strong>Phone:</strong> +63 928 459 4158</p>
+                    <p><strong>Address:</strong> Matina Gravahan, Davao City, Philippines</p>
                     <p><strong>Hours:</strong> 24/7 Online Support</p>
                 </div>
             </div>
