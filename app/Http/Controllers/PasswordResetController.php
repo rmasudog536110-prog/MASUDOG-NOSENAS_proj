@@ -26,7 +26,8 @@ class PasswordResetController extends Controller
         // Generate a token
         $token = Str::random(60);
 
-        // Save token to the database
+        // Remove any existing tokens for this email, then save the new token
+        DB::table('password_resets')->where('email', $request->email)->delete();
         DB::table('password_resets')->insert([
             'email' => $request->email,
             'token' => $token,
