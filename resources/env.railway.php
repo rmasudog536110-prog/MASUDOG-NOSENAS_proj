@@ -1,7 +1,7 @@
 <php
 APP_NAME=Laravel
 APP_ENV=production
-APP_KEY=base64:B2v+8YSZ8fpQcdVYt8efMP6r0vXHbHDOzlIPXuq+WTA=
+APP_KEY=base64:XNOXiDgd7fSt4qyG1nk3ZjfPb7HSCTPZnTiCCgD5dqU=
 APP_DEBUG=false
 APP_URL=https://masudog-nosenasproj-production.up.railway.app/
 
