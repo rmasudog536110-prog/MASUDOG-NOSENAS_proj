@@ -19,8 +19,8 @@ return new class extends Migration
             $table->enum('difficulty', ['beginner', 'intermediate', 'expert']);
             $table->string('equipment');
             $table->text('instruction')->nullable();
-            $table->string('video_url');
-            $table->string('img_url');
+            $table->string('video_url')->nullable();
+            $table->string('img_url')->nullable();
             $table->string('icon')->nullable();
             $table->string('muscle_group')->nullable();
             $table->boolean('is_active')->default(true);

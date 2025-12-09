@@ -58,7 +58,7 @@ public function index(Request $request)
             'video_url' => $exercise->video_url,
             'icon' => $exercise->icon ?? '💪',
             'targetMuscles' => ['Full Body'], // Simplified since muscle_group field doesn't exist
-            'instructions' => $exercise->instruction ? explode("\n", $exercise->instruction) : ['Follow proper form', 'Breathe steadily', 'Control the movement'],
+            'instructions' => $exercise->instructions ? explode("\n", $exercise->instructions) : ['Follow proper form', 'Breathe steadily', 'Control the movement'],
             'tips' => ['Maintain proper form throughout', 'Start with lighter weights', 'Focus on controlled movements'],
             'variations' => ['Beginner variation available', 'Advanced variation available'],
             'commonMistakes' => ['Rushing through reps', 'Using too much weight', 'Poor form'],

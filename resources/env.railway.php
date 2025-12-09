@@ -1,4 +1,3 @@
-<php
 APP_NAME=Laravel
 APP_ENV=production
 APP_KEY=base64:XNOXiDgd7fSt4qyG1nk3ZjfPb7HSCTPZnTiCCgD5dqU=

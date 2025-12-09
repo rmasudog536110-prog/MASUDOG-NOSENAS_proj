@@ -20,7 +20,7 @@ return new class extends Migration
             $table->json('completed_days')->nullable();
             $table->integer('progress')->default(0);
             $table->date('last_activity');
-            $table->timestamps();
+            $table->timestamp('completed_at')->nullable();
             
             $table->unique(['user_id', 'program_id']);
         });
