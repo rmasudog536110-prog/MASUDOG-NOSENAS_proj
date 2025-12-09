@@ -24,4 +24,4 @@
     <?php endif; ?>
 })();
 </script>
-<?php /**PATH C:\xampp\htdocs\backup\MASUDOG-NOSENAS_proj\resources\views/partials/session-security.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\backup\MASUDOG-NOSENAS_proj\resources\views\partials\session-security.blade.php ENDPATH**/ ?>

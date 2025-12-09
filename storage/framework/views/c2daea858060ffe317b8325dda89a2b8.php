@@ -51,4 +51,4 @@
     
 </body>
 </html>
-<?php /**PATH C:\xampp\htdocs\backup\MASUDOG-NOSENAS_proj\resources\views/skeleton/layout.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\backup\MASUDOG-NOSENAS_proj\resources\views\skeleton\layout.blade.php ENDPATH**/ ?>

@@ -82,4 +82,4 @@
         </main>
     </body>
     </html>
-<?php /**PATH C:\xampp\htdocs\backup\MASUDOG-NOSENAS_proj\resources\views/auth/login.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\backup\MASUDOG-NOSENAS_proj\resources\views\auth\login.blade.php ENDPATH**/ ?>

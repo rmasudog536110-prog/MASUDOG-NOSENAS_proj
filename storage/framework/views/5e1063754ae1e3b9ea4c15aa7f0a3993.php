@@ -115,4 +115,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-<?php /**PATH C:\xampp\htdocs\backup\MASUDOG-NOSENAS_proj\resources\views/index/index_header.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\backup\MASUDOG-NOSENAS_proj\resources\views\index\index_header.blade.php ENDPATH**/ ?>

@@ -60,4 +60,4 @@
         </div>
     </div>
 </footer>
-<?php /**PATH C:\xampp\htdocs\backup\MASUDOG-NOSENAS_proj\resources\views/index/footer.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\backup\MASUDOG-NOSENAS_proj\resources\views\index\footer.blade.php ENDPATH**/ ?>
