@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('progress')->default(0);
             $table->date('last_activity');
             $table->timestamp('completed_at')->nullable();
+            $table->timestamps();
             
             $table->unique(['user_id', 'program_id']);
         });
