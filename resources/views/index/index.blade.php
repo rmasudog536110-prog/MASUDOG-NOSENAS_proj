@@ -20,7 +20,7 @@
             </p>
 
             @guest
-            <a href="#subscription-plans" class="btn btn-primary cta-btn">Start Your Free Trial</a>
+            <a href="#subscription-plans" class="btn btn-primary cta-btn">Start Your Journey Now!</a>
             @else
             <a href="{{ route('user_dashboard') }}" class="btn btn-primary cta-btn">Go to Dashboard</a>
             @endguest
@@ -47,7 +47,6 @@
                             <div>
                                 <span class="price">₱{{ number_format($plan['price'], 2) }}</span>
                             </div>
-                            <span class="free-trial">7-Day Free Trial</span>
                         </div>
 
                 <ul class="plan-features">
