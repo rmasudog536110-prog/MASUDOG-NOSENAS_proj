@@ -11,10 +11,7 @@
             </div>
 
             <nav class="nav">
-                <a href="{{ url('/') }}" 
-                   class="nav-link {{ request()->is('/') ? 'active' : '' }}">
-                    <i class="fa-solid fa-house-user"></i> Home
-                </a>
+    
 
                 @auth
                     <a href="{{ route('programs') }}" 

@@ -213,6 +213,7 @@
                                             allowfullscreen></iframe>
                                 </div>
                             @else
+                            
                                 <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 250px;">
                                     <p class="text-muted">Video cannot be displayed</p>
                                 </div>
